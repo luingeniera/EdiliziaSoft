@@ -37,7 +37,7 @@ namespace WindowsFormsApplication1
 
         private void bienesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Bienes Bien = new Bienes();
+            FrmBienes Bien = new FrmBienes();
             Bien.Show();
         }
 

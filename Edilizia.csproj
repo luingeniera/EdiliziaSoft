@@ -47,11 +47,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Bienes.cs">
+    <Compile Include="Bienes.cs" />
+    <Compile Include="Controlador.cs" />
+    <Compile Include="FrmBienes.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Bienes.Designer.cs">
-      <DependentUpon>Bienes.cs</DependentUpon>
+    <Compile Include="FrmBienes.Designer.cs">
+      <DependentUpon>FrmBienes.cs</DependentUpon>
     </Compile>
     <Compile Include="Calendario.cs">
       <SubType>Form</SubType>
@@ -98,6 +100,9 @@
     <Compile Include="Solicitudes.Designer.cs">
       <DependentUpon>Solicitudes.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="FrmBienes.resx">
+      <DependentUpon>FrmBienes.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
