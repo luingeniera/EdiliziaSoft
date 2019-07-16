@@ -10,13 +10,6 @@ namespace Edilizia
     class Controlador
     {
 
-        //GetCategorias 
-        public static List<Bienes> GetBienes()
-        {
-         //armar el select de datos aca
-
-            return Bienes;
-        }
-
+        
     }
 }
