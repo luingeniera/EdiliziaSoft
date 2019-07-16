@@ -43,12 +43,6 @@ namespace WindowsFormsApplication1
                 //Create a data reader and Execute the command
                 MySqlDataReader dataReader = cmd.ExecuteReader();
 
-                //mySqlDataAdapter = new MySqlDataAdapter("select * from users", connection);
-                //mySqlDataAdapter = new MySqlDataAdapter(selectCommand, connection);
-                //DataSet DS = new DataSet();
-                //mySqlDataAdapter.Fill(DS);
-                //dgLocales.DataSource = DS.Tables[0];
-
                 return dataReader;
                 //close connection
                 this.CloseConnection();

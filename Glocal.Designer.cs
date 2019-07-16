@@ -91,23 +91,24 @@
             this.cbNivel.FormattingEnabled = true;
             this.cbNivel.Location = new System.Drawing.Point(26, 62);
             this.cbNivel.Name = "cbNivel";
-            this.cbNivel.Size = new System.Drawing.Size(106, 21);
+            this.cbNivel.Size = new System.Drawing.Size(152, 21);
             this.cbNivel.TabIndex = 4;
             this.cbNivel.Text = "Nivel";
+            this.cbNivel.SelectedValueChanged += new System.EventHandler(this.cbNivel_SelectedValueChanged);
             // 
             // cbNumero
             // 
             this.cbNumero.FormattingEnabled = true;
-            this.cbNumero.Location = new System.Drawing.Point(140, 62);
+            this.cbNumero.Location = new System.Drawing.Point(215, 62);
             this.cbNumero.Name = "cbNumero";
-            this.cbNumero.Size = new System.Drawing.Size(121, 21);
+            this.cbNumero.Size = new System.Drawing.Size(172, 21);
             this.cbNumero.TabIndex = 5;
             this.cbNumero.Text = "Número";
             // 
             // lblLocal
             // 
             this.lblLocal.AutoSize = true;
-            this.lblLocal.Location = new System.Drawing.Point(276, 65);
+            this.lblLocal.Location = new System.Drawing.Point(23, 100);
             this.lblLocal.Name = "lblLocal";
             this.lblLocal.Size = new System.Drawing.Size(56, 13);
             this.lblLocal.TabIndex = 6;
@@ -116,7 +117,7 @@
             // lblResponsable
             // 
             this.lblResponsable.AutoSize = true;
-            this.lblResponsable.Location = new System.Drawing.Point(368, 65);
+            this.lblResponsable.Location = new System.Drawing.Point(212, 100);
             this.lblResponsable.Name = "lblResponsable";
             this.lblResponsable.Size = new System.Drawing.Size(72, 13);
             this.lblResponsable.TabIndex = 7;
@@ -125,7 +126,7 @@
             // lblActivos
             // 
             this.lblActivos.AutoSize = true;
-            this.lblActivos.Location = new System.Drawing.Point(546, 65);
+            this.lblActivos.Location = new System.Drawing.Point(530, 100);
             this.lblActivos.Name = "lblActivos";
             this.lblActivos.Size = new System.Drawing.Size(73, 13);
             this.lblActivos.TabIndex = 8;
@@ -141,7 +142,7 @@
             // 
             // btBuscar
             // 
-            this.btBuscar.Location = new System.Drawing.Point(26, 93);
+            this.btBuscar.Location = new System.Drawing.Point(533, 61);
             this.btBuscar.Name = "btBuscar";
             this.btBuscar.Size = new System.Drawing.Size(105, 20);
             this.btBuscar.TabIndex = 10;
@@ -164,6 +165,7 @@
             this.Controls.Add(this.panel1);
             this.Name = "Glocal";
             this.Text = "Glocal";
+            this.Load += new System.EventHandler(this.Glocal_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgLocales)).EndInit();
