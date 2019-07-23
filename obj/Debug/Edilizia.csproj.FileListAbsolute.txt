@@ -2,8 +2,6 @@ C:\Users\JP\Documents\GitHub\EdiliziaSoft\bin\Debug\WindowsFormsApplication1.exe
 C:\Users\JP\Documents\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.exe
 C:\Users\JP\Documents\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.pdb
 C:\Users\JP\Documents\GitHub\EdiliziaSoft\obj\Debug\Edilizia.csprojResolveAssemblyReference.cache
-C:\Users\JP\Documents\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.FrmBienes.resources
-C:\Users\JP\Documents\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.Form1.resources
 C:\Users\JP\Documents\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.Glocal.resources
 C:\Users\JP\Documents\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.home.resources
 C:\Users\JP\Documents\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.Properties.Resources.resources
@@ -17,3 +15,16 @@ C:\Users\JP\Documents\GitHub\EdiliziaSoft\bin\Debug\MySql.Data.dll
 C:\Users\JP\Documents\GitHub\EdiliziaSoft\bin\Debug\Google.Protobuf.xml
 C:\Users\JP\Documents\GitHub\EdiliziaSoft\bin\Debug\itextsharp.xml
 C:\Users\JP\Documents\GitHub\EdiliziaSoft\bin\Debug\MySql.Data.xml
+C:\Users\JP\Documents\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.Calendario.resources
+C:\Users\JP\Documents\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.Sincro.resources
+C:\Users\JP\Documents\GitHub\EdiliziaSoft\bin\Debug\JsonRpc.CoreCLR.Client.dll
+C:\Users\JP\Documents\GitHub\EdiliziaSoft\bin\Debug\Newtonsoft.Json.dll
+C:\Users\JP\Documents\GitHub\EdiliziaSoft\bin\Debug\OdooRpc.CoreCLR.Client.dll
+C:\Users\JP\Documents\GitHub\EdiliziaSoft\bin\Debug\System.Data.CData.Odoo.Designer.dll
+C:\Users\JP\Documents\GitHub\EdiliziaSoft\bin\Debug\System.Data.CData.Odoo.dll
+C:\Users\JP\Documents\GitHub\EdiliziaSoft\bin\Debug\System.Data.CData.Odoo.Entities.EF6.dll
+C:\Users\JP\Documents\GitHub\EdiliziaSoft\bin\Debug\Newtonsoft.Json.xml
+C:\Users\JP\Documents\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.Bienes.resources
+C:\Users\JP\Documents\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.Login.resources
+C:\Users\JP\Documents\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.Gsolicitudes.resources
+C:\Users\JP\Documents\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.Solicitudes.resources

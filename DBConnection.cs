@@ -7,6 +7,7 @@ using System.Data;
 using System.Drawing;
 using MySql.Data.MySqlClient;
 using System.Data.SqlClient;
+using OdooRpc.CoreCLR;
 
 
 namespace WindowsFormsApplication1
@@ -21,6 +22,7 @@ namespace WindowsFormsApplication1
         private string password;
         private MySqlConnection connection;
 
+        
         public MySqlDataReader GetData(string selectCommand)
         {
 
@@ -99,6 +101,8 @@ namespace WindowsFormsApplication1
                 return false;
             }
         }
+
+        
     }
     
 }

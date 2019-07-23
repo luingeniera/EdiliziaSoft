@@ -1,11 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using MySql.Data.MySqlClient;
+using WindowsFormsApplication1;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System.IO;
+using System.Diagnostics;
+
 
 namespace WindowsFormsApplication1
 {
@@ -13,19 +21,29 @@ namespace WindowsFormsApplication1
     {
 
 
-     //   Stream myStream;
-     //   SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+        public void GenerarPDF (string titulo,string cuerpo)
 
-     //   saveFileDialog1.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*"  ;
-     //saveFileDialog1.FilterIndex = 2 ;
-     //saveFileDialog1.RestoreDirectory = true ;
- 
-     //if(saveFileDialog1.ShowDialog() == DialogResult.OK)
-     //{
-     //    if((myStream = saveFileDialog1.OpenFile()) != null)
-     //    {
-     //        // Code to write the stream goes here.
-     //        myStream.Close();
+        {
+            
+            //crear el PDF
+            Document doc = new Document();
+          PdfWriter.GetInstance(doc, new FileStream("holahola2.pdf", FileMode.Create));
+            doc.Open();
+            Paragraph title = new Paragraph();
+          title.Font = FontFactory.GetFont(FontFactory.HELVETICA, 18f, BaseColor.BLUE);
+            title.Add(titulo);
+            doc.Add(title);
+            
+             MessageBox.Show(cuerpo);
+            
+            doc.Add(new Paragraph(cuerpo));
+           
+            doc.Close();
+
+            Process.Start("holahola2.pdf");
+
+
+        }
 
     }
 }

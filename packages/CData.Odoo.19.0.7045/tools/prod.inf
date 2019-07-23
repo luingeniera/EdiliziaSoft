@@ -1,0 +1,6 @@
+part=OERE-A
+version=19.0
+build=7045
+prod=Odoo Data provider 2019
+licpath=./
+licname=System.Data.CData.Odoo
