@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Glocal));
             this.rbEntrega = new System.Windows.Forms.RadioButton();
             this.rbDevolucion = new System.Windows.Forms.RadioButton();
             this.rbAuditoria = new System.Windows.Forms.RadioButton();
@@ -39,6 +40,10 @@
             this.lblActivos = new System.Windows.Forms.Label();
             this.dgLocales = new System.Windows.Forms.DataGridView();
             this.btBuscar = new System.Windows.Forms.Button();
+            this.PDF = new System.Windows.Forms.Button();
+            this.btnConfirmar = new System.Windows.Forms.Button();
+            this.cbEntrega = new System.Windows.Forms.ComboBox();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgLocales)).BeginInit();
             this.SuspendLayout();
@@ -85,6 +90,7 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(324, 25);
             this.panel1.TabIndex = 3;
+            this.panel1.Visible = false;
             // 
             // cbNivel
             // 
@@ -99,9 +105,9 @@
             // cbNumero
             // 
             this.cbNumero.FormattingEnabled = true;
-            this.cbNumero.Location = new System.Drawing.Point(215, 62);
+            this.cbNumero.Location = new System.Drawing.Point(191, 62);
             this.cbNumero.Name = "cbNumero";
-            this.cbNumero.Size = new System.Drawing.Size(172, 21);
+            this.cbNumero.Size = new System.Drawing.Size(145, 21);
             this.cbNumero.TabIndex = 5;
             this.cbNumero.Text = "Número";
             // 
@@ -110,9 +116,9 @@
             this.lblLocal.AutoSize = true;
             this.lblLocal.Location = new System.Drawing.Point(23, 100);
             this.lblLocal.Name = "lblLocal";
-            this.lblLocal.Size = new System.Drawing.Size(56, 13);
+            this.lblLocal.Size = new System.Drawing.Size(43, 13);
             this.lblLocal.TabIndex = 6;
-            this.lblLocal.Text = "label1XXX";
+            this.lblLocal.Text = "Oficina:";
             // 
             // lblResponsable
             // 
@@ -137,7 +143,7 @@
             this.dgLocales.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgLocales.Location = new System.Drawing.Point(26, 127);
             this.dgLocales.Name = "dgLocales";
-            this.dgLocales.Size = new System.Drawing.Size(640, 329);
+            this.dgLocales.Size = new System.Drawing.Size(640, 304);
             this.dgLocales.TabIndex = 9;
             // 
             // btBuscar
@@ -150,11 +156,56 @@
             this.btBuscar.UseVisualStyleBackColor = true;
             this.btBuscar.Click += new System.EventHandler(this.btBuscar_Click);
             // 
+            // PDF
+            // 
+            this.PDF.Location = new System.Drawing.Point(581, 31);
+            this.PDF.Margin = new System.Windows.Forms.Padding(2);
+            this.PDF.Name = "PDF";
+            this.PDF.Size = new System.Drawing.Size(56, 19);
+            this.PDF.TabIndex = 11;
+            this.PDF.Text = "PDF";
+            this.PDF.UseVisualStyleBackColor = true;
+            this.PDF.Visible = false;
+            this.PDF.Click += new System.EventHandler(this.PDF_Click);
+            // 
+            // btnConfirmar
+            // 
+            this.btnConfirmar.Location = new System.Drawing.Point(515, 450);
+            this.btnConfirmar.Name = "btnConfirmar";
+            this.btnConfirmar.Size = new System.Drawing.Size(151, 27);
+            this.btnConfirmar.TabIndex = 12;
+            this.btnConfirmar.Text = "Confirmar";
+            this.btnConfirmar.UseVisualStyleBackColor = true;
+            this.btnConfirmar.Click += new System.EventHandler(this.btnConfirmar_Click);
+            // 
+            // cbEntrega
+            // 
+            this.cbEntrega.Enabled = false;
+            this.cbEntrega.FormattingEnabled = true;
+            this.cbEntrega.Location = new System.Drawing.Point(26, 454);
+            this.cbEntrega.Name = "cbEntrega";
+            this.cbEntrega.Size = new System.Drawing.Size(183, 21);
+            this.cbEntrega.TabIndex = 13;
+            this.cbEntrega.Text = "Entregar a:";
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(356, 62);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(140, 21);
+            this.comboBox1.TabIndex = 14;
+            this.comboBox1.Text = "ENT 00000001";
+            // 
             // Glocal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(691, 489);
+            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.cbEntrega);
+            this.Controls.Add(this.btnConfirmar);
+            this.Controls.Add(this.PDF);
             this.Controls.Add(this.btBuscar);
             this.Controls.Add(this.dgLocales);
             this.Controls.Add(this.lblActivos);
@@ -163,8 +214,9 @@
             this.Controls.Add(this.cbNumero);
             this.Controls.Add(this.cbNivel);
             this.Controls.Add(this.panel1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Glocal";
-            this.Text = "Glocal";
+            this.Text = "ENT 00000001";
             this.Load += new System.EventHandler(this.Glocal_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
@@ -187,5 +239,9 @@
         private System.Windows.Forms.Label lblActivos;
         private System.Windows.Forms.DataGridView dgLocales;
         private System.Windows.Forms.Button btBuscar;
+        private System.Windows.Forms.Button PDF;
+        private System.Windows.Forms.Button btnConfirmar;
+        private System.Windows.Forms.ComboBox cbEntrega;
+        private System.Windows.Forms.ComboBox comboBox1;
     }
 }

@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.Layout;
+
 
 namespace WindowsFormsApplication1
 {
@@ -15,6 +17,16 @@ namespace WindowsFormsApplication1
         public Calendario()
         {
             InitializeComponent();
+        }
+
+        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Calendario_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
