@@ -58,3 +58,4 @@ C:\Users\Leandro\Documents\GitHub\EdiliziaSoft\bin\Debug\Google.Protobuf.xml
 C:\Users\Leandro\Documents\GitHub\EdiliziaSoft\bin\Debug\itextsharp.xml
 C:\Users\Leandro\Documents\GitHub\EdiliziaSoft\bin\Debug\MySql.Data.xml
 C:\Users\Leandro\Documents\GitHub\EdiliziaSoft\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Leandro\Documents\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.Picking.resources

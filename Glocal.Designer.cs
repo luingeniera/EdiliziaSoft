@@ -41,9 +41,11 @@
             this.dgLocales = new System.Windows.Forms.DataGridView();
             this.btBuscar = new System.Windows.Forms.Button();
             this.PDF = new System.Windows.Forms.Button();
-            this.btnConfirmar = new System.Windows.Forms.Button();
+            this.btnEntregar = new System.Windows.Forms.Button();
             this.cbEntrega = new System.Windows.Forms.ComboBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.btnConfirmar = new System.Windows.Forms.Button();
+            this.lblComprobante = new System.Windows.Forms.Label();
+            this.btPicking = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgLocales)).BeginInit();
             this.SuspendLayout();
@@ -90,7 +92,6 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(324, 25);
             this.panel1.TabIndex = 3;
-            this.panel1.Visible = false;
             // 
             // cbNivel
             // 
@@ -132,7 +133,7 @@
             // lblActivos
             // 
             this.lblActivos.AutoSize = true;
-            this.lblActivos.Location = new System.Drawing.Point(530, 100);
+            this.lblActivos.Location = new System.Drawing.Point(397, 100);
             this.lblActivos.Name = "lblActivos";
             this.lblActivos.Size = new System.Drawing.Size(73, 13);
             this.lblActivos.TabIndex = 8;
@@ -140,6 +141,7 @@
             // 
             // dgLocales
             // 
+            this.dgLocales.AllowUserToOrderColumns = true;
             this.dgLocales.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgLocales.Location = new System.Drawing.Point(26, 127);
             this.dgLocales.Name = "dgLocales";
@@ -148,7 +150,7 @@
             // 
             // btBuscar
             // 
-            this.btBuscar.Location = new System.Drawing.Point(533, 61);
+            this.btBuscar.Location = new System.Drawing.Point(365, 61);
             this.btBuscar.Name = "btBuscar";
             this.btBuscar.Size = new System.Drawing.Size(105, 20);
             this.btBuscar.TabIndex = 10;
@@ -168,15 +170,15 @@
             this.PDF.Visible = false;
             this.PDF.Click += new System.EventHandler(this.PDF_Click);
             // 
-            // btnConfirmar
+            // btnEntregar
             // 
-            this.btnConfirmar.Location = new System.Drawing.Point(515, 450);
-            this.btnConfirmar.Name = "btnConfirmar";
-            this.btnConfirmar.Size = new System.Drawing.Size(151, 27);
-            this.btnConfirmar.TabIndex = 12;
-            this.btnConfirmar.Text = "Confirmar";
-            this.btnConfirmar.UseVisualStyleBackColor = true;
-            this.btnConfirmar.Click += new System.EventHandler(this.btnConfirmar_Click);
+            this.btnEntregar.Location = new System.Drawing.Point(515, 450);
+            this.btnEntregar.Name = "btnEntregar";
+            this.btnEntregar.Size = new System.Drawing.Size(151, 27);
+            this.btnEntregar.TabIndex = 12;
+            this.btnEntregar.Text = "Entregar";
+            this.btnEntregar.UseVisualStyleBackColor = true;
+            this.btnEntregar.Click += new System.EventHandler(this.btnEntregar_Click);
             // 
             // cbEntrega
             // 
@@ -188,23 +190,46 @@
             this.cbEntrega.TabIndex = 13;
             this.cbEntrega.Text = "Entregar a:";
             // 
-            // comboBox1
+            // btnConfirmar
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(356, 62);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(140, 21);
-            this.comboBox1.TabIndex = 14;
-            this.comboBox1.Text = "ENT 00000001";
+            this.btnConfirmar.Location = new System.Drawing.Point(358, 450);
+            this.btnConfirmar.Name = "btnConfirmar";
+            this.btnConfirmar.Size = new System.Drawing.Size(151, 27);
+            this.btnConfirmar.TabIndex = 14;
+            this.btnConfirmar.Text = "Confirmar Entrega";
+            this.btnConfirmar.UseVisualStyleBackColor = true;
+            this.btnConfirmar.Visible = false;
+            this.btnConfirmar.Click += new System.EventHandler(this.btnConfirmar_Click);
+            // 
+            // lblComprobante
+            // 
+            this.lblComprobante.AutoSize = true;
+            this.lblComprobante.Location = new System.Drawing.Point(568, 99);
+            this.lblComprobante.Name = "lblComprobante";
+            this.lblComprobante.Size = new System.Drawing.Size(0, 13);
+            this.lblComprobante.TabIndex = 15;
+            // 
+            // btPicking
+            // 
+            this.btPicking.Enabled = false;
+            this.btPicking.Location = new System.Drawing.Point(515, 60);
+            this.btPicking.Name = "btPicking";
+            this.btPicking.Size = new System.Drawing.Size(105, 23);
+            this.btPicking.TabIndex = 16;
+            this.btPicking.Text = "Realizar Picking";
+            this.btPicking.UseVisualStyleBackColor = true;
+            this.btPicking.Click += new System.EventHandler(this.btPicking_Click);
             // 
             // Glocal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(691, 489);
-            this.Controls.Add(this.comboBox1);
-            this.Controls.Add(this.cbEntrega);
+            this.Controls.Add(this.btPicking);
+            this.Controls.Add(this.lblComprobante);
             this.Controls.Add(this.btnConfirmar);
+            this.Controls.Add(this.cbEntrega);
+            this.Controls.Add(this.btnEntregar);
             this.Controls.Add(this.PDF);
             this.Controls.Add(this.btBuscar);
             this.Controls.Add(this.dgLocales);
@@ -216,7 +241,7 @@
             this.Controls.Add(this.panel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Glocal";
-            this.Text = "ENT 00000001";
+            this.Text = "Gestión de Locales";
             this.Load += new System.EventHandler(this.Glocal_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
@@ -240,8 +265,10 @@
         private System.Windows.Forms.DataGridView dgLocales;
         private System.Windows.Forms.Button btBuscar;
         private System.Windows.Forms.Button PDF;
-        private System.Windows.Forms.Button btnConfirmar;
+        private System.Windows.Forms.Button btnEntregar;
         private System.Windows.Forms.ComboBox cbEntrega;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.Button btnConfirmar;
+        private System.Windows.Forms.Label lblComprobante;
+        private System.Windows.Forms.Button btPicking;
     }
 }

@@ -52,6 +52,35 @@ namespace WindowsFormsApplication1
             return null;
         }
 
+        public long InsertData(string selectCommand)
+        {
+
+            // Specify a connection string. Replace the given value with a 
+            // valid connection string for a Northwind SQL Server sample
+            // database accessible to your system.
+            server = "localhost";
+            database = "edilizia";
+            uid = "root";
+            password = "qwe.123";
+            string connectionString;
+            connectionString = "SERVER=" + server + ";" + "DATABASE=" + database + ";" + "UID=" + uid + ";" + "PASSWORD=" + password + ";";
+
+            connection = new MySqlConnection(connectionString);
+
+            if (this.OpenConnection() == true)
+            {
+                //Create Command
+                MySqlCommand cmd = new MySqlCommand(selectCommand, connection);
+                //Create a data reader and Execute the command
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+
+                return cmd.LastInsertedId;
+                //close connection
+                this.CloseConnection();
+            }
+            return 0;
+        }
+
         //open connection to database
         private bool OpenConnection()
         {
