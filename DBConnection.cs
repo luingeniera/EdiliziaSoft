@@ -76,7 +76,7 @@ namespace WindowsFormsApplication1
 
                 return cmd.LastInsertedId;
                 //close connection
-                this.CloseConnection();
+                //this.CloseConnection();
             }
             return 0;
         }
