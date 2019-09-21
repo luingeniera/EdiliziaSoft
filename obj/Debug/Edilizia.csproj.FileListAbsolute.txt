@@ -59,3 +59,6 @@ C:\Users\Leandro\Documents\GitHub\EdiliziaSoft\bin\Debug\itextsharp.xml
 C:\Users\Leandro\Documents\GitHub\EdiliziaSoft\bin\Debug\MySql.Data.xml
 C:\Users\Leandro\Documents\GitHub\EdiliziaSoft\bin\Debug\Newtonsoft.Json.xml
 C:\Users\Leandro\Documents\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.Picking.resources
+C:\Users\lucia\OneDrive\Documentos\GitHub\EdiliziaSoft\bin\Debug\WindowsFormsApplication1.exe.config
+C:\Users\lucia\OneDrive\Documentos\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.exe
+C:\Users\lucia\OneDrive\Documentos\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.pdb
