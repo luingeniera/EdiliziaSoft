@@ -195,13 +195,13 @@ namespace WindowsFormsApplication1
             }
         }
 
-        private void PDF_Click(object sender, EventArgs e)
+        private void btnPDF_Click(object sender, EventArgs e)
         {
             PDF pp = new PDF();
-            string cuerpo, titulo;
-            titulo = "Pantalla gestion de locales";
-            cuerpo = "cuerpo del pdf locales";
-            pp.GenerarPDF(titulo, cuerpo);
+         
+           
+            pp.GenerarPDF("Entrega de Local", "1", "Entrega",
+                        "cuerpo", dgLocales, cbEntrega.SelectedItem.ToString());
         }
 
         private void btnEntregar_Click(object sender, EventArgs e)
@@ -294,7 +294,12 @@ namespace WindowsFormsApplication1
                     long IDRoomByUser = DB.InsertData(sql);
 
                     MessageBox.Show("Se ha realizado la entrega del local exitosamente.");
-                    PDF_Click(null, new EventArgs());
+                    //PDF_Click(null, new EventArgs());
+
+                    PDF pp = new PDF();
+
+                    pp.GenerarPDF("Entrega de Local", IDTransaction.ToString(),"Entrega", 
+                        "cuerpo", dgLocales, cbEntrega.SelectedItem.ToString());
                     this.Close();
                 }
             }
@@ -322,7 +327,7 @@ namespace WindowsFormsApplication1
             {
                 for (int j = 0; j < dgLocales.Rows.Count; j++)
                 {
-                    if (dgLocales.Rows[j].Cells["Codigo"].FormattedValue.ToString() == dtReturnPicking.Rows[i][0].ToString())
+                    if (dgLocales.Rows[j].Cells["Codigo"].FormattedValue.ToString() == dtReturnPicking.Rows[i][0].ToString().ToUpper())
                     {
                         dgLocales["color", j].Style.BackColor = Color.Green;
                         dtReturnPicking.Rows[i][1] = "1";                  
@@ -339,13 +344,13 @@ namespace WindowsFormsApplication1
 
                     //Recupero el id_assets y el id_room
                     sql = "SELECT id_assets,idRoom FROM edilizia.assets inner join assets_by_room on id_assets = idAsset " +
-                        "where code = '" + dtReturnPicking.Rows[i][0].ToString() + "'";
+                        "where code = '" + dtReturnPicking.Rows[i][0].ToString().ToUpper() + "'";
                     MySqlDataReader dataReaderInfo = DB.GetData(sql);
                     //Si existe el bien lo agrego y pinto en amarillo, sino digo que no existe el bien.
                     if (dataReaderInfo.HasRows)
                     {
                         DataRow dr = dataTableDgLocales.NewRow();
-                        dr["Codigo"] = dtReturnPicking.Rows[i][0].ToString();
+                        dr["Codigo"] = dtReturnPicking.Rows[i][0].ToString().ToUpper();
                         dr["color"] = "";
                         DataTable dtInfo = new DataTable();
                         dtInfo.Load(dataReaderInfo);
@@ -357,7 +362,7 @@ namespace WindowsFormsApplication1
                     }
                     else
                     {
-                        MessageBox.Show("El bien " + dtReturnPicking.Rows[i][0].ToString() + " no existe y no será agregado. Por favor asegurese que sea correcto.");
+                        MessageBox.Show("El bien " + dtReturnPicking.Rows[i][0].ToString().ToUpper() + " no existe y no será agregado. Por favor asegurese que sea correcto.");
                     }
                 }
             }
@@ -396,5 +401,9 @@ namespace WindowsFormsApplication1
                 }
             }
         }
-     }
+
+   
+
+        
+    }
 }

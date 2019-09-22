@@ -29,52 +29,58 @@ namespace WindowsFormsApplication1
        
         private void Bienes_Load(object sender, EventArgs e)
         {
-      
 
             WindowsFormsApplication1.DBConnection DB = new WindowsFormsApplication1.DBConnection();
-            MySqlDataReader dataReaderBienes = DB.GetData("select distinct category  from assets");
-            
-                if (dataReaderBienes.HasRows)
-                {
-                    DataTable dt = new DataTable();
-                    dt.Load(dataReaderBienes);
+            MySqlDataReader dataReaderBienes = DB.GetData("select distinct description  from assets");
 
-                    for (int i = 0; i < dt.Rows.Count; i++)
-                    {
-                        cbTipo.ValueMember = "Valor";
-                    cbTipo.DisplayMember = "category";
-                    cbTipo.Items.Add(dt.Rows[i][0]);
-                    }
+            if (dataReaderBienes.HasRows)
+            {
+                DataTable dt = new DataTable();
+                dt.Load(dataReaderBienes);
+
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    cbCategoria.ValueMember = "Valor";
+                    cbCategoria.DisplayMember = "description";
+                    cbCategoria.Items.Add(dt.Rows[i][0]);
                 }
             }
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
         }
 
-        private void button1_Click(object sender, EventArgs e)
+      
+
+
+
+        private void btnBuscar_Click_1(object sender, EventArgs e)
         {
+            dgBienes.DataSource = bindingSource1;
+            WindowsFormsApplication1.DBConnection DB = new WindowsFormsApplication1.DBConnection();
+            string sqlQuery = "";
 
 
-            PDF pp = new PDF();
-            string cuerpo,titulo;
-            titulo = "Pantalla gestion de bienes";
-            cuerpo = "cuerpo del pdf";
+            sqlQuery = "SELECT id_assets,code,'' as vacia,description FROM edilizia.assets;";
+            MySqlDataReader dataReaderLocal = DB.GetData(sqlQuery);
 
-            pp.GenerarPDF(titulo,cuerpo);
-         
+            if (dataReaderLocal.HasRows)
+            {
+                DataTable dt = new DataTable();
+                dt.Load(dataReaderLocal);
 
-
-                }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-
-            //Printer p = new Printer();
-            //p.CapturarPantalla();
-            //p.printDocument1_PrintPage();          
-
-        }
+                dgBienes.DataSource = dt;
+            }
     }
 
+        private void PDF_Click(object sender, EventArgs e)
+        {
+            PDF pp = new PDF();
+            string cuerpo, titulo, encabezado, talonario;
+
+            titulo = "Listado de Bienes";
+            
+            cuerpo = "";
+            encabezado = "Bienes";
+            talonario = "001";
+            pp.GenerarPDF(encabezado, talonario, titulo, cuerpo, dgBienes, null);
+        }
+    }
 }
