@@ -12,7 +12,7 @@ namespace WindowsFormsApplication1.Preferencias
 {
     public partial class Preference : Form
     {
-        public string usuariologueado = "LPERALTA";
+        public string usuariologueado = "LTETTAMANZI";
         public Preference()
         {
             InitializeComponent();

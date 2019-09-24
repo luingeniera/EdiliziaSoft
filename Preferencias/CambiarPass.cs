@@ -18,7 +18,7 @@ namespace WindowsFormsApplication1.Preferencias
             txtpass.MaxLength = 15;
             txtpass2.MaxLength = 15;
         }
-        public string usuariologueado = "LRAIES";
+        public string usuariologueado = "LTETTAMANZI";
 
 
         private void CambiarPass_Load(object sender, EventArgs e)

@@ -80,7 +80,8 @@ namespace WindowsFormsApplication1
             cuerpo = "";
             encabezado = "Bienes";
             talonario = "001";
-            pp.GenerarPDF(encabezado, talonario, titulo, cuerpo, dgBienes, null);
+            //origen = 2
+            pp.GenerarPDF(2,encabezado, null,talonario, titulo, cuerpo, dgBienes, null);
         }
     }
 }

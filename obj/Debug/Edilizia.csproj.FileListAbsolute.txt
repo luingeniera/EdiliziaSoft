@@ -78,7 +78,6 @@ C:\Users\lucia\OneDrive\Documentos\GitHub\EdiliziaSoft\bin\Debug\Google.Protobuf
 C:\Users\lucia\OneDrive\Documentos\GitHub\EdiliziaSoft\bin\Debug\itextsharp.xml
 C:\Users\lucia\OneDrive\Documentos\GitHub\EdiliziaSoft\bin\Debug\MySql.Data.xml
 C:\Users\lucia\OneDrive\Documentos\GitHub\EdiliziaSoft\bin\Debug\Newtonsoft.Json.xml
-C:\Users\lucia\OneDrive\Documentos\GitHub\EdiliziaSoft\obj\Debug\Edilizia.csprojResolveAssemblyReference.cache
 C:\Users\lucia\OneDrive\Documentos\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.Calendario.resources
 C:\Users\lucia\OneDrive\Documentos\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.Bienes.resources
 C:\Users\lucia\OneDrive\Documentos\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.Gsolicitudes.resources
@@ -96,3 +95,4 @@ C:\Users\lucia\OneDrive\Documentos\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApp
 C:\Users\lucia\OneDrive\Documentos\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.application
 C:\Users\lucia\OneDrive\Documentos\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.exe
 C:\Users\lucia\OneDrive\Documentos\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.pdb
+C:\Users\lucia\OneDrive\Documentos\GitHub\EdiliziaSoft\obj\Debug\Edilizia.csprojResolveAssemblyReference.cache

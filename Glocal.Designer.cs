@@ -45,7 +45,6 @@
             this.btnConfirmar = new System.Windows.Forms.Button();
             this.lblComprobante = new System.Windows.Forms.Label();
             this.btPicking = new System.Windows.Forms.Button();
-            this.btnPDF = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgLocales)).BeginInit();
             this.SuspendLayout();
@@ -230,22 +229,11 @@
             this.btPicking.UseVisualStyleBackColor = true;
             this.btPicking.Click += new System.EventHandler(this.btPicking_Click);
             // 
-            // btnPDF
-            // 
-            this.btnPDF.Location = new System.Drawing.Point(834, 15);
-            this.btnPDF.Name = "btnPDF";
-            this.btnPDF.Size = new System.Drawing.Size(75, 23);
-            this.btnPDF.TabIndex = 17;
-            this.btnPDF.Text = "PDF";
-            this.btnPDF.UseVisualStyleBackColor = true;
-            this.btnPDF.Click += new System.EventHandler(this.btnPDF_Click);
-            // 
             // Glocal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(921, 602);
-            this.Controls.Add(this.btnPDF);
             this.Controls.Add(this.btPicking);
             this.Controls.Add(this.lblComprobante);
             this.Controls.Add(this.btnConfirmar);
@@ -290,6 +278,5 @@
         private System.Windows.Forms.Button btnConfirmar;
         private System.Windows.Forms.Label lblComprobante;
         private System.Windows.Forms.Button btPicking;
-        private System.Windows.Forms.Button btnPDF;
     }
 }

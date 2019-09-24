@@ -15,6 +15,8 @@ namespace WindowsFormsApplication1
         public Login()
         {
             InitializeComponent();
+            txtNombre.Text = "lperalta";
+            txtPassword.Text = "lu";
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -31,7 +33,7 @@ namespace WindowsFormsApplication1
           
             home menu = new home();
             menu.Show();
-          
+                this.Hide();
 
             }
          else

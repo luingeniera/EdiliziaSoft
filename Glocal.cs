@@ -197,11 +197,11 @@ namespace WindowsFormsApplication1
 
         private void btnPDF_Click(object sender, EventArgs e)
         {
-            PDF pp = new PDF();
+           //PDF pp = new PDF();
          
-           
-            pp.GenerarPDF("Entrega de Local", "1", "Entrega",
-                        "cuerpo", dgLocales, cbEntrega.SelectedItem.ToString());
+           //origen =1
+            //pp.GenerarPDF(1,"Entrega de Local", "1", "Entrega",
+            //            "cuerpo", dgLocales, cbEntrega.SelectedItem.ToString());
         }
 
         private void btnEntregar_Click(object sender, EventArgs e)
@@ -260,7 +260,8 @@ namespace WindowsFormsApplication1
                                 sql = "UPDATE assets set idStatus = " +Status+ " where id_assets = " + idAsset ;
                                 long IDAsset = DB.InsertData(sql);
                             }
-                            
+
+                            #region amariilo
                             //Si es amarillo transfiero el bien al local seleccionado.
                             if (dgLocales["color", j].Style.BackColor == Color.Yellow)
                             {
@@ -275,7 +276,9 @@ namespace WindowsFormsApplication1
                                 sql = "UPDATE assets set idStatus = " + Status + " where id_assets = " + idAsset;
                                 long IDAsset = DB.InsertData(sql);
                             }
-                        } else
+                        }
+                        #endregion
+                        else
                         {
                             //Si es rojo muevo el bien al dep. virtual
                             if (dgLocales["color", j].Style.BackColor == Color.Red)
@@ -296,9 +299,23 @@ namespace WindowsFormsApplication1
                     MessageBox.Show("Se ha realizado la entrega del local exitosamente.");
                     //PDF_Click(null, new EventArgs());
 
+
+
+
+                    DataTable tmpCabecera = new DataTable();
+                    tmpCabecera.Columns.Add("Nivel", typeof(string));
+                    tmpCabecera.Columns.Add("Nro Local", typeof(string));
+                    tmpCabecera.Columns.Add("Local", typeof(string));
+                    tmpCabecera.Columns.Add("Responsable", typeof(string));
+                    tmpCabecera.Columns.Add("Comprobante", typeof(string));
+
+                    tmpCabecera.Rows.Add(cbNivel.Text, cbNivel.Text, lblLocal.Text, lblResponsable.Text, IDTransaction);
+
+                    
+
                     PDF pp = new PDF();
 
-                    pp.GenerarPDF("Entrega de Local", IDTransaction.ToString(),"Entrega", 
+                    pp.GenerarPDF(1,"Entrega de Local",tmpCabecera ,IDTransaction.ToString(),"Entrega", 
                         "cuerpo", dgLocales, cbEntrega.SelectedItem.ToString());
                     this.Close();
                 }
