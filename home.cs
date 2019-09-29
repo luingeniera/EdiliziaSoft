@@ -35,20 +35,20 @@ namespace WindowsFormsApplication1
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
-         //   Solicitudes sol = new Solicitudes();
-           // sol.Show();
+           Solicitudes sol = new Solicitudes();
+            sol.Show();
         }
 
         private void gestiónESToolStripMenuItem_Click(object sender, EventArgs e)
         {
-        //    Gsolicitudes Gsol = new Gsolicitudes ();
-          //  Gsol.Show();
+           Gsolicitudes Gsol = new Gsolicitudes ();
+            Gsol.Show();
         }
 
         private void sincronizaciónSIPRECOREVITToolStripMenuItem_Click(object sender, EventArgs e)
         {
-         //   Sincro Sincro = new Sincro();
-           // Sincro.Show();
+            Sincro Sincro = new Sincro();
+            Sincro.Show();
         }
 
         private void bienesToolStripMenuItem_Click(object sender, EventArgs e)
@@ -59,8 +59,8 @@ namespace WindowsFormsApplication1
 
         private void calendarioToolStripMenuItem_Click(object sender, EventArgs e)
         {
-        //    Calendario Cal = new Calendario();
-         //   Cal.Show();
+            Calendario Cal = new Calendario();
+            Cal.Show();
         }
 
         private void gestiónDeLocalToolStripMenuItem_Click(object sender, EventArgs e)

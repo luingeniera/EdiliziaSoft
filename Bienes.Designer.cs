@@ -36,7 +36,7 @@
             this.cbFamilia = new System.Windows.Forms.ComboBox();
             this.button2 = new System.Windows.Forms.Button();
             this.PDF = new System.Windows.Forms.Button();
-            this.cbCategoria = new System.Windows.Forms.ComboBox();
+            this.cbRubro = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgBienes)).BeginInit();
             this.SuspendLayout();
             // 
@@ -107,14 +107,14 @@
             this.PDF.UseVisualStyleBackColor = true;
             this.PDF.Click += new System.EventHandler(this.PDF_Click);
             // 
-            // cbCategoria
+            // cbRubro
             // 
-            this.cbCategoria.FormattingEnabled = true;
-            this.cbCategoria.Location = new System.Drawing.Point(67, 28);
-            this.cbCategoria.Name = "cbCategoria";
-            this.cbCategoria.Size = new System.Drawing.Size(259, 24);
-            this.cbCategoria.TabIndex = 15;
-            this.cbCategoria.Text = "Categoria";
+            this.cbRubro.FormattingEnabled = true;
+            this.cbRubro.Location = new System.Drawing.Point(67, 28);
+            this.cbRubro.Name = "cbRubro";
+            this.cbRubro.Size = new System.Drawing.Size(259, 24);
+            this.cbRubro.TabIndex = 15;
+            this.cbRubro.Text = "Rubro";
             // 
             // Bienes
             // 
@@ -127,7 +127,7 @@
             this.Controls.Add(this.cbFamilia);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.PDF);
-            this.Controls.Add(this.cbCategoria);
+            this.Controls.Add(this.cbRubro);
             this.Controls.Add(this.dgBienes);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Bienes";
@@ -146,6 +146,6 @@
         private System.Windows.Forms.ComboBox cbFamilia;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button PDF;
-        private System.Windows.Forms.ComboBox cbCategoria;
+        private System.Windows.Forms.ComboBox cbRubro;
     }
 }
