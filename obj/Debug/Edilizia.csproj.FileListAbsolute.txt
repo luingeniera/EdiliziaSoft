@@ -96,3 +96,4 @@ C:\Users\lucia\OneDrive\Documentos\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApp
 C:\Users\lucia\OneDrive\Documentos\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.exe
 C:\Users\lucia\OneDrive\Documentos\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.pdb
 C:\Users\lucia\OneDrive\Documentos\GitHub\EdiliziaSoft\obj\Debug\Edilizia.csprojResolveAssemblyReference.cache
+C:\Users\lucia\OneDrive\Documentos\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.GDif.resources

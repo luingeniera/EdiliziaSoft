@@ -33,12 +33,15 @@
             this.Solicitudes = new System.Windows.Forms.ToolStripMenuItem();
             this.GSolicitudes = new System.Windows.Forms.ToolStripMenuItem();
             this.gestiónDeLocalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.comprobantesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bienesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sincronizaciónSIPRECOREVIT = new System.Windows.Forms.ToolStripMenuItem();
             this.calendarioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btPreferencias = new System.Windows.Forms.Button();
             this.tcNotificaciones = new System.Windows.Forms.TabControl();
             this.TbNoti = new System.Windows.Forms.TabPage();
+            this.gestiónDeDiferenciasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.comprobantesToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.tcNotificaciones.SuspendLayout();
             this.SuspendLayout();
@@ -76,10 +79,21 @@
             // 
             // gestiónDeLocalToolStripMenuItem
             // 
+            this.gestiónDeLocalToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.comprobantesToolStripMenuItem,
+            this.gestiónDeDiferenciasToolStripMenuItem,
+            this.comprobantesToolStripMenuItem1});
             this.gestiónDeLocalToolStripMenuItem.Name = "gestiónDeLocalToolStripMenuItem";
-            this.gestiónDeLocalToolStripMenuItem.Size = new System.Drawing.Size(128, 38);
-            this.gestiónDeLocalToolStripMenuItem.Text = "Gestión de local";
+            this.gestiónDeLocalToolStripMenuItem.Size = new System.Drawing.Size(70, 38);
+            this.gestiónDeLocalToolStripMenuItem.Text = "Locales";
             this.gestiónDeLocalToolStripMenuItem.Click += new System.EventHandler(this.gestiónDeLocalToolStripMenuItem_Click);
+            // 
+            // comprobantesToolStripMenuItem
+            // 
+            this.comprobantesToolStripMenuItem.Name = "comprobantesToolStripMenuItem";
+            this.comprobantesToolStripMenuItem.Size = new System.Drawing.Size(233, 26);
+            this.comprobantesToolStripMenuItem.Text = "Gestión de Local";
+            this.comprobantesToolStripMenuItem.Click += new System.EventHandler(this.comprobantesToolStripMenuItem_Click);
             // 
             // bienesToolStripMenuItem
             // 
@@ -136,6 +150,20 @@
             this.TbNoti.TabIndex = 0;
             this.TbNoti.Text = "NOTIFICACIONES";
             // 
+            // gestiónDeDiferenciasToolStripMenuItem
+            // 
+            this.gestiónDeDiferenciasToolStripMenuItem.Name = "gestiónDeDiferenciasToolStripMenuItem";
+            this.gestiónDeDiferenciasToolStripMenuItem.Size = new System.Drawing.Size(233, 26);
+            this.gestiónDeDiferenciasToolStripMenuItem.Text = "Gestión de Diferencias";
+            this.gestiónDeDiferenciasToolStripMenuItem.Click += new System.EventHandler(this.gestiónDeDiferenciasToolStripMenuItem_Click);
+            // 
+            // comprobantesToolStripMenuItem1
+            // 
+            this.comprobantesToolStripMenuItem1.Name = "comprobantesToolStripMenuItem1";
+            this.comprobantesToolStripMenuItem1.Size = new System.Drawing.Size(233, 26);
+            this.comprobantesToolStripMenuItem1.Text = "Comprobantes";
+            this.comprobantesToolStripMenuItem1.Click += new System.EventHandler(this.comprobantesToolStripMenuItem1_Click);
+            // 
             // home
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -169,5 +197,8 @@
         private System.Windows.Forms.Button btPreferencias;
         private System.Windows.Forms.TabControl tcNotificaciones;
         private System.Windows.Forms.TabPage TbNoti;
+        private System.Windows.Forms.ToolStripMenuItem comprobantesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem gestiónDeDiferenciasToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem comprobantesToolStripMenuItem1;
     }
 }

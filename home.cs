@@ -65,14 +65,31 @@ namespace WindowsFormsApplication1
 
         private void gestiónDeLocalToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Glocal Local = new Glocal();
-            Local.Show();
+           
         }
 
         private void btPreferencias_Click(object sender, EventArgs e)
         {
             Preferencias.Preference preferencias = new Preferencias.Preference();
             preferencias.Show();
+        }
+
+        private void comprobantesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Glocal Local = new Glocal();
+            Local.Show();
+        }
+
+        private void comprobantesToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Comprobantes Comprobantes = new Comprobantes();
+            Comprobantes.Show();
+        }
+
+        private void gestiónDeDiferenciasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            GDif Diferencias = new GDif();
+            Diferencias.Show();
         }
     }
 }

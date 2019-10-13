@@ -151,7 +151,7 @@ namespace WindowsFormsApplication1
 
         private void PDF_Click(object sender, EventArgs e)
         {
-            PDF pp = new PDF();
+            PDF2 pp = new PDF2();
             string cuerpo, titulo, encabezado, talonario;
 
             titulo = "Listado de Bienes";
@@ -160,7 +160,7 @@ namespace WindowsFormsApplication1
             encabezado = "Bienes";
             talonario = "001";
             //origen = 2
-            pp.GenerarPDF(2,encabezado, null,talonario, titulo, cuerpo, dgBienes, null);
+            pp.PrintPDF(24);
         }
     }
 }

@@ -133,7 +133,19 @@
     <Compile Include="Calendario.Designer.cs">
       <DependentUpon>Calendario.cs</DependentUpon>
     </Compile>
+    <Compile Include="Comprobantes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Comprobantes.Designer.cs">
+      <DependentUpon>Comprobantes.cs</DependentUpon>
+    </Compile>
     <Compile Include="DBConnection.cs" />
+    <Compile Include="GDif.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GDif.Designer.cs">
+      <DependentUpon>GDif.cs</DependentUpon>
+    </Compile>
     <Compile Include="Login.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -160,6 +172,7 @@
     </Compile>
     <Compile Include="OdooConnect.cs" />
     <Compile Include="PDF.cs" />
+    <Compile Include="PDF2.cs" />
     <Compile Include="Picking.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -179,7 +192,6 @@
       <DependentUpon>Preference.cs</DependentUpon>
     </Compile>
     <Compile Include="Preferencias\Usuario.cs" />
-    <Compile Include="Printer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sincro.cs">
@@ -199,6 +211,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Bienes.resx">
       <DependentUpon>Bienes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GDif.resx">
+      <DependentUpon>GDif.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gsolicitudes.resx">
       <DependentUpon>Gsolicitudes.cs</DependentUpon>
