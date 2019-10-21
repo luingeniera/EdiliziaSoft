@@ -77,7 +77,7 @@ namespace WindowsFormsApplication1
                 }
                 //Busco datos de los bienes del local para completar la grilla.
                 sqlQuery = "SELECT a.code as 'Codigo', a.description as 'Desc' ,s.description as 'Estado', concat(last_name, ', ', name) as 'Responsible', concat(t.bookCode,'-',t.bookNumber) as 'Comprobante' " +
-                " ,art.idtransaction,abr.idAsset, abr.idRoom, '' as color FROM rooms r INNER JOIN edilizia.assets_by_room abr ON abr.idRoom = r.idRooms INNER JOIN assets a on a.id_assets = abr.idAsset" +
+                " ,art.idtransaction,abr.idAsset, abr.idRoom, '' as Evaluacion FROM rooms r INNER JOIN edilizia.assets_by_room abr ON abr.idRoom = r.idRooms INNER JOIN assets a on a.id_assets = abr.idAsset" +
                 " INNER JOIN assets_status s on a.idStatus = s.idstatus LEFT OUTER JOIN rooms_by_users rbu on r.idRooms = rbu.id_room and rbu.end_date is null " +
                 " LEFT OUTER JOIN users u on u.idUsers = rbu.id_user_responsible LEFT OUTER JOIN assets_room_Transaction art on art.id_Asset = abr.idAsset and art.id_Room = abr.idRoom and art.return_date is null" +
                 " LEFT OUTER JOIN transaction t on t.idtransaction = art.idtransaction and t.bookCode='"+TipoComprobante+"' WHERE level = " + cbNivel.SelectedItem + " and number = " + cbNumero.SelectedItem + " order by a.code";
@@ -175,13 +175,18 @@ namespace WindowsFormsApplication1
             WindowsFormsApplication1.DBConnection DB = new WindowsFormsApplication1.DBConnection();
             string sql = "";
             cbNumero.Items.Clear();
-            
-            if (cbNivel.SelectedIndex > -1)
-                sql = "select distinct number from rooms where level = " + cbNivel.SelectedItem;
-            else
-                sql = "select distinct number from rooms";
 
-            MySqlDataReader dataReaderNumber = DB.GetData(sql);
+            if (cbNivel.SelectedIndex > -1)
+            {
+                sql = "select distinct number from rooms where level = " + cbNivel.SelectedItem;
+                cbNumero.Enabled = true;
+            }
+            else
+            {
+                sql = "select distinct number from rooms";
+                cbNumero.Enabled = false;
+            }
+                MySqlDataReader dataReaderNumber = DB.GetData(sql);
             if (dataReaderNumber.HasRows)
             {
                 DataTable dtNro = new DataTable();
@@ -247,7 +252,7 @@ namespace WindowsFormsApplication1
                             idAsset = dgLocales["idAsset", j].Value.ToString();
                             Status = dgLocales["Estado Obs.", j].Value.ToString();
                             //Si es verde guardo normalmente.
-                            if (dgLocales["color",j].Style.BackColor == Color.Green)
+                            if (dgLocales["Evaluacion",j].Style.BackColor == Color.Green)
                             {
                                 
                                 sql = "INSERT INTO assets_room_transaction (delivery_status,delivery_date,idTransaction,id_Asset,id_Room) " +
@@ -263,7 +268,7 @@ namespace WindowsFormsApplication1
 
                             #region amariilo
                             //Si es amarillo transfiero el bien al local seleccionado.
-                            if (dgLocales["color", j].Style.BackColor == Color.Yellow)
+                            if (dgLocales["Evaluacion", j].Style.BackColor == Color.Yellow)
                             {
 
                                 sql = "update assets_by_room set idRoom = "+ IdRoomSelected + " where idAsset = "+idAsset;
@@ -281,7 +286,7 @@ namespace WindowsFormsApplication1
                         else
                         {
                             //Si es rojo muevo el bien al dep. virtual
-                            if (dgLocales["color", j].Style.BackColor == Color.Red)
+                            if (dgLocales["Evaluacion", j].Style.BackColor == Color.Red)
                             {
                                 idAsset = dgLocales["idAsset", j].Value.ToString();
                                 sql = "update assets_by_room set idRoom = 5 where idAsset=" + idAsset;
@@ -346,7 +351,7 @@ namespace WindowsFormsApplication1
                 {
                     if (dgLocales.Rows[j].Cells["Codigo"].FormattedValue.ToString() == dtReturnPicking.Rows[i][0].ToString().ToUpper())
                     {
-                        dgLocales["color", j].Style.BackColor = Color.Green;
+                        dgLocales["Evaluacion", j].Style.BackColor = Color.Green;
                         dtReturnPicking.Rows[i][1] = "1";                  
                     }
                 }
@@ -368,14 +373,14 @@ namespace WindowsFormsApplication1
                     {
                         DataRow dr = dataTableDgLocales.NewRow();
                         dr["Codigo"] = dtReturnPicking.Rows[i][0].ToString().ToUpper();
-                        dr["color"] = "";
+                        dr["Evaluacion"] = "";
                         DataTable dtInfo = new DataTable();
                         dtInfo.Load(dataReaderInfo);
                         dr["idAsset"] = dtInfo.Rows[0][0].ToString();
                         dr["idRoom"] = dtInfo.Rows[0][1].ToString();
                         dataTableDgLocales.Rows.Add(dr);
                         dgLocales.DataSource = dataTableDgLocales;
-                        dgLocales["color", dgLocales.NewRowIndex - 1].Style.BackColor = Color.Yellow;
+                        dgLocales["Evaluacion", dgLocales.NewRowIndex - 1].Style.BackColor = Color.Yellow;
                     }
                     else
                     {
@@ -396,31 +401,53 @@ namespace WindowsFormsApplication1
                     das.Load(dataAssets_status);
                     ds.Tables.Add(das);
                 }
-                if (ds.Tables[0].Rows.Count > 0)
+                //Son 7 columnas porque tambien tengo columnas invisibles.
+                if (ds.Tables[0].Rows.Count > 0 && dgLocales.Columns.Count == 7)
                 {
                     var column = new DataGridViewComboBoxColumn();
                     column.Name = "Estado Obs.";
                     column.DataSource = ds.Tables[0];
                     column.DisplayMember = "description";
                     column.ValueMember = "idstatus";
+                    column.ToolTipText = "Asegurarse de haber realizado el picking completo del local antes de actualizar estos datos";
                     dgLocales.Columns.Add(column);
+
+                    var column1 = new DataGridViewTextBoxColumn();
+                    column1.Name = "Observaciones";
+                    column1.ToolTipText = "Asegurarse de haber realizado el picking completo del local antes de actualizar estos datos";
+                    dgLocales.Columns.Add(column1);
                 }
 
                 //El resto de los bienes que figuraban en el local y no fueron pickeados van a color rojo y deshabilito
                 //la posibilidad de cambiarles el estado.
                 for (int j = 0; j < dgLocales.Rows.Count - 1; j++)
                 {
-                    if (dgLocales["color", j].Style.BackColor != Color.Green && dgLocales["color", j].Style.BackColor != Color.Yellow)
+                    if (dgLocales["Evaluacion", j].Style.BackColor != Color.Green && dgLocales["Evaluacion", j].Style.BackColor != Color.Yellow)
                     {
-                        dgLocales["color", j].Style.BackColor = Color.Red;
+                        dgLocales["Evaluacion", j].Style.BackColor = Color.Red;
                         dgLocales["Estado Obs.", j].ReadOnly = true;
                     }
                 }
             }
         }
 
-   
+        private void cbNumero_SelectedValueChanged(object sender, EventArgs e)
+        {
+            if (cbNivel.SelectedIndex > -1)
+            {
+                btBuscar_Click(null, new EventArgs());
+            }
+        }
 
-        
+        private void dgLocales_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (dgLocales.Columns[e.ColumnIndex].Name == "Estado Obs.")
+            {
+                if (dgLocales[e.ColumnIndex, e.RowIndex].FormattedValue.ToString() != dgLocales["Estado", e.RowIndex].Value.ToString())
+                    dgLocales["Evaluacion", e.RowIndex].Style.BackColor = Color.Yellow;
+                else
+                    dgLocales["Evaluacion", e.RowIndex].Style.BackColor = Color.Green;
+            }
+        }
     }
 }

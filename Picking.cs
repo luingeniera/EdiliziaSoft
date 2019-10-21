@@ -40,5 +40,10 @@ namespace WindowsFormsApplication1
             FrmLocal.dtReturnPicking = tmpTable;
             Close();
         }
+
+        private void Picking_Load(object sender, EventArgs e)
+        {
+            //MessageBox.Show(Convert.ToString(FrmLocal.dtReturnPicking.Rows.Count));
+        }
     }
 }

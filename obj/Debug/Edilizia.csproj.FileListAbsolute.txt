@@ -96,3 +96,9 @@ C:\Users\lucia\OneDrive\Documentos\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApp
 C:\Users\lucia\OneDrive\Documentos\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.exe
 C:\Users\lucia\OneDrive\Documentos\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.pdb
 C:\Users\lucia\OneDrive\Documentos\GitHub\EdiliziaSoft\obj\Debug\Edilizia.csprojResolveAssemblyReference.cache
+C:\Users\Leandro\Documents\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.Preferencias.CambiarPass.resources
+C:\Users\Leandro\Documents\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.Preferencias.Preference.resources
+C:\Users\Leandro\Documents\GitHub\EdiliziaSoft\bin\Debug\WindowsFormsApplication1.exe.manifest
+C:\Users\Leandro\Documents\GitHub\EdiliziaSoft\bin\Debug\WindowsFormsApplication1.application
+C:\Users\Leandro\Documents\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.exe.manifest
+C:\Users\Leandro\Documents\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.application
