@@ -171,7 +171,7 @@
       <DependentUpon>home.cs</DependentUpon>
     </Compile>
     <Compile Include="OdooConnect.cs" />
-    <Compile Include="PDF.cs" />
+    <Compile Include="PDF_plano.cs" />
     <Compile Include="PDF2.cs" />
     <Compile Include="Picking.cs">
       <SubType>Form</SubType>

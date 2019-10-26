@@ -20,12 +20,20 @@ namespace WindowsFormsApplication1
 {
     public partial class Bienes : Form
     {
-        string where ="1=1";
+
+        int bandera = 0;
+        DataTable dtBienes =  new DataTable();
+        
         private BindingSource bindingSource1 = new BindingSource();
         public Bienes()
         {
             InitializeComponent();
          }
+
+        //string icbFamilia;
+        //string icbLocales;
+        //string icbTipo;
+        //string icbRubro;
 
        
         private void Bienes_Load(object sender, EventArgs e)
@@ -42,6 +50,7 @@ namespace WindowsFormsApplication1
             cbRubro.Items.Add("Todos");
             cbRubro.SelectedItem = "Todos";
             cargacombos("Todos", "Todos", "Todos", "Todos");
+            bandera = 1;
                 //cbFamilia.SelectedValue.ToString(), cbLocales.SelectedValue.ToString()
                 //, cbRubro.SelectedValue.ToString(),cbTipo.SelectedValue.ToString());
         }
@@ -53,59 +62,75 @@ namespace WindowsFormsApplication1
             dgBienes.DataSource = bindingSource1;
             WindowsFormsApplication1.DBConnection DB = new WindowsFormsApplication1.DBConnection();
             string sqlQuery = "";
-            sqlQuery = "SELECT id_assets,code,'' as vacia,description FROM edilizia.assets";
-               
 
-            MessageBox.Show(sqlQuery);
-            //if (cbNivel.SelectedIndex > -1)
-            //    sql = "select distinct number from rooms where level = " + cbNivel.SelectedItem;
-            //else
-            //    sql = "select distinct number from rooms";
+            string wrubro = " branch='" + cbRubro.SelectedItem.ToString() + "'";
+            string wtipo = " type='" + cbTipo.SelectedItem.ToString() + "'";
+            string wlocal = " rooms.description='" + cbRubro.SelectedItem.ToString() + "'";
+            string wfamilia = " family='" + cbFamilia.SelectedItem.ToString() + "'";
 
 
+            if (cbRubro.SelectedItem.ToString() == "Todos") { wrubro = "1=1"; };
+            if (cbTipo.SelectedItem.ToString() == "Todos") { wtipo = "1=1"; };
+            if (cbLocales.SelectedItem.ToString() == "Todos") { wlocal = "1=1"; };
+            if (cbFamilia.SelectedItem.ToString() == "Todos") { wfamilia = "1=1"; };
 
-            sqlQuery = "SELECT id_assets,code,'' as vacia,description FROM edilizia.assets;";
+
+            sqlQuery =
+             "SELECT branch as Rubro,type as Tipo, rooms.description as Local, family as Familia,   a.code as Codigo, a.description as Descripcion " +
+             " from edilizia.rooms_by_users inner join edilizia.users on users.idUsers = id_user_responsible" +
+             " inner join edilizia.rooms on rooms.idrooms = id_room" +
+             " inner join edilizia.assets_by_room abr on abr.idRoom = rooms.idrooms" +
+             " inner join edilizia.assets a on a.id_assets = abr.idAsset" +
+             " where id_user_responsible = '2'" +
+             " and " + wtipo +
+             " and " + wlocal +
+             " and " + wfamilia +
+             " and " + wtipo + ";";
+            
+
+
             MySqlDataReader dataReaderLocal = DB.GetData(sqlQuery);
 
             if (dataReaderLocal.HasRows)
             {
                 DataTable dt = new DataTable();
                 dt.Load(dataReaderLocal);
-
+                dtBienes.Load(dataReaderLocal);
                 dgBienes.DataSource = dt;
             }
     }
 
         private void PDF_Click(object sender, EventArgs e)
         {
-            
-           
+            PDF_plano pepe = new PDF_plano();
+            pepe.GenerarPDF(0, "Listado de bienes", dtBienes,null,null,null, dgBienes, "ultimoreglon"); 
+
+
         }
 
-        private void cbRubro_SelectedValueChanged(object sender, EventArgs e)
-        {
-
-            cargacombos(cbFamilia.SelectedItem.ToString(), cbLocales.SelectedItem.ToString(),
-                cbRubro.SelectedItem.ToString(), cbTipo.SelectedItem.ToString()
-              );
-        }
+       
 
         private void cargacombos( string familia, string local, string rubro, string tipo)
         {
 
+
+
+
             DBConnection DB = new DBConnection();
+            DBConnection DB1 = new DBConnection();
             string wrubro = " branch='" + rubro +"'";
             string wtipo = " type='" + tipo + "'";
             string wlocal = " rooms.description='" + local + "'";
-            string wfamilia = " family='" + familia + "'"; 
+            string wfamilia = " family='" + familia + "'";
 
+          
             if (rubro == "Todos") { wrubro = "1=1"; };
             if (tipo == "Todos") { wtipo = "1=1"; };
             if (local == "Todos") { wlocal = "1=1"; };
             if (familia == "Todos") { wfamilia = "1=1";};
 
 
-MySqlDataReader drRubro = DB.GetData(
+MySqlDataReader drRubro = DB1.GetData(
 "SELECT distinct branch as rubro " +
 " from edilizia.rooms_by_users inner join edilizia.users on users.idUsers = id_user_responsible" +
 " inner join edilizia.rooms on rooms.idrooms = id_room" +
@@ -159,12 +184,11 @@ MySqlDataReader drlocales = DB.GetData(
 );
 
 
-
             if (drRubro.HasRows)
             {
                 DataTable dt = new DataTable();
                 dt.Load(drRubro);
-                cbRubro.Items.Add("Todos");
+                if (bandera == 0) { cbRubro.Items.Add("Todos"); }
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     cbRubro.ValueMember = "Rubro";
@@ -195,14 +219,17 @@ MySqlDataReader drlocales = DB.GetData(
 
             if (drtipo.HasRows)
             {
-                DataTable dt = new DataTable();
-                dt.Load(drtipo);
+                DataTable dt1 = new DataTable();
+                dt1.Load(drtipo);
+               
+
                 cbTipo.Items.Add("Todos");
-                for (int i = 0; i < dt.Rows.Count; i++)
+               
+                for (int i = 0; i < dt1.Rows.Count; i++)
                 {
                     cbTipo.ValueMember = "Tipo";
                     cbTipo.DisplayMember = "tipo";
-                    cbTipo.Items.Add(dt.Rows[i][0]);
+                    cbTipo.Items.Add(dt1.Rows[i][0]);
 
                 }
             }
@@ -225,7 +252,41 @@ MySqlDataReader drlocales = DB.GetData(
 
         }
 
-        
+
+        private void cbRubro_SelectedValueChanged(object sender, EventArgs e)
+        {
+            //if (bandera != 0)
+            //{
+            //    cargacombos(cbFamilia.SelectedItem.ToString(), cbLocales.SelectedItem.ToString(),
+            //        cbRubro.SelectedItem.ToString(), cbTipo.SelectedItem.ToString());
+            //}
+
+          
+        }
+
+        private void cbFamilia_SelectedValueChanged(object sender, EventArgs e)
+        {
+
+            
+
+
+
+        }
+
+       
+
+
+        private void cbLocales_SelectedValueChanged(object sender, EventArgs e)
+        {
+
+
+          
+        }
+
+        private void cbTipo_SelectedValueChanged(object sender, EventArgs e)
+        {
+         
+        }
     }
 
 }

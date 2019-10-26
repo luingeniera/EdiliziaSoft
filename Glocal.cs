@@ -313,7 +313,7 @@ namespace WindowsFormsApplication1
 
                     
 
-                    PDF pp = new PDF();
+                    PDF_plano pp = new PDF_plano();
 
                     pp.GenerarPDF(1,"Entrega de Local",tmpCabecera ,IDTransaction.ToString(),"Entrega", 
                         "cuerpo", dgLocales, cbEntrega.SelectedItem.ToString());

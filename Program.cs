@@ -18,8 +18,11 @@ namespace WindowsFormsApplication1
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             //Application.Run(new Form1());
-           Application.Run(new Login());
+            // este es el que va pero para rapides de pruebas    Application.Run(new Login());
+
+            Application.Run(new Bienes());
         }
+
     }
 
     class DBConnect
@@ -68,11 +71,11 @@ namespace WindowsFormsApplication1
                 switch (ex.Number)
                 {
                     case 0:
-                        MessageBox.Show("Cannot connect to server.  Contact administrator");
+                        MessageBox.Show("No fue posible la conexión con el servidor. Comunicarse con el administrador");
                         break;
 
                     case 1045:
-                        MessageBox.Show("Invalid username/password, please try again");
+                        MessageBox.Show("Usario/Contraseña invalido. Intentelo nuevamente");
                         break;
                 }
                 return false;

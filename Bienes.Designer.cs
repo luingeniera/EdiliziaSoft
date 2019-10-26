@@ -46,11 +46,16 @@
             // 
             // dgBienes
             // 
+            this.dgBienes.AllowUserToAddRows = false;
+            this.dgBienes.AllowUserToDeleteRows = false;
+            this.dgBienes.AllowUserToOrderColumns = true;
+            this.dgBienes.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.dgBienes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgBienes.Location = new System.Drawing.Point(67, 130);
             this.dgBienes.Margin = new System.Windows.Forms.Padding(4);
             this.dgBienes.Name = "dgBienes";
-            this.dgBienes.Size = new System.Drawing.Size(853, 405);
+            this.dgBienes.ReadOnly = true;
+            this.dgBienes.Size = new System.Drawing.Size(1009, 405);
             this.dgBienes.TabIndex = 10;
             // 
             // btnBuscar
@@ -72,6 +77,7 @@
             this.cbLocales.Size = new System.Drawing.Size(259, 24);
             this.cbLocales.TabIndex = 20;
             this.cbLocales.Text = "Todos";
+            this.cbLocales.SelectedValueChanged += new System.EventHandler(this.cbLocales_SelectedValueChanged);
             // 
             // cbTipo
             // 
@@ -81,6 +87,7 @@
             this.cbTipo.Size = new System.Drawing.Size(259, 24);
             this.cbTipo.TabIndex = 19;
             this.cbTipo.Text = "Todos";
+            this.cbTipo.SelectedValueChanged += new System.EventHandler(this.cbTipo_SelectedValueChanged);
             // 
             // cbFamilia
             // 
@@ -90,6 +97,7 @@
             this.cbFamilia.Size = new System.Drawing.Size(259, 24);
             this.cbFamilia.TabIndex = 18;
             this.cbFamilia.Text = "Todos";
+            this.cbFamilia.SelectedValueChanged += new System.EventHandler(this.cbFamilia_SelectedValueChanged);
             // 
             // button2
             // 
@@ -162,7 +170,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(986, 664);
+            this.ClientSize = new System.Drawing.Size(1103, 590);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -186,7 +194,6 @@
         }
 
         #endregion
-        private System.Windows.Forms.DataGridView dgBienes;
         private System.Windows.Forms.Button btnBuscar;
         private System.Windows.Forms.ComboBox cbLocales;
         private System.Windows.Forms.ComboBox cbTipo;
@@ -198,5 +205,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.DataGridView dgBienes;
     }
 }
