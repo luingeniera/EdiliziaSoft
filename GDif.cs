@@ -23,69 +23,70 @@ namespace WindowsFormsApplication1
 
         private void GDif_Load(object sender, EventArgs e)
         {
-          
+
             DBConnection DB = new DBConnection();
             string sqlQuery = "";
-            
-            sqlQuery = "SELECT distinct idBien FROM edilizia.diferences";
-    
-                
+
+            sqlQuery =
+                  "SELECT branch as Rubro,type as Tipo, rooms.description as Local, family as Familia,   a.code as Codigo, a.description as Descripcion " +
+                  " from edilizia.rooms_by_users inner join edilizia.users on users.idUsers = id_user_responsible" +
+                  " inner join edilizia.rooms on rooms.idrooms = id_room" +
+                  " inner join edilizia.assets_by_room abr on abr.idRoom = rooms.idrooms" +
+                  " inner join edilizia.assets a on a.id_assets = abr.idAsset" +
+                  " where id_user_responsible = '2'";
+
+
             MySqlDataReader Bienes = DB.GetData(sqlQuery);
 
-            //enlisto todos los parents = bienes
 
-            treeView1.BeginUpdate();
             if (Bienes.HasRows)
             {
                 DataTable dt = new DataTable();
                 dt.Load(Bienes);
-                for (int i = 0; i < dt.Rows.Count; i++)
-                {
+                dataGridView1.DataSource = dt;
 
-                    treeView1.Nodes.Add(dt.Rows[i][0].ToString());
-
-                    //busco todos los comprobantes por cada bien
-                    DBConnection DB1 = new DBConnection();
-                    string sqlQuery1 = "";
-
-                    sqlQuery1 = "SELECT * FROM edilizia.diferences";
-
-                    //+
-                     //"where idbien = " + dt.Rows[i][0].ToString() ;
-
-                    MessageBox.Show(sqlQuery1);
-
-                    MySqlDataReader Comp = DB1.GetData(sqlQuery1);
-                    if (Comp.HasRows)
-                    {
-                        DataTable Cm = new DataTable();
-                        Cm.Load(Comp);
-                        for (int j = 0; j < Cm.Rows.Count; j++)
-                        {
-
-                            MessageBox.Show(Cm.Rows[j][0].ToString());
-
-                            for (int l = 0; l < Cm.Columns.Count; j++)
-                            {
-                                treeView1.Nodes[i].Nodes.Add(Cm.Rows[j][l].ToString());
-
-
-                        }
             }
-                }
-           
 
 
-            //treeView1.Nodes[0].Nodes.Add("Child 1");
-            //treeView1.Nodes[0].Nodes.Add("Child 2");
-            //treeView1.Nodes[0].Nodes[1].Nodes.Add("Grandchild");
-            //treeView1.Nodes[0].Nodes[1].Nodes[0].Nodes.Add("Great Grandchild");
-            treeView1.EndUpdate();
-            }
+
+            //Comienzo las agrupacion
+            // compienzo la agrupacion
+            var grouper = new Subro.Controls.DataGridViewGrouper(dataGridView1);
+            grouper.SetGroupOn("Tipo");
+
+            //also valid:
+            //grouper.SetGroupOn<TestData>(t => t.AString);
+            //grouper.SetGroupOn(this.dataGridView1.Columns["AString"]);
+
+
+            //all options available in the control (via the dropdown menu) can be set in code as well and vice versa all options in this example can be set via the control.
+
+            //to start with all rows collapsed on a (re)load or when the group is changed you can set the option startcollapsed:
+            //grouper.Options.StartCollapsed = true;
+
+            //to collapse all loaded rows: (the difference with setting the option above, is that after choosing a new grouping (or on a reload), the new groups would expand.
+            //grouper.CollapseAll();
+
+            //if you don't want the (rowcount) to be shown in the headers:
+            grouper.Options.ShowCount = false;
+
+            //if you don't want the grouped column name to be repeated in the headers:
+            //grouper.Options.ShowGroupName = false;
+
+            //default sort order for the groups is ascending, you can change that in the options as well (ascending, descending or none)
+            //grouper.Options.GroupSortOrder = SortOrder.Descending;
+
+            //besides grouping on a property/column value, you can set a custom group:
+            //   grouper.SetCustomGroup<TestData>(t => t.AnInt % 10, "Mod 10");
+
+            //to customize the grouping display, you can attach to the DisplayGroup event:
+            //  grouper.DisplayGroup += grouper_DisplayGroup;
+
 
         }
+
+
     }
-}
 }
 
 

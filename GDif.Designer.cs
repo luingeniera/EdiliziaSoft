@@ -29,32 +29,25 @@
         private void InitializeComponent()
         {
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.treeView1 = new System.Windows.Forms.TreeView();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // dataGridView1
             // 
+            this.dataGridView1.AllowUserToAddRows = false;
+            this.dataGridView1.AllowUserToDeleteRows = false;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(39, 42);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(758, 383);
+            this.dataGridView1.Size = new System.Drawing.Size(990, 386);
             this.dataGridView1.TabIndex = 0;
-            // 
-            // treeView1
-            // 
-            this.treeView1.Location = new System.Drawing.Point(105, -61);
-            this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(121, 97);
-            this.treeView1.TabIndex = 1;
             // 
             // GDif
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(858, 457);
-            this.Controls.Add(this.treeView1);
+            this.ClientSize = new System.Drawing.Size(1160, 496);
             this.Controls.Add(this.dataGridView1);
             this.Name = "GDif";
             this.Text = "Gestión de Diferencias";
@@ -67,6 +60,5 @@
         #endregion
 
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.TreeView treeView1;
     }
 }

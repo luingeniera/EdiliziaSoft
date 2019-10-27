@@ -121,6 +121,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Agrupador\DataGridViewGrouper.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Agrupador\DataGridViewGrouperContextMenuStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Agrupador\DataGridViewGrouperControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Agrupador\DataGridViewGrouperControl.designer.cs" />
+    <Compile Include="Agrupador\GroupingInfo.cs" />
+    <Compile Include="Agrupador\GroupingOptions.cs" />
+    <Compile Include="Agrupador\GroupingSource.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Agrupador\GroupList.cs" />
+    <Compile Include="Agrupador\SearchBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Agrupador\SearchBox.designer.cs" />
+    <Compile Include="Agrupador\Support.cs" />
     <Compile Include="Bienes.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -206,6 +227,8 @@
     <Compile Include="Solicitudes.Designer.cs">
       <DependentUpon>Solicitudes.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Agrupador\DataGridViewGrouperControl.resx" />
+    <EmbeddedResource Include="Agrupador\SearchBox.resx" />
     <EmbeddedResource Include="Calendario.resx">
       <DependentUpon>Calendario.cs</DependentUpon>
     </EmbeddedResource>
