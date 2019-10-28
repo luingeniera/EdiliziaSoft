@@ -17,13 +17,11 @@ using System.Diagnostics;
 
 namespace WindowsFormsApplication1
 {
-    class PDF
+    class PDF_plano
     {
 
 
-       
-
-        public void GenerarPDF(int origen,string encabezado
+               public void GenerarPDF(int origen,string encabezado
             , DataTable tablacabecera, string talonario, string titulo  , string cuerpo, DataGridView grilla , string pie)
             
 
@@ -115,11 +113,11 @@ namespace WindowsFormsApplication1
 
 
 
-                            Tabla_cabecera.AddCell(new Phrase(tablacabecera.Rows[0]["Nivel"].ToString()));
-                            Tabla_cabecera.AddCell(new Phrase(tablacabecera.Rows[0]["Nro Local"].ToString()));
+                            Tabla_cabecera.AddCell(new Phrase(tablacabecera.Rows[0]["Rubro"].ToString()));
+                            Tabla_cabecera.AddCell(new Phrase(tablacabecera.Rows[0]["Tipo"].ToString()));
                             Tabla_cabecera.AddCell(new Phrase(tablacabecera.Rows[0]["Local"].ToString()));
-                            Tabla_cabecera.AddCell(new Phrase(tablacabecera.Rows[0]["Responsable"].ToString()));
-                            Tabla_cabecera.AddCell(new Phrase(tablacabecera.Rows[0]["Comprobante"].ToString()));
+                            Tabla_cabecera.AddCell(new Phrase(tablacabecera.Rows[0]["Codigo"].ToString()));
+                            Tabla_cabecera.AddCell(new Phrase(tablacabecera.Rows[0]["Descripcion"].ToString()));
 
 
                             doc.Add(Tabla_cabecera);
@@ -170,48 +168,48 @@ namespace WindowsFormsApplication1
                 doc.Add(saltoDeLinea2);
 
 
-                // aca hay que chequear que venga desde entrega,devolcuion o auditoria. tengo que agregar un parametro desde donde convoco pdf
-                PdfPTable tabla_faltantes = new PdfPTable(1);
-                tabla_faltantes.WidthPercentage = 70;
-                tabla_faltantes.HorizontalAlignment = Element.ALIGN_CENTER;
+            //    // aca hay que chequear que venga desde entrega,devolcuion o auditoria. tengo que agregar un parametro desde donde convoco pdf
+            //    PdfPTable tabla_faltantes = new PdfPTable(1);
+            //    tabla_faltantes.WidthPercentage = 70;
+            //    tabla_faltantes.HorizontalAlignment = Element.ALIGN_CENTER;
              
-                tabla_faltantes.AddCell(".");
+            //    tabla_faltantes.AddCell(".");
 
 
 
-                Paragraph _titulofaltantes = new Paragraph();
-                _titulofaltantes.Font = FontFactory.GetFont(FontFactory.TIMES, 13f);
+            //    Paragraph _titulofaltantes = new Paragraph();
+            //    _titulofaltantes.Font = FontFactory.GetFont(FontFactory.TIMES, 13f);
 
 
 
-                _titulofaltantes.Add("Bienes no encontrados");
-                _titulofaltantes.Alignment = Element.ALIGN_CENTER;
-                doc.Add(_titulofaltantes);
-                Paragraph saltoDeLinea4 = new Paragraph("                                                                                                                                                                                                                                                                                                                                                                                   ");
-                doc.Add(saltoDeLinea4);
+            //    _titulofaltantes.Add("Bienes no encontrados");
+            //    _titulofaltantes.Alignment = Element.ALIGN_CENTER;
+            //    doc.Add(_titulofaltantes);
+            //    Paragraph saltoDeLinea4 = new Paragraph("                                                                                                                                                                                                                                                                                                                                                                                   ");
+            //    doc.Add(saltoDeLinea4);
 
-                doc.Add(tabla_faltantes);
+            //    doc.Add(tabla_faltantes);
 
-                //concatenando cada parrafo que estará formado por una línea
-                doc.Add(new Paragraph("\n\n"));
+            //    //concatenando cada parrafo que estará formado por una línea
+            //    doc.Add(new Paragraph("\n\n"));
 
 
-                #region Pie de paguina
+            //    #region Pie de paguina
                 
 
-                PdfPTable Tabla_cabecera2 = new PdfPTable(3);
-                Tabla_cabecera2.WidthPercentage = 95;
-                Tabla_cabecera2.HorizontalAlignment = Element.ALIGN_CENTER;
-                Tabla_cabecera2.DefaultCell.BorderColor = BaseColor.BLUE;
+            //    PdfPTable Tabla_cabecera2 = new PdfPTable(3);
+            //    Tabla_cabecera2.WidthPercentage = 95;
+            //    Tabla_cabecera2.HorizontalAlignment = Element.ALIGN_CENTER;
+            //    Tabla_cabecera2.DefaultCell.BorderColor = BaseColor.BLUE;
                 
 
-                Paragraph _fuentetabla = new Paragraph();
-                _fuentetabla.Font = FontFactory.GetFont(FontFactory.COURIER, 10f);
-                Tabla_cabecera2.AddCell(new PdfPCell(new Phrase("\n\n\n.............................\n Secretaria Administrativa", _fuentetabla.Font)));
-                Tabla_cabecera2.AddCell(new PdfPCell(new Phrase("\n\n\n.............................\n Responsable del Local", _fuentetabla.Font))); ;
-                Tabla_cabecera2.AddCell(new PdfPCell(new Phrase("\n\n\n.............................\n Responsable de Inventario", _fuentetabla.Font)));
+            //    Paragraph _fuentetabla = new Paragraph();
+            //    _fuentetabla.Font = FontFactory.GetFont(FontFactory.COURIER, 10f);
+            //    Tabla_cabecera2.AddCell(new PdfPCell(new Phrase("\n\n\n.............................\n Secretaria Administrativa", _fuentetabla.Font)));
+            //    Tabla_cabecera2.AddCell(new PdfPCell(new Phrase("\n\n\n.............................\n Responsable del Local", _fuentetabla.Font))); ;
+            //    Tabla_cabecera2.AddCell(new PdfPCell(new Phrase("\n\n\n.............................\n Responsable de Inventario", _fuentetabla.Font)));
 
-            doc.Add(Tabla_cabecera2);
+            //doc.Add(Tabla_cabecera2);
                
 
                 // Insertamos salto de linea
@@ -249,7 +247,7 @@ namespace WindowsFormsApplication1
 
 
                 doc.Add(_version);
-                #endregion
+                
 
                 doc.Close();
 

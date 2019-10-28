@@ -96,9 +96,18 @@ C:\Users\lucia\OneDrive\Documentos\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApp
 C:\Users\lucia\OneDrive\Documentos\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.exe
 C:\Users\lucia\OneDrive\Documentos\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.pdb
 C:\Users\lucia\OneDrive\Documentos\GitHub\EdiliziaSoft\obj\Debug\Edilizia.csprojResolveAssemblyReference.cache
+<<<<<<< HEAD
 C:\Users\Leandro\Documents\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.Preferencias.CambiarPass.resources
 C:\Users\Leandro\Documents\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.Preferencias.Preference.resources
 C:\Users\Leandro\Documents\GitHub\EdiliziaSoft\bin\Debug\WindowsFormsApplication1.exe.manifest
 C:\Users\Leandro\Documents\GitHub\EdiliziaSoft\bin\Debug\WindowsFormsApplication1.application
 C:\Users\Leandro\Documents\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.exe.manifest
 C:\Users\Leandro\Documents\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.application
+=======
+C:\Users\lucia\OneDrive\Documentos\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.GDif.resources
+C:\Users\lucia\OneDrive\Documentos\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.Agrupador.DataGridViewGrouperControl.resources
+C:\Users\lucia\OneDrive\Documentos\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.Agrupador.SearchBox.resources
+>>>>>>> 5889b542f327b5328373a91e795c666212c6ffaf
+C:\Users\Leandro\Documents\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.Agrupador.DataGridViewGrouperControl.resources
+C:\Users\Leandro\Documents\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.Agrupador.SearchBox.resources
+C:\Users\Leandro\Documents\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.GDif.resources
