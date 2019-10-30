@@ -217,6 +217,9 @@ namespace WindowsFormsApplication1
                 
                 WindowsFormsApplication1.DBConnection DB = new WindowsFormsApplication1.DBConnection();
                 string sql = "";
+                int totalRows = 0;
+                int rowsVerde = 0;
+                totalRows = dgLocales.Rows.Count - 1;
                 //Falta recuperar el id_user_owner seleccionado.
                 sql = "UPDATE rooms_by_users set id_user_owner=2 where id_room="+IdRoomSelected;
                 MySqlDataReader dataUpdateRoomsByUsers = DB.GetData(sql);
@@ -247,16 +250,19 @@ namespace WindowsFormsApplication1
                     {
                         string Status = "";
                         string idAsset = "";
+                        string observaciones = "";
                         if (dgLocales["Estado Obs.", j].Value != null)
                         {
                             idAsset = dgLocales["idAsset", j].Value.ToString();
                             Status = dgLocales["Estado Obs.", j].Value.ToString();
+                            observaciones = dgLocales["Observaciones", j].Value.ToString();
+                            //Observaciones
                             //Si es verde guardo normalmente.
                             if (dgLocales["Evaluacion",j].Style.BackColor == Color.Green)
                             {
-                                
-                                sql = "INSERT INTO assets_room_transaction (delivery_status,delivery_date,idTransaction,id_Asset,id_Room) " +
-                                " values ('" + Status + "', now()," + IDTransaction + ", " + idAsset + ", " + IdRoomSelected + ")";
+                                rowsVerde++;
+                                sql = "INSERT INTO assets_room_transaction (delivery_status,delivery_date,observation,idTransaction,id_Asset,id_Room) " +
+                                " values ('" + Status + "', now(),'" + observaciones + "', " + IDTransaction + ", " + idAsset + ", " + IdRoomSelected + ")";
                                 //   " select '" + Status + "', now()," + IDTransaction + ",idassets_by_room from assets_by_room inner join assets on idAsset = id_assets " +
                                 //" select idStatus, now()," + IDTransaction + ",idassets_by_room from assets_by_room inner join assets on idAsset = id_assets " +
                                 //" where idRoom = " + IdRoomSelected + " and code = '" + dgLocales["Codigo", j].Value.ToString() + "'";
@@ -266,11 +272,10 @@ namespace WindowsFormsApplication1
                                 long IDAsset = DB.InsertData(sql);
                             }
 
-                            #region amariilo
+                            #region amarillo
                             //Si es amarillo transfiero el bien al local seleccionado.
                             if (dgLocales["Evaluacion", j].Style.BackColor == Color.Yellow)
                             {
-
                                 sql = "update assets_by_room set idRoom = "+ IdRoomSelected + " where idAsset = "+idAsset;
                                 long IDAssetsByRoom = DB.InsertData(sql);
 
@@ -280,10 +285,18 @@ namespace WindowsFormsApplication1
 
                                 sql = "UPDATE assets set idStatus = " + Status + " where id_assets = " + idAsset;
                                 long IDAsset = DB.InsertData(sql);
+
+                                //INSERTO LAS DIFERENCIAS. En el caso de amarillo figuraba en un local y lo pickeo donde hago la entrega (se movio).
+                                int IdRoomOrig = 0;
+                                sql = "INSERT INTO diferences (idComprobante,idBien,idLocalOrig,idLocalPicking,idEstadoOrig,idEstadoObs,Semaforo) " +
+                                " values (" + IDTransaction + ", " + dgLocales["idAsset", j].Value.ToString() + ", " + dgLocales["idRoom", j].Value.ToString() + ", " + IdRoomSelected + ", 7, " + Status + ", 'amarillo')";
+                                //" values (" + IDTransaction + ", " + IDAsset + ", " + IdRoomOrig + ", " + IdRoomSelected + ", " + dgLocales["Estado", j].Value.ToString() + ", " + Status + ", 'amarillo')";
+                                //En la grilla deberia guardar el idStatus del bien y ocultarlo. Ojo q me cambia el for
+                                long idDifference = DB.InsertData(sql);
                             }
+                            #endregion
                         }
-                        #endregion
-                        else
+                        else //Este else significa que entro por evaluacion = rojo
                         {
                             //Si es rojo muevo el bien al dep. virtual
                             if (dgLocales["Evaluacion", j].Style.BackColor == Color.Red)
@@ -294,7 +307,20 @@ namespace WindowsFormsApplication1
                             }
                         }
                     }
-                        
+                    
+                    if (totalRows == rowsVerde)
+                    {
+                        //Si coinciden las cantidades es xq estuvo todo bien y el estado de la transaccion es aprobado.
+                        sql = "UPDATE transaction SET idTransaction_status=3 where idtransaction=" + IDTransaction;
+                        long idTrans = DB.InsertData(sql);
+                    } 
+                    else
+                    {
+                        //Si NO coinciden las cantidades es xq existen diferencias y el estado de la transaccion
+                        //es Pendiente de aprobar.
+                        sql = "UPDATE transaction SET idTransaction_status=2 where idtransaction=" + IDTransaction;
+                        long idTrans = DB.InsertData(sql);
+                    }
                     //Asigno el local a un usuario responsable.
                     //IdUserResponsibleSelected = int.Parse(cbEntrega.SelectedValue.ToString());
                     sql = "UPDATE rooms_by_users SET id_user_responsible = (select idUsers from users where status = 1  " +
@@ -303,10 +329,7 @@ namespace WindowsFormsApplication1
 
                     MessageBox.Show("Se ha realizado la entrega del local exitosamente.");
                     //PDF_Click(null, new EventArgs());
-
-
-
-
+                    
                     DataTable tmpCabecera = new DataTable();
                     tmpCabecera.Columns.Add("Nivel", typeof(string));
                     tmpCabecera.Columns.Add("Nro Local", typeof(string));
@@ -315,8 +338,6 @@ namespace WindowsFormsApplication1
                     tmpCabecera.Columns.Add("Comprobante", typeof(string));
 
                     tmpCabecera.Rows.Add(cbNivel.Text, cbNivel.Text, lblLocal.Text, lblResponsable.Text, IDTransaction);
-
-                    
 
                     PDF_plano pp = new PDF_plano();
 
