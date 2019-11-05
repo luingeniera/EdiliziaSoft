@@ -18,9 +18,14 @@ namespace WindowsFormsApplication1
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             //Application.Run(new Form1());
-            // este es el que va pero para rapides de pruebas    Application.Run(new Login());
-
-            Application.Run(new Glocal());
+            // este es el que va pero para rapides de pruebas    
+            Application.Run(new Login());
+            //Application.Run(new Bienes());
+            //Application.Run(new GDif());
+            //Application.Run(new Glocal());
+            //PDF_Comp callPDF = new PDF_Comp();
+            //callPDF.PrintPDF(50);
+            //Application.Run(new PDF_Comp());
         }
 
     }

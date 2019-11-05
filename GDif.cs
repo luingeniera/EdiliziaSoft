@@ -33,7 +33,8 @@ namespace WindowsFormsApplication1
                   " inner join edilizia.rooms on rooms.idrooms = id_room" +
                   " inner join edilizia.assets_by_room abr on abr.idRoom = rooms.idrooms" +
                   " inner join edilizia.assets a on a.id_assets = abr.idAsset" +
-                  " where id_user_responsible = '2'";
+                  //" where id_user_responsible = '2'"
+                  " where 1=1";
 
 
             MySqlDataReader Bienes = DB.GetData(sqlQuery);
@@ -81,11 +82,7 @@ namespace WindowsFormsApplication1
 
             //to customize the grouping display, you can attach to the DisplayGroup event:
             //  grouper.DisplayGroup += grouper_DisplayGroup;
-
-
         }
-
-
     }
 }
 

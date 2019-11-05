@@ -11,8 +11,6 @@ using MySql.Data.MySqlClient;
 using System.Windows.Forms;
 using System.Data;
 
-
-
 namespace WindowsFormsApplication1
 
 {
@@ -21,40 +19,40 @@ namespace WindowsFormsApplication1
 
         public void PrintPDF(int comprobante)
         {
-         
-            for (int l = 0; l < 1; l++)
+
+            for (int l = 0; l < 3; l++)
             {
 
                 Document doc = new Document(PageSize.A4, 10f, 10f, 10f, 0f);
 
                 #region VersiondelPDF
-                //confeccion de dstos del pdf
+                //confeccion de datos del pdf
                 string version = "";
-            switch (l)
-            {
-                case 0:
-                    version = "Original";
-                    break;
-                case 1:
-                    version = "Duplicado";
-                    break;
-                case 2:
-                    version = "Triplicado";
-                    break;
+                switch (l)
+                {
+                    case 0:
+                        version = "Original";
+                        break;
+                    case 1:
+                        version = "Duplicado";
+                        break;
+                    case 2:
+                        version = "Triplicado";
+                        break;
 
-                default:
-                    version = "Defecto";
-                    break;
-            }
+                    default:
+                        version = "Defecto";
+                        break;
+                }
                 #endregion
 
-              
+
                 WindowsFormsApplication1.DBConnection DB = new WindowsFormsApplication1.DBConnection();
-                
+
                 String sql = "SELECT bookcode FROM edilizia.transaction where idtransaction = " + comprobante.ToString();
-                              
+
                 MySqlDataReader Comp = DB.GetData(sql);
-                string nombre = "probando" + ".pdf";
+                string nombre = "Comprobante" + ".pdf";
                 //Document();
 
                 PdfWriter.GetInstance(doc, new FileStream(nombre, FileMode.Create));
@@ -62,31 +60,28 @@ namespace WindowsFormsApplication1
 
                 while (Comp.Read())
                 {
-                    if ( Comp.GetString(0) == "ENT")
+                    if (Comp.GetString(0) == "ENT")
                     {
-                    MessageBox.Show("Entro en ENT");
+                        //MessageBox.Show("Entro en ENT");
 
-                  String sql2 = "SELECT *  FROM edilizia.transaction where idtransaction = " + comprobante.ToString();
+                        String sql2 = "SELECT *  FROM edilizia.transaction where idtransaction = " + comprobante.ToString();
 
                         linea(doc);
-                        seccion("Entrega de Local",'c', doc);
+                        seccion("Entrega de Local", 'c', doc);
                         linea(doc);
 
                         DBConnection cab = new DBConnection();
 
-                         string sql1 = "SELECT  distinct r.level as Nivel, r.number as Numero,r.description as 'oficina',CONCAT(resp.name,', ',resp.last_name) as 'responsable'"+
-                            
-", cab.idtransaction as nro,cab.date as dia" +
-" FROM edilizia.transaction as cab" +
-" inner join edilizia.assets_room_transaction as items on cab.idtransaction = items.idtransaction" +
-" inner join rooms as r on r.idRooms = items.id_Room" +
-" inner JOIN edilizia.rooms_by_users as rbu ON r.idRooms = rbu.id_room" +
-" inner JOIN edilizia.users resp on resp.idUsers = rbu.id_user_owner";
-
-
+                        string sql1 = "SELECT  distinct r.level as Nivel, r.number as Numero,r.description as 'oficina',CONCAT(resp.name,', ',resp.last_name) as 'responsable'" +
+                       ", cab.idtransaction as nro,cab.date as dia" +
+                       " FROM edilizia.transaction as cab" +
+                       " inner join edilizia.assets_room_transaction as items on cab.idtransaction = items.idtransaction" +
+                       " inner join rooms as r on r.idRooms = items.id_Room" +
+                       " inner JOIN edilizia.rooms_by_users as rbu ON r.idRooms = rbu.id_room" +
+                       " inner JOIN edilizia.users resp on resp.idUsers = rbu.id_user_owner";
 
                         MySqlDataReader Cabecera = cab.GetData(sql1);
-                        
+
                         PdfPTable Tabla_cabecera = new PdfPTable(6);
                         Tabla_cabecera.WidthPercentage = 85;
                         Tabla_cabecera.HorizontalAlignment = Element.ALIGN_CENTER;
@@ -96,69 +91,57 @@ namespace WindowsFormsApplication1
                             DataTable Cb = new DataTable();
                             Cb.Load(Cabecera);
 
-                            
+                            for (int m = 0; m < Cb.Columns.Count; m++)
+                            {
+                                this.celdas(Tabla_cabecera, Cb.Columns[m].ToString());
+                            }
 
-                                for (int m = 0; m < Cb.Columns.Count ; m++)
-                                {
-                                    this.celdas(Tabla_cabecera, Cb.Columns[m].ToString());
-                                }
 
-                        
                             for (int j = 0; j < Cb.Columns.Count; j++)
                             {
                                 this.celdas(Tabla_cabecera, Cb.Rows[0][j].ToString());
                             }
-                                
-                                doc.Add(Tabla_cabecera);
+
+                            doc.Add(Tabla_cabecera);
 
 
+                            //break;
 
-
-
-                        break;
-                    
                         }
 
 
                     }
-                else {
-
-
+                    else
+                    {
 
                         MessageBox.Show("Entro no ENT");
 
-
-
                     }
-                
+
                 }
-           
-            doc.Close();
 
+                doc.Close();
 
-
-            Process.Start(nombre);
+                Process.Start(nombre);
             }
-        
+
         }
-        private void seccion(string texto,char a, Document doc)
+        private void seccion(string texto, char a, Document doc)
         {
 
             Paragraph _seccion = new Paragraph();
             _seccion.Font = FontFactory.GetFont(FontFactory.TIMES, 13f);
-           
+
             switch (a)
-                { 
+            {
                 case 'l': { _seccion.Alignment = Element.ALIGN_LEFT; break; };
                 case 'c': { _seccion.Alignment = Element.ALIGN_CENTER; break; };
 
                 case 'r': { _seccion.Alignment = Element.ALIGN_RIGHT; break; };
 
-                }
-
-
+            }
+            
             _seccion.Add(texto + "\n");
-
 
             doc.Add(_seccion);
 
@@ -170,7 +153,7 @@ namespace WindowsFormsApplication1
 
             doc.Add(new Chunk(line1));
         }
-              
+
         private void celdas(PdfPTable tabla, String strText)
         {
             PdfPCell cell = new PdfPCell(new Phrase(strText));
@@ -183,4 +166,3 @@ namespace WindowsFormsApplication1
 
     }
 }
-

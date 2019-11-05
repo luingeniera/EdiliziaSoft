@@ -49,11 +49,20 @@ namespace WindowsFormsApplication1
                 btnConfirmar.Visible = false;
                 dgLocales.DataSource = null;
                 if (rbEntrega.Checked == true)
-                { TipoComprobante = "ENT"; }
+                {
+                    TipoComprobante = "ENT";
+                    cbEntrega.Enabled = true;
+                }
                 if (rbDevolucion.Checked == true)
-                { TipoComprobante = "DEV"; }
+                {
+                    TipoComprobante = "DEV";
+                    cbEntrega.Enabled = false;
+                }
                 if (rbAuditoria.Checked == true)
-                { TipoComprobante = "AUD"; }
+                {
+                    TipoComprobante = "AUD";
+                    cbEntrega.Enabled = false;
+                }
 
                 dgLocales.DataSource = bindingSource1;
                 if (dgLocales.Columns.Contains("Estado Obs."))
@@ -62,8 +71,8 @@ namespace WindowsFormsApplication1
                 string sqlQuery = "";
                 //Con esta consulta busco el nombre de la oficina, dueño y cantidad de bienes que tiene.
                 sqlQuery = "select rooms.description as 'oficina' , CONCAT(resp.name,', ',resp.last_name) as 'responsable', " +
-                "count(abr.idasset) as 'bienes', rooms.idRooms from rooms INNER JOIN edilizia.rooms_by_users ON idRooms = id_room " +
-                "INNER JOIN edilizia.users resp on resp.idUsers = id_user_owner INNER JOIN edilizia.assets_by_room abr on abr.idRoom = rooms.idRooms " +
+                "count(abr.idasset) as 'bienes', rooms.idRooms from rooms LEFT JOIN edilizia.rooms_by_users ON idRooms = id_room " +
+                "LEFT JOIN edilizia.users resp on resp.idUsers = id_user_owner LEFT JOIN edilizia.assets_by_room abr on abr.idRoom = rooms.idRooms " +
                 "WHERE rooms.level=" + cbNivel.SelectedItem + " and rooms.number=" + cbNumero.SelectedItem;
                 MySqlDataReader dataReaderInfo = DB.GetData(sqlQuery);
                 if (dataReaderInfo.HasRows)
@@ -107,6 +116,7 @@ namespace WindowsFormsApplication1
                     MySqlDataReader dataReaderUsers = DB.GetData("select distinct concat(last_name, ', ', name) from users where status = 1");
                     if (dataReaderUsers.HasRows)
                     {
+                        cbEntrega.Items.Clear();
                         DataTable dt = new DataTable();
                         dt.Load(dataReaderUsers);
                         for (int i = 0; i < dt.Rows.Count; i++)
@@ -118,8 +128,8 @@ namespace WindowsFormsApplication1
                     }
                 } else
                 {
-                    //Para los casos en que estoy filtrando un local que ya se generó la entrega (pero no se confirmó)
-                    //oculto el btn Entregar y muestro el confirmar, inhabilito el combo de personas a entregar y 
+                    //Para los casos en que estoy filtrando un local que ya se generó la entrega
+                    //oculto el btn Entregar y muestro el salir, inhabilito el combo de personas a entregar y 
                     //agrego la columna "estado observado" para que puedan realizar correciones.
                     if (TipoComprobante == "ENT")
                     {
@@ -131,23 +141,24 @@ namespace WindowsFormsApplication1
                         cbEntrega.SelectedText = deliveriedTo;
                         lblComprobante.Text = comprobante;
                         btnConfirmar.Visible = true;
+                        btPicking.Enabled = false;
                     }
                     if (TipoComprobante == "DEV")
                     {
                         //Habilito el combo box de "entregar a" y lo completo con los usuarios activos (status=1)
-                        cbEntrega.Enabled = true;
-                        MySqlDataReader dataReaderUsers = DB.GetData("select distinct concat(last_name, ', ', name) from users where status = 1");
-                        if (dataReaderUsers.HasRows)
-                        {
-                            DataTable dt = new DataTable();
-                            dt.Load(dataReaderUsers);
-                            for (int i = 0; i < dt.Rows.Count; i++)
-                            {
-                                cbEntrega.ValueMember = "Valor";
-                                cbEntrega.DisplayMember = "Usuario";
-                                cbEntrega.Items.Add(dt.Rows[i][0]);
-                            }
-                        }
+                        //cbEntrega.Enabled = true;
+                        //MySqlDataReader dataReaderUsers = DB.GetData("select distinct concat(last_name, ', ', name) from users where status = 1");
+                        //if (dataReaderUsers.HasRows)
+                        //{
+                        //    DataTable dt = new DataTable();
+                        //    dt.Load(dataReaderUsers);
+                        //    for (int i = 0; i < dt.Rows.Count; i++)
+                        //    {
+                        //        cbEntrega.ValueMember = "Valor";
+                        //        cbEntrega.DisplayMember = "Usuario";
+                        //        cbEntrega.Items.Add(dt.Rows[i][0]);
+                        //    }
+                        //}
                     }
                 }
             }
@@ -238,13 +249,16 @@ namespace WindowsFormsApplication1
                     //dtBook.Rows[i][0] -- nuevo nro de comprobante
                     //dtBook.Rows[i][1] -- descripcion del comprobante.
                     //VER COMO HACER ROLLBACK!!
-                    
+
                     //Actualizo el numero del comprobante.
                     sql = "UPDATE book set number=number+1 where code='" + TipoComprobante + "'";
+                    //sql = " call ActualizaNroComprobante('" + TipoComprobante + "')";
                     MySqlDataReader dataUpdBookNumber = DB.GetData(sql);
                     //Inserto registro en la tabla transaction para reflejar la entrega, dev o auditoria.
                     sql = "INSERT INTO transaction(bookNumber, date,bookCode, idTransaction_Status) values(" + dtBook.Rows[0][0] + ", now(),'"+TipoComprobante+"',1) ";
+                    //sql = "call InsTransaction('" + TipoComprobante + "')";
                     long IDTransaction = DB.InsertData(sql);
+
                     //Guardo los bienes del local aparejados a la transaction realizada.
                     for (int j = 0; j < dgLocales.Rows.Count-1; j++)
                     {
@@ -255,21 +269,21 @@ namespace WindowsFormsApplication1
                         {
                             idAsset = dgLocales["idAsset", j].Value.ToString();
                             Status = dgLocales["Estado Obs.", j].Value.ToString();
-                            observaciones = dgLocales["Observaciones", j].Value.ToString();
+                            if (dgLocales["Observaciones", j].Value != null)
+                                observaciones = dgLocales["Observaciones", j].Value.ToString();
                             //Observaciones
                             //Si es verde guardo normalmente.
                             if (dgLocales["Evaluacion",j].Style.BackColor == Color.Green)
                             {
                                 rowsVerde++;
-                                sql = "INSERT INTO assets_room_transaction (delivery_status,delivery_date,observation,idTransaction,id_Asset,id_Room) " +
-                                " values ('" + Status + "', now(),'" + observaciones + "', " + IDTransaction + ", " + idAsset + ", " + IdRoomSelected + ")";
-                                //   " select '" + Status + "', now()," + IDTransaction + ",idassets_by_room from assets_by_room inner join assets on idAsset = id_assets " +
-                                //" select idStatus, now()," + IDTransaction + ",idassets_by_room from assets_by_room inner join assets on idAsset = id_assets " +
-                                //" where idRoom = " + IdRoomSelected + " and code = '" + dgLocales["Codigo", j].Value.ToString() + "'";
+
+                                sql = "INSERT INTO assets_room_transaction (delivery_status,delivery_date,observation,idTransaction,color,id_Asset,id_Room) " +
+                                " values ('" + Status + "', now(),'" + observaciones + "', " + IDTransaction + ",'1', " + idAsset + ", " + IdRoomSelected + ")";
+                                //sql = "call InsAssetsTransaction('" + Status + "','" + observaciones + "'," + IDTransaction + "," + idAsset + "," + IdRoomSelected + ")";
                                 long IDAssetRoomTrans = DB.InsertData(sql);
 
-                                sql = "UPDATE assets set idStatus = " +Status+ " where id_assets = " + idAsset ;
-                                long IDAsset = DB.InsertData(sql);
+                                //sql = "UPDATE assets set idStatus = " +Status+ " where id_assets = " + idAsset ;
+                                //long IDAsset = DB.InsertData(sql);
                             }
 
                             #region amarillo
@@ -279,17 +293,26 @@ namespace WindowsFormsApplication1
                                 sql = "update assets_by_room set idRoom = "+ IdRoomSelected + " where idAsset = "+idAsset;
                                 long IDAssetsByRoom = DB.InsertData(sql);
 
-                                sql = "INSERT INTO assets_room_transaction (delivery_status,delivery_date,idTransaction,id_Asset,id_Room) " +
-                                " values ('" + Status + "', now()," + IDTransaction + ", " + idAsset + ", " + IdRoomSelected + ")";
+                                sql = "INSERT INTO assets_room_transaction (delivery_status,delivery_date,observation,idTransaction,color,id_Asset,id_Room) " +
+                                " values ('" + Status + "', now(),'" + observaciones + "', " + IDTransaction + ",'2', " + idAsset + ", " + IdRoomSelected + ")";
                                 long IDAssetRoomTrans = DB.InsertData(sql);
 
                                 sql = "UPDATE assets set idStatus = " + Status + " where id_assets = " + idAsset;
                                 long IDAsset = DB.InsertData(sql);
 
                                 //INSERTO LAS DIFERENCIAS. En el caso de amarillo figuraba en un local y lo pickeo donde hago la entrega (se movio).
-                                int IdRoomOrig = 0;
+                                //int IdRoomOrig = 0;
+                                string estadoOrig = "''";
+                                if (dgLocales["Estado", j].Value.ToString() == "Bueno")
+                                    estadoOrig = "1";
+                                if (dgLocales["Estado", j].Value.ToString() == "Regular")
+                                    estadoOrig = "2";
+                                if (dgLocales["Estado", j].Value.ToString() == "Malo")
+                                    estadoOrig = "3";
+                                if (dgLocales["Estado", j].Value.ToString() == "Nuevo")
+                                    estadoOrig = "10";
                                 sql = "INSERT INTO diferences (idComprobante,idBien,idLocalOrig,idLocalPicking,idEstadoOrig,idEstadoObs,Semaforo) " +
-                                " values (" + IDTransaction + ", " + dgLocales["idAsset", j].Value.ToString() + ", " + dgLocales["idRoom", j].Value.ToString() + ", " + IdRoomSelected + ", 7, " + Status + ", 'amarillo')";
+                                " values (" + IDTransaction + ", " + dgLocales["idAsset", j].Value.ToString() + ", " + dgLocales["idRoom", j].Value.ToString() + ", " + IdRoomSelected + ","+ estadoOrig + ", " + Status + ", 'amarillo')";
                                 //" values (" + IDTransaction + ", " + IDAsset + ", " + IdRoomOrig + ", " + IdRoomSelected + ", " + dgLocales["Estado", j].Value.ToString() + ", " + Status + ", 'amarillo')";
                                 //En la grilla deberia guardar el idStatus del bien y ocultarlo. Ojo q me cambia el for
                                 long idDifference = DB.InsertData(sql);
@@ -301,9 +324,23 @@ namespace WindowsFormsApplication1
                             //Si es rojo muevo el bien al dep. virtual
                             if (dgLocales["Evaluacion", j].Style.BackColor == Color.Red)
                             {
+                                if (dgLocales["Observaciones", j].Value != null)
+                                    observaciones = dgLocales["Observaciones", j].Value.ToString();
+
+                                //Por defecto tomo que el idRoom=1 es el deposito virtual.
                                 idAsset = dgLocales["idAsset", j].Value.ToString();
-                                sql = "update assets_by_room set idRoom = 5 where idAsset=" + idAsset;
+                                sql = "update assets_by_room set idRoom = 1 where idAsset=" + idAsset;
                                 long IDAssetsByRoom = DB.InsertData(sql);
+
+                                sql = "INSERT INTO assets_room_transaction (delivery_date,observation,idTransaction,color,id_Asset,id_Room) " +
+                                " values (now(),'" + observaciones + "', " + IDTransaction + ",'3', " + idAsset + ", 1)";
+                                long IDAssetRoomTrans = DB.InsertData(sql);
+
+                                sql = "INSERT INTO diferences (idComprobante,idBien,idLocalOrig,idLocalPicking,Semaforo) " +
+                                " values (" + IDTransaction + ", " + dgLocales["idAsset", j].Value.ToString() + ", " + dgLocales["idRoom", j].Value.ToString() + ", '1','rojo')";
+                                //" values (" + IDTransaction + ", " + IDAsset + ", " + IdRoomOrig + ", " + IdRoomSelected + ", " + dgLocales["Estado", j].Value.ToString() + ", " + Status + ", 'amarillo')";
+                                //En la grilla deberia guardar el idStatus del bien y ocultarlo. Ojo q me cambia el for
+                                long idDifference = DB.InsertData(sql);
                             }
                         }
                     }
@@ -312,7 +349,7 @@ namespace WindowsFormsApplication1
                     {
                         //Si coinciden las cantidades es xq estuvo todo bien y el estado de la transaccion es aprobado.
                         sql = "UPDATE transaction SET idTransaction_status=3 where idtransaction=" + IDTransaction;
-                        long idTrans = DB.InsertData(sql);
+                        long idTrans = DB.InsertData(sql);                        
                     } 
                     else
                     {
@@ -323,27 +360,19 @@ namespace WindowsFormsApplication1
                     }
                     //Asigno el local a un usuario responsable.
                     //IdUserResponsibleSelected = int.Parse(cbEntrega.SelectedValue.ToString());
-                    sql = "UPDATE rooms_by_users SET id_user_responsible = (select idUsers from users where status = 1  " +
-                    " and concat(last_name,', ',name)='"+ cbEntrega.SelectedItem + "') where end_date is null and id_room = " + IdRoomSelected;
+                    if (rbEntrega.Checked == true)
+                        sql = "UPDATE rooms_by_users SET id_user_responsible = (select idUsers from users where status = 1  " +
+                         " and concat(last_name,', ',name)='" + cbEntrega.SelectedItem + "') where end_date is null and id_room = " + IdRoomSelected;
+                    if (rbDevolucion.Checked == true)
+                        sql = "UPDATE rooms_by_users SET id_user_responsible = null  where end_date is null and id_room = " + IdRoomSelected;
+
                     long IDRoomByUser = DB.InsertData(sql);
 
                     MessageBox.Show("Se ha realizado la entrega del local exitosamente.");
-                    //PDF_Click(null, new EventArgs());
                     
-                    DataTable tmpCabecera = new DataTable();
-                    tmpCabecera.Columns.Add("Nivel", typeof(string));
-                    tmpCabecera.Columns.Add("Nro Local", typeof(string));
-                    tmpCabecera.Columns.Add("Local", typeof(string));
-                    tmpCabecera.Columns.Add("Responsable", typeof(string));
-                    tmpCabecera.Columns.Add("Comprobante", typeof(string));
-
-                    tmpCabecera.Rows.Add(cbNivel.Text, cbNivel.Text, lblLocal.Text, lblResponsable.Text, IDTransaction);
-
-                    PDF_plano pp = new PDF_plano();
-
-                    pp.GenerarPDF(1,"Entrega de Local",tmpCabecera ,IDTransaction.ToString(),"Entrega", 
-                        "cuerpo", dgLocales, cbEntrega.SelectedItem.ToString());
-                    this.Close();
+                    PDF_Comp callPDF = new PDF_Comp();
+                    callPDF.PrintPDF(Convert.ToInt32(IDTransaction));
+                    Close();
                 }
             }
             else
@@ -354,11 +383,13 @@ namespace WindowsFormsApplication1
 
         private void btnConfirmar_Click(object sender, EventArgs e)
         {
-            
+            Close();
         }
 
         private void btPicking_Click(object sender, EventArgs e)
         {
+            cbNivel.Enabled = false;
+            cbNumero.Enabled = false;
             Picking formPicking = new Picking(this);
             formPicking.ShowDialog();
             WindowsFormsApplication1.DBConnection DB = new WindowsFormsApplication1.DBConnection();
@@ -382,9 +413,6 @@ namespace WindowsFormsApplication1
             {
                 if (dtReturnPicking.Rows[i][1].ToString() == "0")
                 {
-                    //DataTable dt = new DataTable();
-                    //dt.Columns.Add("bien", typeof(string));
-
                     //Recupero el id_assets y el id_room
                     sql = "SELECT id_assets,idRoom FROM edilizia.assets inner join assets_by_room on id_assets = idAsset " +
                         "where code = '" + dtReturnPicking.Rows[i][0].ToString().ToUpper() + "'";
