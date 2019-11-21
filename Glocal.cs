@@ -69,27 +69,48 @@ namespace WindowsFormsApplication1
                     dgLocales.Columns.Remove("Estado Obs.");
 
                 string sqlQuery = "";
-                //Con esta consulta busco el nombre de la oficina, dueño y cantidad de bienes que tiene.
-                sqlQuery = "select rooms.description as 'oficina' , CONCAT(resp.name,', ',resp.last_name) as 'responsable', " +
-                "count(abr.idasset) as 'bienes', rooms.idRooms from rooms LEFT JOIN edilizia.rooms_by_users ON idRooms = id_room " +
-                "LEFT JOIN edilizia.users resp on resp.idUsers = id_user_owner LEFT JOIN edilizia.assets_by_room abr on abr.idRoom = rooms.idRooms " +
-                "WHERE rooms.level=" + cbNivel.SelectedItem + " and rooms.number=" + cbNumero.SelectedItem;
+                if (rbEntrega.Checked == true)
+                {
+                    //Con esta consulta busco el nombre de la oficina, dueño y cantidad de bienes que tiene.
+                    sqlQuery = "select CONCAT('[',rooms.code,'] - ', rooms.description) as 'Local' , CONCAT(resp.name,', ',resp.last_name) as 'responsable', " +
+                    "count(abr.idasset) as 'bienes', rooms.idRooms from rooms LEFT JOIN edilizia.rooms_by_users ON idRooms = id_room " +
+                    "LEFT JOIN edilizia.users resp on resp.idUsers = id_user_owner LEFT JOIN edilizia.assets_by_room abr on abr.idRoom = rooms.idRooms " +
+                    "WHERE rooms.level=" + cbNivel.SelectedItem + " and rooms.number=" + cbNumero.SelectedItem;
+                }
+                else {
+                    //En el caso de una auditoria o devolucion el responsable no es el 'id_user_owner', sino el 'id_user_responsible' porque ya tiene alguien asignado.
+                    sqlQuery = "select CONCAT('[',rooms.code,'] - ', rooms.description) as 'Local' , CONCAT(resp.name,', ',resp.last_name) as 'responsable', " +
+                    "count(abr.idasset) as 'bienes', rooms.idRooms from rooms LEFT JOIN edilizia.rooms_by_users ON idRooms = id_room " +
+                    "LEFT JOIN edilizia.users resp on resp.idUsers = id_user_responsible LEFT JOIN edilizia.assets_by_room abr on abr.idRoom = rooms.idRooms " +
+                    "WHERE rooms.level=" + cbNivel.SelectedItem + " and rooms.number=" + cbNumero.SelectedItem;
+                }
                 MySqlDataReader dataReaderInfo = DB.GetData(sqlQuery);
                 if (dataReaderInfo.HasRows)
                 {
                     DataTable dtInfo = new DataTable();
                     dtInfo.Load(dataReaderInfo);
-                    lblLocal.Text = "Oficina: " + dtInfo.Rows[0][0].ToString();
-                    lblResponsable.Text = "Dueño: " + dtInfo.Rows[0][1].ToString();
+                    lblLocal.Text = "Local: " + dtInfo.Rows[0][0].ToString();
+                    lblResponsable.Text = "Responsable: " + dtInfo.Rows[0][1].ToString();
                     lblActivos.Text = "Cant. Bienes: " + dtInfo.Rows[0][2].ToString();
                     IdRoomSelected = int.Parse(dtInfo.Rows[0][3].ToString());
                 }
                 //Busco datos de los bienes del local para completar la grilla.
-                sqlQuery = "SELECT a.code as 'Codigo', a.description as 'Desc' ,s.description as 'Estado', concat(last_name, ', ', name) as 'Responsible', concat(t.bookCode,'-',t.bookNumber) as 'Comprobante' " +
-                " ,art.idtransaction,abr.idAsset, abr.idRoom, '' as Evaluacion FROM rooms r INNER JOIN edilizia.assets_by_room abr ON abr.idRoom = r.idRooms INNER JOIN assets a on a.id_assets = abr.idAsset" +
-                " INNER JOIN assets_status s on a.idStatus = s.idstatus LEFT OUTER JOIN rooms_by_users rbu on r.idRooms = rbu.id_room and rbu.end_date is null " +
-                " LEFT OUTER JOIN users u on u.idUsers = rbu.id_user_responsible LEFT OUTER JOIN assets_room_Transaction art on art.id_Asset = abr.idAsset and art.id_Room = abr.idRoom and art.return_date is null" +
-                " LEFT OUTER JOIN transaction t on t.idtransaction = art.idtransaction and t.bookCode='"+TipoComprobante+"' WHERE level = " + cbNivel.SelectedItem + " and number = " + cbNumero.SelectedItem + " order by a.code";
+                if (rbEntrega.Checked != true)
+                {
+                    sqlQuery = "SELECT distinct a.code as 'Referencia', a.description as 'Nombre de activo' ,s.description as 'Estado', concat(last_name, ', ', name) as 'Responsible', '' as 'Comprobante' " +
+                    " ,'' as idtransaction,abr.idAsset, abr.idRoom, art.color as 'Eval' FROM rooms r INNER JOIN edilizia.assets_by_room abr ON abr.idRoom = r.idRooms INNER JOIN assets a on a.id_assets = abr.idAsset" +
+                    " INNER JOIN assets_status s on a.idStatus = s.idstatus LEFT OUTER JOIN rooms_by_users rbu on r.idRooms = rbu.id_room and rbu.end_date is null " +
+                    " LEFT OUTER JOIN users u on u.idUsers = rbu.id_user_responsible INNER JOIN assets_room_Transaction art on art.id_Asset = abr.idAsset and art.id_Room = abr.idRoom and art.return_date is null" +
+                    " WHERE level = " + cbNivel.SelectedItem + " and number = " + cbNumero.SelectedItem + " order by a.code";
+                }
+                else
+                {
+                    sqlQuery = "SELECT a.code as 'Referencia', a.description as 'Nombre de activo' ,s.description as 'Estado', concat(last_name, ', ', name) as 'Responsible', concat(t.bookCode,'-',t.bookNumber) as 'Comprobante' " +
+                    " ,art.idtransaction,abr.idAsset, abr.idRoom, '' as 'Eval' FROM rooms r INNER JOIN edilizia.assets_by_room abr ON abr.idRoom = r.idRooms INNER JOIN assets a on a.id_assets = abr.idAsset" +
+                    " INNER JOIN assets_status s on a.idStatus = s.idstatus LEFT OUTER JOIN rooms_by_users rbu on r.idRooms = rbu.id_room and rbu.end_date is null " +
+                    " LEFT OUTER JOIN users u on u.idUsers = rbu.id_user_responsible LEFT OUTER JOIN assets_room_Transaction art on art.id_Asset = abr.idAsset and art.id_Room = abr.idRoom and art.return_date is null" +
+                    " LEFT OUTER JOIN transaction t on t.idtransaction = art.idtransaction and t.bookCode='" + TipoComprobante + "' WHERE level = " + cbNivel.SelectedItem + " and number = " + cbNumero.SelectedItem + " order by a.code";
+                }
                 MySqlDataReader dataReaderLocal = DB.GetData(sqlQuery);
                 if (dataReaderLocal.HasRows)
                 {
@@ -106,12 +127,15 @@ namespace WindowsFormsApplication1
                     dgLocales.Columns["idAsset"].Visible = false;
                     dgLocales.Columns["idRoom"].Visible = false;
                     btPicking.Enabled = true;
-
+                    dgLocales.Columns["Eval"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                    dgLocales.Columns["Nombre de activo"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                    //dgLocales.Columns["Eval"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                    //Width = 35;
                 }
 
                 if (deliveriedTo == "")
                 {
-                    //Habilito el combo box de "entregar a" y lo completo con los usuarios activos (status=1)
+                    //Habilito el combobox de "entregar a" y lo completo con los usuarios activos (status=1)
                     cbEntrega.Enabled = true;
                     MySqlDataReader dataReaderUsers = DB.GetData("select distinct concat(last_name, ', ', name) from users where status = 1");
                     if (dataReaderUsers.HasRows)
@@ -135,30 +159,32 @@ namespace WindowsFormsApplication1
                     {
                         btnEntregar.Visible = false;
                         btnConfirmar.Visible = true;
-
+                        
                         cbEntrega.Enabled = false;
                         cbEntrega.Text = "";
                         cbEntrega.SelectedText = deliveriedTo;
                         lblComprobante.Text = comprobante;
-                        btnConfirmar.Visible = true;
                         btPicking.Enabled = false;
-                    }
-                    if (TipoComprobante == "DEV")
+                    } else
                     {
-                        //Habilito el combo box de "entregar a" y lo completo con los usuarios activos (status=1)
-                        //cbEntrega.Enabled = true;
-                        //MySqlDataReader dataReaderUsers = DB.GetData("select distinct concat(last_name, ', ', name) from users where status = 1");
-                        //if (dataReaderUsers.HasRows)
-                        //{
-                        //    DataTable dt = new DataTable();
-                        //    dt.Load(dataReaderUsers);
-                        //    for (int i = 0; i < dt.Rows.Count; i++)
-                        //    {
-                        //        cbEntrega.ValueMember = "Valor";
-                        //        cbEntrega.DisplayMember = "Usuario";
-                        //        cbEntrega.Items.Add(dt.Rows[i][0]);
-                        //    }
-                        //}
+                        btnEntregar.Visible = true;
+                        btnConfirmar.Visible = true;
+                        
+                        cbEntrega.Enabled = false;
+                        cbEntrega.Text = "";
+                        cbEntrega.SelectedText = deliveriedTo;
+                        lblComprobante.Text = comprobante;
+                        //btPicking.Enabled = false;
+                        for (int i = 0; i < dgLocales.Rows.Count-1; i++)
+                        {
+                            if (dgLocales["Eval", i].Value.ToString() == "1")
+                                dgLocales["Eval", i].Style.BackColor = Color.Green;
+                            if (dgLocales["Eval", i].Value.ToString() == "2")
+                                dgLocales["Eval", i].Style.BackColor = Color.Yellow;
+                            if (dgLocales["Eval", i].Value.ToString() == "3")
+                                dgLocales["Eval", i].Style.BackColor = Color.Red;
+                            dgLocales["Eval", i].Value = null;
+                        }
                     }
                 }
             }
@@ -210,20 +236,11 @@ namespace WindowsFormsApplication1
                 }
             }
         }
-
-        private void btnPDF_Click(object sender, EventArgs e)
-        {
-           //PDF pp = new PDF();
-         
-           //origen =1
-            //pp.GenerarPDF(1,"Entrega de Local", "1", "Entrega",
-            //            "cuerpo", dgLocales, cbEntrega.SelectedItem.ToString());
-        }
-
+        
         private void btnEntregar_Click(object sender, EventArgs e)
         {
             string TipoComprobante = "";
-            if (cbEntrega.SelectedIndex > -1)
+            if ((cbEntrega.SelectedIndex > -1 && rbEntrega.Checked == true) || (rbDevolucion.Checked == true) || (rbAuditoria.Checked == true))
             {
                 
                 WindowsFormsApplication1.DBConnection DB = new WindowsFormsApplication1.DBConnection();
@@ -259,91 +276,105 @@ namespace WindowsFormsApplication1
                     //sql = "call InsTransaction('" + TipoComprobante + "')";
                     long IDTransaction = DB.InsertData(sql);
 
-                    //Guardo los bienes del local aparejados a la transaction realizada.
-                    for (int j = 0; j < dgLocales.Rows.Count-1; j++)
-                    {
-                        string Status = "";
-                        string idAsset = "";
-                        string observaciones = "";
-                        if (dgLocales["Estado Obs.", j].Value != null)
+                    //if (TipoComprobante == "ENT")
+                    //{
+                        //Guardo los bienes del local aparejados a la transaction realizada.
+                        for (int j = 0; j < dgLocales.Rows.Count - 1; j++)
                         {
-                            idAsset = dgLocales["idAsset", j].Value.ToString();
-                            Status = dgLocales["Estado Obs.", j].Value.ToString();
-                            if (dgLocales["Observaciones", j].Value != null)
-                                observaciones = dgLocales["Observaciones", j].Value.ToString();
-                            //Observaciones
-                            //Si es verde guardo normalmente.
-                            if (dgLocales["Evaluacion",j].Style.BackColor == Color.Green)
+                            string Status = "";
+                            string idAsset = "";
+                            string observaciones = "";
+                            if ( (rbEntrega.Checked == true && dgLocales["Estado Obs.", j].Value != null) || rbAuditoria.Checked == true)
                             {
-                                rowsVerde++;
-
-                                sql = "INSERT INTO assets_room_transaction (delivery_status,delivery_date,observation,idTransaction,color,id_Asset,id_Room) " +
-                                " values ('" + Status + "', now(),'" + observaciones + "', " + IDTransaction + ",'1', " + idAsset + ", " + IdRoomSelected + ")";
-                                //sql = "call InsAssetsTransaction('" + Status + "','" + observaciones + "'," + IDTransaction + "," + idAsset + "," + IdRoomSelected + ")";
-                                long IDAssetRoomTrans = DB.InsertData(sql);
-
-                                //sql = "UPDATE assets set idStatus = " +Status+ " where id_assets = " + idAsset ;
-                                //long IDAsset = DB.InsertData(sql);
-                            }
-
-                            #region amarillo
-                            //Si es amarillo transfiero el bien al local seleccionado.
-                            if (dgLocales["Evaluacion", j].Style.BackColor == Color.Yellow)
-                            {
-                                sql = "update assets_by_room set idRoom = "+ IdRoomSelected + " where idAsset = "+idAsset;
-                                long IDAssetsByRoom = DB.InsertData(sql);
-
-                                sql = "INSERT INTO assets_room_transaction (delivery_status,delivery_date,observation,idTransaction,color,id_Asset,id_Room) " +
-                                " values ('" + Status + "', now(),'" + observaciones + "', " + IDTransaction + ",'2', " + idAsset + ", " + IdRoomSelected + ")";
-                                long IDAssetRoomTrans = DB.InsertData(sql);
-
-                                sql = "UPDATE assets set idStatus = " + Status + " where id_assets = " + idAsset;
-                                long IDAsset = DB.InsertData(sql);
-
-                                //INSERTO LAS DIFERENCIAS. En el caso de amarillo figuraba en un local y lo pickeo donde hago la entrega (se movio).
-                                //int IdRoomOrig = 0;
-                                string estadoOrig = "''";
-                                if (dgLocales["Estado", j].Value.ToString() == "Bueno")
-                                    estadoOrig = "1";
-                                if (dgLocales["Estado", j].Value.ToString() == "Regular")
-                                    estadoOrig = "2";
-                                if (dgLocales["Estado", j].Value.ToString() == "Malo")
-                                    estadoOrig = "3";
-                                if (dgLocales["Estado", j].Value.ToString() == "Nuevo")
-                                    estadoOrig = "10";
-                                sql = "INSERT INTO diferences (idComprobante,idBien,idLocalOrig,idLocalPicking,idEstadoOrig,idEstadoObs,Semaforo) " +
-                                " values (" + IDTransaction + ", " + dgLocales["idAsset", j].Value.ToString() + ", " + dgLocales["idRoom", j].Value.ToString() + ", " + IdRoomSelected + ","+ estadoOrig + ", " + Status + ", 'amarillo')";
-                                //" values (" + IDTransaction + ", " + IDAsset + ", " + IdRoomOrig + ", " + IdRoomSelected + ", " + dgLocales["Estado", j].Value.ToString() + ", " + Status + ", 'amarillo')";
-                                //En la grilla deberia guardar el idStatus del bien y ocultarlo. Ojo q me cambia el for
-                                long idDifference = DB.InsertData(sql);
-                            }
-                            #endregion
-                        }
-                        else //Este else significa que entro por evaluacion = rojo
-                        {
-                            //Si es rojo muevo el bien al dep. virtual
-                            if (dgLocales["Evaluacion", j].Style.BackColor == Color.Red)
-                            {
-                                if (dgLocales["Observaciones", j].Value != null)
-                                    observaciones = dgLocales["Observaciones", j].Value.ToString();
-
-                                //Por defecto tomo que el idRoom=1 es el deposito virtual.
                                 idAsset = dgLocales["idAsset", j].Value.ToString();
-                                sql = "update assets_by_room set idRoom = 1 where idAsset=" + idAsset;
-                                long IDAssetsByRoom = DB.InsertData(sql);
+                                if (rbAuditoria.Checked != true)
+                                    Status = dgLocales["Estado Obs.", j].Value.ToString();
+                                else
+                                {
+                                    if (dgLocales["Estado", j].Value.ToString() == "Bueno")
+                                        Status = "1";
+                                    if (dgLocales["Estado", j].Value.ToString() == "Regular")
+                                        Status = "2";
+                                    if (dgLocales["Estado", j].Value.ToString() == "Malo")
+                                        Status = "3";
+                                    if (dgLocales["Estado", j].Value.ToString() == "Nuevo")
+                                        Status = "10";
+                                }
+                                      
+                                //if (rbAuditoria.Checked != true && dgLocales["Observaciones", j].Value != null)
+                                    observaciones = dgLocales["Observaciones", j].Value.ToString();
+                                //Observaciones
+                                //Si es verde guardo normalmente.
+                                if (dgLocales["Eval", j].Style.BackColor == Color.Green)
+                                {
+                                    rowsVerde++;
 
-                                sql = "INSERT INTO assets_room_transaction (delivery_date,observation,idTransaction,color,id_Asset,id_Room) " +
-                                " values (now(),'" + observaciones + "', " + IDTransaction + ",'3', " + idAsset + ", 1)";
-                                long IDAssetRoomTrans = DB.InsertData(sql);
+                                    sql = "INSERT INTO assets_room_transaction (delivery_status,delivery_date,observation,idTransaction,color,id_Asset,id_Room) " +
+                                    " values ('" + Status + "', now(),'" + observaciones + "', " + IDTransaction + ",'1', " + idAsset + ", " + IdRoomSelected + ")";
+                                    //sql = "call InsAssetsTransaction('" + Status + "','" + observaciones + "'," + IDTransaction + "," + idAsset + "," + IdRoomSelected + ")";
+                                    long IDAssetRoomTrans = DB.InsertData(sql);
+                                }
 
-                                sql = "INSERT INTO diferences (idComprobante,idBien,idLocalOrig,idLocalPicking,Semaforo) " +
-                                " values (" + IDTransaction + ", " + dgLocales["idAsset", j].Value.ToString() + ", " + dgLocales["idRoom", j].Value.ToString() + ", '1','rojo')";
-                                //" values (" + IDTransaction + ", " + IDAsset + ", " + IdRoomOrig + ", " + IdRoomSelected + ", " + dgLocales["Estado", j].Value.ToString() + ", " + Status + ", 'amarillo')";
-                                //En la grilla deberia guardar el idStatus del bien y ocultarlo. Ojo q me cambia el for
-                                long idDifference = DB.InsertData(sql);
+                                //Si es amarillo transfiero el bien al local seleccionado. NO REALIZO LA TRANSFERENCIA, SINO QUE CREO LA DIFERENCIA. VALIDAR CON LUZ.
+                                if (dgLocales["Eval", j].Style.BackColor == Color.Yellow)
+                                {
+                                    sql = "INSERT INTO assets_room_transaction (delivery_status,delivery_date,observation,idTransaction,color,id_Asset,id_Room) " +
+                                    " values ('" + Status + "', now(),'" + observaciones + "', " + IDTransaction + ",'2', " + idAsset + ", " + IdRoomSelected + ")";
+                                    long IDAssetRoomTrans = DB.InsertData(sql);
+
+                                    //INSERTO LAS DIFERENCIAS. En el caso de amarillo figuraba en un local y lo pickeo donde hago la entrega (se movio).
+                                    string estadoOrig = "NULL";
+                                    if (dgLocales["Estado", j].Value.ToString() == "Bueno")
+                                        estadoOrig = "1";
+                                    if (dgLocales["Estado", j].Value.ToString() == "Regular")
+                                        estadoOrig = "2";
+                                    if (dgLocales["Estado", j].Value.ToString() == "Malo")
+                                        estadoOrig = "3";
+                                    if (dgLocales["Estado", j].Value.ToString() == "Nuevo")
+                                        estadoOrig = "10";
+
+                                    string idEstadoFinal = "";
+                                    string idLocalFinal = "";
+                                    //Comparo si hay diferencia en el local donde se encuentra el bien y el local donde dice el sistema deberia estar el mismo.
+                                    if (dgLocales["idRoom", j].Value.ToString() == Convert.ToString(IdRoomSelected))
+                                        idLocalFinal = Convert.ToString(IdRoomSelected);
+                                    //Comparo si hay diferencias en el estado observado del bien y el estado que dice el sistema.
+                                    if (estadoOrig == Status)
+                                        idEstadoFinal = Status;
+
+                                    sql = "INSERT INTO diferences (idComprobante,idBien,idLocalOrig,idLocalPicking,idEstadoOrig,idEstadoObs,Semaforo,idLocalFinal,idEstadoFinal) " +
+                                    " values (" + IDTransaction + ", " + dgLocales["idAsset", j].Value.ToString() + ", " + dgLocales["idRoom", j].Value.ToString() + 
+                                    ", " + IdRoomSelected + "," + estadoOrig + ", " + Status + ", '2','" + idLocalFinal + "', '" + idEstadoFinal + "')";
+                                    
+                                    //En la grilla deberia guardar el idStatus del bien y ocultarlo. Ojo q me cambia el for
+                                    long idDifference = DB.InsertData(sql);
+                                }
+                            }
+                            else //Este else significa que entro por evaluacion = rojo
+                            {
+                                //Si es rojo muevo el bien al dep. virtual. LO MUEVO DIRECTAMENTE AL VIRTUAL Y SI LO ENCUENTRO LO TRAIGO?
+                                if (dgLocales["Eval", j].Style.BackColor == Color.Red)
+                                {
+                                    if (dgLocales["Observaciones", j].Value != null)
+                                        observaciones = dgLocales["Observaciones", j].Value.ToString();
+
+                                    //Por defecto tomo que el idRoom=1 es el deposito virtual.
+                                    idAsset = dgLocales["idAsset", j].Value.ToString();
+                                    sql = "update assets_by_room set idRoom = 1 where idAsset=" + idAsset;
+                                    long IDAssetsByRoom = DB.InsertData(sql);
+
+                                    sql = "INSERT INTO assets_room_transaction (delivery_date,observation,idTransaction,color,id_Asset,id_Room) " +
+                                    " values (now(),'" + observaciones + "', " + IDTransaction + ",'3', " + idAsset + ", 1)";
+                                    long IDAssetRoomTrans = DB.InsertData(sql);
+
+                                    sql = "INSERT INTO diferences (idComprobante,idBien,idLocalOrig,idLocalPicking,Semaforo,idLocalFinal,idEstadoFinal) " +
+                                    " values (" + IDTransaction + ", " + dgLocales["idAsset", j].Value.ToString() + ", " + dgLocales["idRoom", j].Value.ToString() + ", '1','3','','')";
+                                    //En la grilla deberia guardar el idStatus del bien y ocultarlo. Ojo q me cambia el for
+                                    long idDifference = DB.InsertData(sql);
+                                }
                             }
                         }
-                    }
+                    //}
                     
                     if (totalRows == rowsVerde)
                     {
@@ -358,7 +389,8 @@ namespace WindowsFormsApplication1
                         sql = "UPDATE transaction SET idTransaction_status=2 where idtransaction=" + IDTransaction;
                         long idTrans = DB.InsertData(sql);
                     }
-                    //Asigno el local a un usuario responsable.
+                    
+                    //Asigno el local a un usuario responsable. SOLO EN LAS ENTREGAS
                     //IdUserResponsibleSelected = int.Parse(cbEntrega.SelectedValue.ToString());
                     if (rbEntrega.Checked == true)
                         sql = "UPDATE rooms_by_users SET id_user_responsible = (select idUsers from users where status = 1  " +
@@ -367,19 +399,32 @@ namespace WindowsFormsApplication1
                         sql = "UPDATE rooms_by_users SET id_user_responsible = null  where end_date is null and id_room = " + IdRoomSelected;
 
                     long IDRoomByUser = DB.InsertData(sql);
-
-                    MessageBox.Show("Se ha realizado la entrega del local exitosamente.");
+                    string mensaje = "Se ha realizado la ";
+                    if (rbEntrega.Checked == true)
+                    {
+                        mensaje = mensaje + "Entrega " + dtBook.Rows[0][0].ToString() + " del local " + cbNivel.SelectedItem + "-" + cbNumero.SelectedItem + " exitosamente";
+                    }
+                    if (rbDevolucion.Checked == true)
+                    {
+                        mensaje = mensaje + "Devolución " + dtBook.Rows[0][0].ToString() + " del local " + cbNivel.SelectedItem + "-" + cbNumero.SelectedItem + " exitosamente";
+                    }
+                    if (rbAuditoria.Checked == true)
+                    {
+                        mensaje = mensaje + "Auditoría  " + dtBook.Rows[0][0].ToString() + " del local " + cbNivel.SelectedItem + "-" + cbNumero.SelectedItem + " exitosamente";
+                    }
+                    MessageBox.Show(mensaje);
                     
                     PDF_Comp callPDF = new PDF_Comp();
                     callPDF.PrintPDF(Convert.ToInt32(IDTransaction));
                     Close();
                 }
             }
-            else
+            else if (rbEntrega.Checked == true)
             {
                 MessageBox.Show("Primero debe seleccionar a quien realizar la entrega del local.");
             }
         }
+        
 
         private void btnConfirmar_Click(object sender, EventArgs e)
         {
@@ -401,9 +446,9 @@ namespace WindowsFormsApplication1
             {
                 for (int j = 0; j < dgLocales.Rows.Count; j++)
                 {
-                    if (dgLocales.Rows[j].Cells["Codigo"].FormattedValue.ToString() == dtReturnPicking.Rows[i][0].ToString().ToUpper())
+                    if (dgLocales.Rows[j].Cells["Referencia"].FormattedValue.ToString() == dtReturnPicking.Rows[i][0].ToString().ToUpper())
                     {
-                        dgLocales["Evaluacion", j].Style.BackColor = Color.Green;
+                        dgLocales["Eval", j].Style.BackColor = Color.Green;
                         dtReturnPicking.Rows[i][1] = "1";                  
                     }
                 }
@@ -414,22 +459,24 @@ namespace WindowsFormsApplication1
                 if (dtReturnPicking.Rows[i][1].ToString() == "0")
                 {
                     //Recupero el id_assets y el id_room
-                    sql = "SELECT id_assets,idRoom FROM edilizia.assets inner join assets_by_room on id_assets = idAsset " +
-                        "where code = '" + dtReturnPicking.Rows[i][0].ToString().ToUpper() + "'";
+                    sql = "SELECT a.id_assets,idRoom,a.description,s.description FROM edilizia.assets a inner join assets_by_room on a.id_assets = idAsset " +
+                        "INNER JOIN assets_status s on a.idStatus = s.idstatus where a.code = '" + dtReturnPicking.Rows[i][0].ToString().ToUpper() + "'";
                     MySqlDataReader dataReaderInfo = DB.GetData(sql);
                     //Si existe el bien lo agrego y pinto en amarillo, sino digo que no existe el bien.
                     if (dataReaderInfo.HasRows)
                     {
                         DataRow dr = dataTableDgLocales.NewRow();
-                        dr["Codigo"] = dtReturnPicking.Rows[i][0].ToString().ToUpper();
-                        dr["Evaluacion"] = "";
+                        dr["Referencia"] = dtReturnPicking.Rows[i][0].ToString().ToUpper();
+                        dr["Eval"] = "";
                         DataTable dtInfo = new DataTable();
                         dtInfo.Load(dataReaderInfo);
                         dr["idAsset"] = dtInfo.Rows[0][0].ToString();
                         dr["idRoom"] = dtInfo.Rows[0][1].ToString();
+                        dr["Nombre de activo"] = dtInfo.Rows[0][2].ToString();
+                        dr["Estado"] = dtInfo.Rows[0][3].ToString();
                         dataTableDgLocales.Rows.Add(dr);
                         dgLocales.DataSource = dataTableDgLocales;
-                        dgLocales["Evaluacion", dgLocales.NewRowIndex - 1].Style.BackColor = Color.Yellow;
+                        dgLocales["Eval", dgLocales.NewRowIndex - 1].Style.BackColor = Color.Yellow;
                     }
                     else
                     {
@@ -459,11 +506,13 @@ namespace WindowsFormsApplication1
                     column.DisplayMember = "description";
                     column.ValueMember = "idstatus";
                     column.ToolTipText = "Asegurarse de haber realizado el picking completo del local antes de actualizar estos datos";
+                    //column.FlatStyle = FlatStyle.Flat;
                     dgLocales.Columns.Add(column);
 
                     var column1 = new DataGridViewTextBoxColumn();
                     column1.Name = "Observaciones";
                     column1.ToolTipText = "Asegurarse de haber realizado el picking completo del local antes de actualizar estos datos";
+                    column1.Width = 250;
                     dgLocales.Columns.Add(column1);
                 }
 
@@ -471,10 +520,12 @@ namespace WindowsFormsApplication1
                 //la posibilidad de cambiarles el estado.
                 for (int j = 0; j < dgLocales.Rows.Count - 1; j++)
                 {
-                    if (dgLocales["Evaluacion", j].Style.BackColor != Color.Green && dgLocales["Evaluacion", j].Style.BackColor != Color.Yellow)
+                    if (dgLocales["Eval", j].Style.BackColor != Color.Green && dgLocales["Eval", j].Style.BackColor != Color.Yellow)
                     {
-                        dgLocales["Evaluacion", j].Style.BackColor = Color.Red;
+                        dgLocales["Eval", j].Style.BackColor = Color.Red;
+                        dgLocales["Estado Obs.", j].ErrorText = "No habilitado.";
                         dgLocales["Estado Obs.", j].ReadOnly = true;
+                        
                     }
                 }
             }
@@ -493,9 +544,9 @@ namespace WindowsFormsApplication1
             if (dgLocales.Columns[e.ColumnIndex].Name == "Estado Obs.")
             {
                 if (dgLocales[e.ColumnIndex, e.RowIndex].FormattedValue.ToString() != dgLocales["Estado", e.RowIndex].Value.ToString())
-                    dgLocales["Evaluacion", e.RowIndex].Style.BackColor = Color.Yellow;
+                    dgLocales["Eval", e.RowIndex].Style.BackColor = Color.Yellow;
                 else
-                    dgLocales["Evaluacion", e.RowIndex].Style.BackColor = Color.Green;
+                    dgLocales["Eval", e.RowIndex].Style.BackColor = Color.Green;
             }
         }
     }

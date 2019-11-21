@@ -27,33 +27,31 @@ namespace WindowsFormsApplication1
             DBConnection DB = new DBConnection();
             string sqlQuery = "";
 
-            sqlQuery =
-                  "SELECT branch as Rubro,type as Tipo, rooms.description as Local, family as Familia,   a.code as Codigo, a.description as Descripcion " +
-                  " from edilizia.rooms_by_users inner join edilizia.users on users.idUsers = id_user_responsible" +
-                  " inner join edilizia.rooms on rooms.idrooms = id_room" +
-                  " inner join edilizia.assets_by_room abr on abr.idRoom = rooms.idrooms" +
-                  " inner join edilizia.assets a on a.id_assets = abr.idAsset" +
-                  //" where id_user_responsible = '2'"
-                  " where 1=1";
-
-
+            sqlQuery = "SELECT concat(a.code,'-',a.description) as Referencia, concat(tra.bookCode,'-',tra.bookNumber) as Comprobante, " +
+            " dif.idLocalOrig, dif.idLocalPicking, dif.idEstadoOrig, dif.idEstadoObs,dif.idLocalFinal, dif.idEstadoFinal, dif.Semaforo " +
+            " FROM edilizia.diferences dif inner join assets a on dif.idBien = a.id_assets " +
+            " inner join edilizia.transaction tra on dif.idComprobante = tra.idtransaction " +
+            " where tra.idTransaction_status <> 3";
+                  //"SELECT branch as Rubro,type as Tipo, rooms.description as Local, family as Familia,   a.code as Codigo, a.description as Descripcion " +
+                  //" from edilizia.rooms_by_users inner join edilizia.users on users.idUsers = id_user_responsible" +
+                  //" inner join edilizia.rooms on rooms.idrooms = id_room" +
+                  //" inner join edilizia.assets_by_room abr on abr.idRoom = rooms.idrooms" +
+                  //" inner join edilizia.assets a on a.id_assets = abr.idAsset" +
+                  ////" where id_user_responsible = '2'"
+                  //" where 1=1";
             MySqlDataReader Bienes = DB.GetData(sqlQuery);
-
-
+            
             if (Bienes.HasRows)
             {
                 DataTable dt = new DataTable();
                 dt.Load(Bienes);
                 dataGridView1.DataSource = dt;
-
             }
-
-
-
+            
             //Comienzo las agrupacion
             // compienzo la agrupacion
             var grouper = new Subro.Controls.DataGridViewGrouper(dataGridView1);
-            grouper.SetGroupOn("Tipo");
+            grouper.SetGroupOn("Referencia");
 
             //also valid:
             //grouper.SetGroupOn<TestData>(t => t.AString);

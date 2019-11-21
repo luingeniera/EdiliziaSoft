@@ -95,7 +95,7 @@
             // cbNivel
             // 
             this.cbNivel.FormattingEnabled = true;
-            this.cbNivel.Location = new System.Drawing.Point(26, 49);
+            this.cbNivel.Location = new System.Drawing.Point(14, 49);
             this.cbNivel.Name = "cbNivel";
             this.cbNivel.Size = new System.Drawing.Size(152, 21);
             this.cbNivel.TabIndex = 4;
@@ -118,14 +118,14 @@
             this.lblLocal.AutoSize = true;
             this.lblLocal.Location = new System.Drawing.Point(23, 100);
             this.lblLocal.Name = "lblLocal";
-            this.lblLocal.Size = new System.Drawing.Size(43, 13);
+            this.lblLocal.Size = new System.Drawing.Size(36, 13);
             this.lblLocal.TabIndex = 6;
-            this.lblLocal.Text = "Oficina:";
+            this.lblLocal.Text = "Local:";
             // 
             // lblResponsable
             // 
             this.lblResponsable.AutoSize = true;
-            this.lblResponsable.Location = new System.Drawing.Point(212, 100);
+            this.lblResponsable.Location = new System.Drawing.Point(390, 100);
             this.lblResponsable.Name = "lblResponsable";
             this.lblResponsable.Size = new System.Drawing.Size(72, 13);
             this.lblResponsable.TabIndex = 7;
@@ -134,7 +134,7 @@
             // lblActivos
             // 
             this.lblActivos.AutoSize = true;
-            this.lblActivos.Location = new System.Drawing.Point(397, 100);
+            this.lblActivos.Location = new System.Drawing.Point(816, 100);
             this.lblActivos.Name = "lblActivos";
             this.lblActivos.Size = new System.Drawing.Size(73, 13);
             this.lblActivos.TabIndex = 8;
@@ -146,7 +146,7 @@
             this.dgLocales.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgLocales.Location = new System.Drawing.Point(26, 127);
             this.dgLocales.Name = "dgLocales";
-            this.dgLocales.Size = new System.Drawing.Size(640, 304);
+            this.dgLocales.Size = new System.Drawing.Size(1179, 469);
             this.dgLocales.TabIndex = 9;
             this.dgLocales.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgLocales_CellValueChanged);
             // 
@@ -166,11 +166,11 @@
             // 
             // btnEntregar
             // 
-            this.btnEntregar.Location = new System.Drawing.Point(515, 450);
+            this.btnEntregar.Location = new System.Drawing.Point(1054, 630);
             this.btnEntregar.Name = "btnEntregar";
             this.btnEntregar.Size = new System.Drawing.Size(151, 27);
             this.btnEntregar.TabIndex = 12;
-            this.btnEntregar.Text = "Entregar";
+            this.btnEntregar.Text = "Confirmar";
             this.btnEntregar.UseVisualStyleBackColor = true;
             this.btnEntregar.Click += new System.EventHandler(this.btnEntregar_Click);
             // 
@@ -178,7 +178,7 @@
             // 
             this.cbEntrega.Enabled = false;
             this.cbEntrega.FormattingEnabled = true;
-            this.cbEntrega.Location = new System.Drawing.Point(26, 454);
+            this.cbEntrega.Location = new System.Drawing.Point(26, 634);
             this.cbEntrega.Name = "cbEntrega";
             this.cbEntrega.Size = new System.Drawing.Size(183, 21);
             this.cbEntrega.TabIndex = 13;
@@ -186,7 +186,7 @@
             // 
             // btnConfirmar
             // 
-            this.btnConfirmar.Location = new System.Drawing.Point(358, 450);
+            this.btnConfirmar.Location = new System.Drawing.Point(893, 630);
             this.btnConfirmar.Name = "btnConfirmar";
             this.btnConfirmar.Size = new System.Drawing.Size(151, 27);
             this.btnConfirmar.TabIndex = 14;
@@ -198,17 +198,18 @@
             // lblComprobante
             // 
             this.lblComprobante.AutoSize = true;
-            this.lblComprobante.Location = new System.Drawing.Point(568, 99);
+            this.lblComprobante.Location = new System.Drawing.Point(1063, 100);
             this.lblComprobante.Name = "lblComprobante";
-            this.lblComprobante.Size = new System.Drawing.Size(0, 13);
+            this.lblComprobante.Size = new System.Drawing.Size(73, 13);
             this.lblComprobante.TabIndex = 15;
+            this.lblComprobante.Text = "Comprobante:";
             // 
             // btPicking
             // 
             this.btPicking.Enabled = false;
             this.btPicking.Image = ((System.Drawing.Image)(resources.GetObject("btPicking.Image")));
             this.btPicking.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btPicking.Location = new System.Drawing.Point(451, 41);
+            this.btPicking.Location = new System.Drawing.Point(464, 33);
             this.btPicking.Name = "btPicking";
             this.btPicking.Size = new System.Drawing.Size(93, 35);
             this.btPicking.TabIndex = 16;
@@ -221,7 +222,9 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(691, 489);
+            this.AutoSize = true;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.ClientSize = new System.Drawing.Size(1253, 723);
             this.Controls.Add(this.btPicking);
             this.Controls.Add(this.lblComprobante);
             this.Controls.Add(this.btnConfirmar);
@@ -238,6 +241,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Glocal";
             this.Text = "Gestión de Locales";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.Glocal_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();

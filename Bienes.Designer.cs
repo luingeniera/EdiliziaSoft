@@ -60,7 +60,7 @@
             // btnBuscar
             // 
             this.btnBuscar.Location = new System.Drawing.Point(471, 32);
-            this.btnBuscar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnBuscar.Margin = new System.Windows.Forms.Padding(2);
             this.btnBuscar.Name = "btnBuscar";
             this.btnBuscar.Size = new System.Drawing.Size(51, 60);
             this.btnBuscar.TabIndex = 21;
@@ -72,7 +72,7 @@
             // 
             this.cbLocales.FormattingEnabled = true;
             this.cbLocales.Location = new System.Drawing.Point(258, 73);
-            this.cbLocales.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cbLocales.Margin = new System.Windows.Forms.Padding(2);
             this.cbLocales.Name = "cbLocales";
             this.cbLocales.Size = new System.Drawing.Size(195, 21);
             this.cbLocales.TabIndex = 20;
@@ -83,7 +83,7 @@
             // 
             this.cbTipo.FormattingEnabled = true;
             this.cbTipo.Location = new System.Drawing.Point(50, 73);
-            this.cbTipo.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cbTipo.Margin = new System.Windows.Forms.Padding(2);
             this.cbTipo.Name = "cbTipo";
             this.cbTipo.Size = new System.Drawing.Size(195, 21);
             this.cbTipo.TabIndex = 19;
@@ -94,7 +94,7 @@
             // 
             this.cbFamilia.FormattingEnabled = true;
             this.cbFamilia.Location = new System.Drawing.Point(258, 32);
-            this.cbFamilia.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cbFamilia.Margin = new System.Windows.Forms.Padding(2);
             this.cbFamilia.Name = "cbFamilia";
             this.cbFamilia.Size = new System.Drawing.Size(195, 21);
             this.cbFamilia.TabIndex = 18;
@@ -104,7 +104,7 @@
             // button2
             // 
             this.button2.Location = new System.Drawing.Point(634, 46);
-            this.button2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button2.Margin = new System.Windows.Forms.Padding(2);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(56, 24);
             this.button2.TabIndex = 17;
@@ -116,7 +116,7 @@
             // 
             this.PDF.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
             this.PDF.Location = new System.Drawing.Point(634, 20);
-            this.PDF.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.PDF.Margin = new System.Windows.Forms.Padding(2);
             this.PDF.Name = "PDF";
             this.PDF.Size = new System.Drawing.Size(56, 21);
             this.PDF.TabIndex = 16;
@@ -128,7 +128,7 @@
             // 
             this.cbRubro.FormattingEnabled = true;
             this.cbRubro.Location = new System.Drawing.Point(50, 32);
-            this.cbRubro.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cbRubro.Margin = new System.Windows.Forms.Padding(2);
             this.cbRubro.Name = "cbRubro";
             this.cbRubro.Size = new System.Drawing.Size(195, 21);
             this.cbRubro.TabIndex = 15;
@@ -194,9 +194,10 @@
             this.Controls.Add(this.cbRubro);
             this.Controls.Add(this.dgBienes);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Bienes";
             this.Text = "Bienes";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.Bienes_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgBienes)).EndInit();
             this.ResumeLayout(false);

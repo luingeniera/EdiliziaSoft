@@ -37,3 +37,4 @@ C:\Users\Leandro\Documents\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication
 C:\Users\Leandro\Documents\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.application
 C:\Users\Leandro\Documents\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.exe
 C:\Users\Leandro\Documents\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.pdb
+C:\Users\Leandro\Documents\GitHub\EdiliziaSoft\obj\Debug\Edilizia.csprojResolveAssemblyReference.cache
