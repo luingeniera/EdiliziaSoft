@@ -32,6 +32,7 @@ namespace WindowsFormsApplication1
 
         private void btBuscar_Click(object sender, EventArgs e)
         {
+            string HasDifference = "0";
             if (cbNivel.SelectedItem == null || cbNumero.SelectedItem == null)
             {
                 MessageBox.Show("Debe seleccionar un nivel y un local.");
@@ -73,15 +74,17 @@ namespace WindowsFormsApplication1
                 {
                     //Con esta consulta busco el nombre de la oficina, dueño y cantidad de bienes que tiene.
                     sqlQuery = "select CONCAT('[',rooms.code,'] - ', rooms.description) as 'Local' , CONCAT(resp.name,', ',resp.last_name) as 'responsable', " +
-                    "count(abr.idasset) as 'bienes', rooms.idRooms from rooms LEFT JOIN edilizia.rooms_by_users ON idRooms = id_room " +
+                    "count(abr.idasset) as 'bienes', rooms.idRooms,CONCAT(tra.bookCode,'-',tra.bookNumber) as 'comprobante' from rooms LEFT JOIN edilizia.rooms_by_users ON idRooms = id_room " +
                     "LEFT JOIN edilizia.users resp on resp.idUsers = id_user_owner LEFT JOIN edilizia.assets_by_room abr on abr.idRoom = rooms.idRooms " +
+                    "LEFT JOIN edilizia.diferences dif on id_room = dif.idLocalOrig and dif.Semaforo <> 1 LEFT JOIN edilizia.transaction tra on dif.idComprobante = tra.idtransaction " +
                     "WHERE rooms.level=" + cbNivel.SelectedItem + " and rooms.number=" + cbNumero.SelectedItem;
                 }
                 else {
                     //En el caso de una auditoria o devolucion el responsable no es el 'id_user_owner', sino el 'id_user_responsible' porque ya tiene alguien asignado.
                     sqlQuery = "select CONCAT('[',rooms.code,'] - ', rooms.description) as 'Local' , CONCAT(resp.name,', ',resp.last_name) as 'responsable', " +
-                    "count(abr.idasset) as 'bienes', rooms.idRooms from rooms LEFT JOIN edilizia.rooms_by_users ON idRooms = id_room " +
+                    "count(abr.idasset) as 'bienes', rooms.idRooms,CONCAT(tra.bookCode,'-',tra.bookNumber) as 'comprobante' from rooms LEFT JOIN edilizia.rooms_by_users ON idRooms = id_room " +
                     "LEFT JOIN edilizia.users resp on resp.idUsers = id_user_responsible LEFT JOIN edilizia.assets_by_room abr on abr.idRoom = rooms.idRooms " +
+                    "LEFT JOIN edilizia.diferences dif on id_room = dif.idLocalOrig and dif.Semaforo <> 1 LEFT JOIN edilizia.transaction tra on dif.idComprobante = tra.idtransaction " +
                     "WHERE rooms.level=" + cbNivel.SelectedItem + " and rooms.number=" + cbNumero.SelectedItem;
                 }
                 MySqlDataReader dataReaderInfo = DB.GetData(sqlQuery);
@@ -93,6 +96,13 @@ namespace WindowsFormsApplication1
                     lblResponsable.Text = "Responsable: " + dtInfo.Rows[0][1].ToString();
                     lblActivos.Text = "Cant. Bienes: " + dtInfo.Rows[0][2].ToString();
                     IdRoomSelected = int.Parse(dtInfo.Rows[0][3].ToString());
+                    if (dtInfo.Rows[0][4].ToString() == null) {
+                        MessageBox.Show("No puede generar un comprobante nuevo hasta gestionar las diferencias que el local posee. Comprobante relacionado: " + dtInfo.Rows[0][4].ToString());
+                        btPicking.Enabled = false;
+                        btnEntregar.Visible = false;
+                        btnConfirmar.Visible = true;
+                        HasDifference = "1";
+                    }
                 }
                 //Busco datos de los bienes del local para completar la grilla.
                 if (rbEntrega.Checked != true)
@@ -132,58 +142,70 @@ namespace WindowsFormsApplication1
                     //dgLocales.Columns["Eval"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                     //Width = 35;
                 }
-
-                if (deliveriedTo == "")
-                {
-                    //Habilito el combobox de "entregar a" y lo completo con los usuarios activos (status=1)
-                    cbEntrega.Enabled = true;
-                    MySqlDataReader dataReaderUsers = DB.GetData("select distinct concat(last_name, ', ', name) from users where status = 1");
-                    if (dataReaderUsers.HasRows)
+                else if (rbDevolucion.Checked == true)
                     {
-                        cbEntrega.Items.Clear();
-                        DataTable dt = new DataTable();
-                        dt.Load(dataReaderUsers);
-                        for (int i = 0; i < dt.Rows.Count; i++)
+                    MessageBox.Show("No se puede realizar la operación ya que el local no está asigndo a ningún responsable.");
+                    btnEntregar.Visible = false;
+                    btnConfirmar.Visible = true;
+                    cbEntrega.Enabled = false;
+                }
+                //Si el local no tiene diferencias pendientes de gestionar habilito la opcion de entregar.
+                if (HasDifference == "0")
+                {
+                    if (deliveriedTo == "")
+                    {
+                        //Habilito el combobox de "entregar a" y lo completo con los usuarios activos (status=1)
+                        cbEntrega.Enabled = true;
+                        MySqlDataReader dataReaderUsers = DB.GetData("select distinct concat(last_name, ', ', name) from users where status = 1");
+                        if (dataReaderUsers.HasRows)
                         {
-                            cbEntrega.ValueMember = "Valor";
-                            cbEntrega.DisplayMember = "Usuario";
-                            cbEntrega.Items.Add(dt.Rows[i][0]);
+                            cbEntrega.Items.Clear();
+                            DataTable dt = new DataTable();
+                            dt.Load(dataReaderUsers);
+                            for (int i = 0; i < dt.Rows.Count; i++)
+                            {
+                                cbEntrega.ValueMember = "Valor";
+                                cbEntrega.DisplayMember = "Usuario";
+                                cbEntrega.Items.Add(dt.Rows[i][0]);
+                            }
                         }
                     }
-                } else
-                {
-                    //Para los casos en que estoy filtrando un local que ya se generó la entrega
-                    //oculto el btn Entregar y muestro el salir, inhabilito el combo de personas a entregar y 
-                    //agrego la columna "estado observado" para que puedan realizar correciones.
-                    if (TipoComprobante == "ENT")
+                    else
                     {
-                        btnEntregar.Visible = false;
-                        btnConfirmar.Visible = true;
-                        
-                        cbEntrega.Enabled = false;
-                        cbEntrega.Text = "";
-                        cbEntrega.SelectedText = deliveriedTo;
-                        lblComprobante.Text = comprobante;
-                        btPicking.Enabled = false;
-                    } else
-                    {
-                        btnEntregar.Visible = true;
-                        btnConfirmar.Visible = true;
-                        
-                        cbEntrega.Enabled = false;
-                        cbEntrega.Text = "";
-                        cbEntrega.SelectedText = deliveriedTo;
-                        lblComprobante.Text = comprobante;
-                        //btPicking.Enabled = false;
-                        for (int i = 0; i < dgLocales.Rows.Count-1; i++)
+                        //Para los casos en que estoy filtrando un local que ya se generó la entrega
+                        //oculto el btn Entregar y muestro el salir, inhabilito el combo de personas a entregar y 
+                        //agrego la columna "estado observado" para que puedan realizar correciones.
+                        if (TipoComprobante == "ENT")
                         {
-                            if (dgLocales["Eval", i].Value.ToString() == "1")
-                                dgLocales["Eval", i].Style.BackColor = Color.Green;
-                            if (dgLocales["Eval", i].Value.ToString() == "2")
-                                dgLocales["Eval", i].Style.BackColor = Color.Yellow;
-                            if (dgLocales["Eval", i].Value.ToString() == "3")
-                                dgLocales["Eval", i].Style.BackColor = Color.Red;
-                            dgLocales["Eval", i].Value = null;
+                            btnEntregar.Visible = false;
+                            btnConfirmar.Visible = true;
+
+                            cbEntrega.Enabled = false;
+                            cbEntrega.Text = "";
+                            cbEntrega.SelectedText = deliveriedTo;
+                            lblComprobante.Text = comprobante;
+                            btPicking.Enabled = false;
+                        }
+                        else
+                        {
+                            btnEntregar.Visible = true;
+                            btnConfirmar.Visible = true;
+
+                            cbEntrega.Enabled = false;
+                            cbEntrega.Text = "";
+                            cbEntrega.SelectedText = deliveriedTo;
+                            lblComprobante.Text = comprobante;
+                            //btPicking.Enabled = false;
+                            for (int i = 0; i < dgLocales.Rows.Count - 1; i++)
+                            {
+                                if (dgLocales["Eval", i].Value.ToString() == "1")
+                                    dgLocales["Eval", i].Style.BackColor = Color.Green;
+                                if (dgLocales["Eval", i].Value.ToString() == "2")
+                                    dgLocales["Eval", i].Style.BackColor = Color.Yellow;
+                                if (dgLocales["Eval", i].Value.ToString() == "3")
+                                    dgLocales["Eval", i].Style.BackColor = Color.Red;
+                                dgLocales["Eval", i].Value = null;
+                            }
                         }
                     }
                 }
