@@ -322,10 +322,10 @@ namespace WindowsFormsApplication1
                                     if (dgLocales["Estado", j].Value.ToString() == "Nuevo")
                                         Status = "10";
                                 }
-                                      
-                                //if (rbAuditoria.Checked != true && dgLocales["Observaciones", j].Value != null)
-                                    observaciones = dgLocales["Observaciones", j].Value.ToString();
                                 //Observaciones
+                                if (dgLocales["Observaciones", j].Value != null)
+                                    observaciones = dgLocales["Observaciones", j].Value.ToString();
+                                
                                 //Si es verde guardo normalmente.
                                 if (dgLocales["Eval", j].Style.BackColor == Color.Green)
                                 {
@@ -386,7 +386,7 @@ namespace WindowsFormsApplication1
                                     long IDAssetsByRoom = DB.InsertData(sql);
 
                                     sql = "INSERT INTO assets_room_transaction (delivery_date,observation,idTransaction,color,id_Asset,id_Room) " +
-                                    " values (now(),'" + observaciones + "', " + IDTransaction + ",'3', " + idAsset + ", 1)";
+                                    " values (now(),'" + observaciones + "', " + IDTransaction + ",'3', " + idAsset + ", " + IdRoomSelected +")";
                                     long IDAssetRoomTrans = DB.InsertData(sql);
 
                                     sql = "INSERT INTO diferences (idComprobante,idBien,idLocalOrig,idLocalPicking,Semaforo,idLocalFinal,idEstadoFinal) " +

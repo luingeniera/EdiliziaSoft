@@ -216,6 +216,12 @@
     <Compile Include="Preferencias\Usuario.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reimpresion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reimpresion.Designer.cs">
+      <DependentUpon>Reimpresion.cs</DependentUpon>
+    </Compile>
     <Compile Include="Sincro.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -269,6 +275,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Reimpresion.resx">
+      <DependentUpon>Reimpresion.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Sincro.resx">
       <DependentUpon>Sincro.cs</DependentUpon>
     </EmbeddedResource>
