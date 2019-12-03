@@ -51,18 +51,19 @@
             this.dgBienes.AllowUserToOrderColumns = true;
             this.dgBienes.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.dgBienes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgBienes.Location = new System.Drawing.Point(50, 106);
+            this.dgBienes.Location = new System.Drawing.Point(67, 127);
+            this.dgBienes.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.dgBienes.Name = "dgBienes";
             this.dgBienes.ReadOnly = true;
-            this.dgBienes.Size = new System.Drawing.Size(757, 329);
+            this.dgBienes.Size = new System.Drawing.Size(1009, 405);
             this.dgBienes.TabIndex = 10;
             // 
             // btnBuscar
             // 
-            this.btnBuscar.Location = new System.Drawing.Point(471, 32);
-            this.btnBuscar.Margin = new System.Windows.Forms.Padding(2);
+            this.btnBuscar.Location = new System.Drawing.Point(628, 39);
+            this.btnBuscar.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnBuscar.Name = "btnBuscar";
-            this.btnBuscar.Size = new System.Drawing.Size(51, 60);
+            this.btnBuscar.Size = new System.Drawing.Size(68, 74);
             this.btnBuscar.TabIndex = 21;
             this.btnBuscar.Text = "Buscar";
             this.btnBuscar.UseVisualStyleBackColor = true;
@@ -71,10 +72,10 @@
             // cbLocales
             // 
             this.cbLocales.FormattingEnabled = true;
-            this.cbLocales.Location = new System.Drawing.Point(258, 73);
-            this.cbLocales.Margin = new System.Windows.Forms.Padding(2);
+            this.cbLocales.Location = new System.Drawing.Point(344, 90);
+            this.cbLocales.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cbLocales.Name = "cbLocales";
-            this.cbLocales.Size = new System.Drawing.Size(195, 21);
+            this.cbLocales.Size = new System.Drawing.Size(259, 24);
             this.cbLocales.TabIndex = 20;
             this.cbLocales.Text = "Todos";
             this.cbLocales.SelectedValueChanged += new System.EventHandler(this.cbLocales_SelectedValueChanged);
@@ -82,10 +83,10 @@
             // cbTipo
             // 
             this.cbTipo.FormattingEnabled = true;
-            this.cbTipo.Location = new System.Drawing.Point(50, 73);
-            this.cbTipo.Margin = new System.Windows.Forms.Padding(2);
+            this.cbTipo.Location = new System.Drawing.Point(67, 90);
+            this.cbTipo.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cbTipo.Name = "cbTipo";
-            this.cbTipo.Size = new System.Drawing.Size(195, 21);
+            this.cbTipo.Size = new System.Drawing.Size(259, 24);
             this.cbTipo.TabIndex = 19;
             this.cbTipo.Text = "Todos";
             this.cbTipo.SelectedValueChanged += new System.EventHandler(this.cbTipo_SelectedValueChanged);
@@ -93,20 +94,20 @@
             // cbFamilia
             // 
             this.cbFamilia.FormattingEnabled = true;
-            this.cbFamilia.Location = new System.Drawing.Point(258, 32);
-            this.cbFamilia.Margin = new System.Windows.Forms.Padding(2);
+            this.cbFamilia.Location = new System.Drawing.Point(344, 39);
+            this.cbFamilia.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cbFamilia.Name = "cbFamilia";
-            this.cbFamilia.Size = new System.Drawing.Size(195, 21);
+            this.cbFamilia.Size = new System.Drawing.Size(259, 24);
             this.cbFamilia.TabIndex = 18;
             this.cbFamilia.Text = "Todos";
             this.cbFamilia.SelectedValueChanged += new System.EventHandler(this.cbFamilia_SelectedValueChanged);
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(634, 46);
-            this.button2.Margin = new System.Windows.Forms.Padding(2);
+            this.button2.Location = new System.Drawing.Point(845, 57);
+            this.button2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(56, 24);
+            this.button2.Size = new System.Drawing.Size(75, 30);
             this.button2.TabIndex = 17;
             this.button2.Text = "Imprimir";
             this.button2.UseVisualStyleBackColor = true;
@@ -115,10 +116,10 @@
             // PDF
             // 
             this.PDF.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.PDF.Location = new System.Drawing.Point(634, 20);
-            this.PDF.Margin = new System.Windows.Forms.Padding(2);
+            this.PDF.Location = new System.Drawing.Point(845, 25);
+            this.PDF.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.PDF.Name = "PDF";
-            this.PDF.Size = new System.Drawing.Size(56, 21);
+            this.PDF.Size = new System.Drawing.Size(75, 26);
             this.PDF.TabIndex = 16;
             this.PDF.Text = "PDF";
             this.PDF.UseVisualStyleBackColor = true;
@@ -127,10 +128,10 @@
             // cbRubro
             // 
             this.cbRubro.FormattingEnabled = true;
-            this.cbRubro.Location = new System.Drawing.Point(50, 32);
-            this.cbRubro.Margin = new System.Windows.Forms.Padding(2);
+            this.cbRubro.Location = new System.Drawing.Point(67, 39);
+            this.cbRubro.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cbRubro.Name = "cbRubro";
-            this.cbRubro.Size = new System.Drawing.Size(195, 21);
+            this.cbRubro.Size = new System.Drawing.Size(259, 24);
             this.cbRubro.TabIndex = 15;
             this.cbRubro.Text = "Todos";
             this.cbRubro.SelectedValueChanged += new System.EventHandler(this.cbRubro_SelectedValueChanged);
@@ -138,10 +139,9 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(50, 14);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Location = new System.Drawing.Point(67, 17);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(36, 13);
+            this.label1.Size = new System.Drawing.Size(47, 17);
             this.label1.TabIndex = 22;
             this.label1.Text = "Rubro";
             // 
@@ -149,38 +149,35 @@
             // 
             this.label2.AccessibleRole = System.Windows.Forms.AccessibleRole.TitleBar;
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(48, 54);
-            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label2.Location = new System.Drawing.Point(64, 66);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(67, 13);
+            this.label2.Size = new System.Drawing.Size(88, 17);
             this.label2.TabIndex = 23;
             this.label2.Text = "Tipo de Bien";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(258, 14);
-            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label3.Location = new System.Drawing.Point(344, 17);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(39, 13);
+            this.label3.Size = new System.Drawing.Size(52, 17);
             this.label3.TabIndex = 24;
             this.label3.Text = "Familia";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(258, 57);
-            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label4.Location = new System.Drawing.Point(344, 70);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(44, 13);
+            this.label4.Size = new System.Drawing.Size(57, 17);
             this.label4.TabIndex = 25;
             this.label4.Text = "Locales";
             // 
             // Bienes
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(827, 479);
+            this.ClientSize = new System.Drawing.Size(1103, 590);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -194,7 +191,7 @@
             this.Controls.Add(this.cbRubro);
             this.Controls.Add(this.dgBienes);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(2);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "Bienes";
             this.Text = "Bienes";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
