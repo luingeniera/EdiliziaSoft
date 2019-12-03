@@ -25,63 +25,136 @@ namespace WindowsFormsApplication1
         {
 
             DBConnection DB = new DBConnection();
-            string sqlQuery = "";
+            MySqlDataReader drReposnsable = DB.GetData("SELECT concat(last_name, ', ', name) as 'Responsable', u.idUsers  FROM edilizia.users u inner JOIN rooms_by_users rbu on u.idUsers = rbu.id_user_responsible; ");
+            MySqlDataReader drNivel = DB.GetData("select  distinct number as Nivel from edilizia.rooms;");
+            MySqlDataReader drLocal = DB.GetData("select CONCAT('[',rooms.code,'] - ', rooms.description) as 'Local'  from edilizia.rooms;");
+            MySqlDataReader drLevel = DB.GetData("select distinct level from rooms");
+            MySqlDataReader drNroComp = DB.GetData("SELECT booknumber as NroComprobante FROM edilizia.transaction;");
 
-            sqlQuery = "SELECT concat(a.code,'-',a.description) as Referencia, concat(tra.bookCode,'-',tra.bookNumber) as Comprobante, " +
-            " dif.idLocalOrig, dif.idLocalPicking, dif.idEstadoOrig, dif.idEstadoObs,dif.idLocalFinal, dif.idEstadoFinal, dif.Semaforo " +
-            " FROM edilizia.diferences dif inner join assets a on dif.idBien = a.id_assets " +
-            " inner join edilizia.transaction tra on dif.idComprobante = tra.idtransaction " +
-            " where tra.idTransaction_status <> 3";
-                  //"SELECT branch as Rubro,type as Tipo, rooms.description as Local, family as Familia,   a.code as Codigo, a.description as Descripcion " +
-                  //" from edilizia.rooms_by_users inner join edilizia.users on users.idUsers = id_user_responsible" +
-                  //" inner join edilizia.rooms on rooms.idrooms = id_room" +
-                  //" inner join edilizia.assets_by_room abr on abr.idRoom = rooms.idrooms" +
-                  //" inner join edilizia.assets a on a.id_assets = abr.idAsset" +
-                  ////" where id_user_responsible = '2'"
-                  //" where 1=1";
-            MySqlDataReader Bienes = DB.GetData(sqlQuery);
-            
-            if (Bienes.HasRows)
+          
+            if (drNivel.HasRows)
             {
                 DataTable dt = new DataTable();
-                dt.Load(Bienes);
-                dataGridView1.DataSource = dt;
+                dt.Load(drNivel);
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    cbNivel.ValueMember = "Valor";
+                    cbNivel.DisplayMember = "Nivel";
+                    cbNivel.Items.Add(dt.Rows[i][0]);
+                }
             }
-            
-            //Comienzo las agrupacion
-            // compienzo la agrupacion
-            var grouper = new Subro.Controls.DataGridViewGrouper(dataGridView1);
-            grouper.SetGroupOn("Referencia");
 
-            //also valid:
-            //grouper.SetGroupOn<TestData>(t => t.AString);
-            //grouper.SetGroupOn(this.dataGridView1.Columns["AString"]);
+            if (drLocal.HasRows)
+            {
+                DataTable dt1 = new DataTable();
+                dt1.Load(drLocal);
+                for (int i = 0; i < dt1.Rows.Count; i++)
+                {
+                    cbLocales.ValueMember = "Valor";
+                    cbLocales.DisplayMember = "Locales";
+                    cbLocales.Items.Add(dt1.Rows[i][0]);
+                }
+            }
+
+            if (drReposnsable.HasRows)
+            {
+                DataTable dt1 = new DataTable();
+                dt1.Load(drReposnsable);
+                for (int i = 0; i < dt1.Rows.Count; i++)
+                {
+                    cbResponsable.ValueMember = "Valor";
+                    cbResponsable.DisplayMember = "Responsables";
+                    cbResponsable.Items.Add(dt1.Rows[i][0]);
+                }
+            }
+
+            if (drNroComp.HasRows)
+            {
+                DataTable dt1 = new DataTable();
+                dt1.Load(drNroComp);
+                for (int i = 0; i < dt1.Rows.Count; i++)
+                {
+                    cbComprobante.ValueMember = "Valor";
+                    cbComprobante.DisplayMember = "Numero comprobante";
+                    cbComprobante.Items.Add(dt1.Rows[i][0]);
+                    
+            }
+
+            }
 
 
-            //all options available in the control (via the dropdown menu) can be set in code as well and vice versa all options in this example can be set via the control.
 
-            //to start with all rows collapsed on a (re)load or when the group is changed you can set the option startcollapsed:
-            //grouper.Options.StartCollapsed = true;
-
-            //to collapse all loaded rows: (the difference with setting the option above, is that after choosing a new grouping (or on a reload), the new groups would expand.
-            //grouper.CollapseAll();
-
-            //if you don't want the (rowcount) to be shown in the headers:
-            grouper.Options.ShowCount = false;
-
-            //if you don't want the grouped column name to be repeated in the headers:
-            //grouper.Options.ShowGroupName = false;
-
-            //default sort order for the groups is ascending, you can change that in the options as well (ascending, descending or none)
-            //grouper.Options.GroupSortOrder = SortOrder.Descending;
-
-            //besides grouping on a property/column value, you can set a custom group:
-            //   grouper.SetCustomGroup<TestData>(t => t.AnInt % 10, "Mod 10");
-
-            //to customize the grouping display, you can attach to the DisplayGroup event:
-            //  grouper.DisplayGroup += grouper_DisplayGroup;
         }
-    }
+
+        private void btnBuscar_Click(object sender, EventArgs e)
+        {
+            string TipoComprobante = "";
+            if (rbEntrega.Checked == true)
+            {
+                TipoComprobante = "ENT";
+                
+            }
+            if (rbDevolucion.Checked == true)
+            {
+                TipoComprobante = "DEV";
+                
+            }
+            if (rbAuditoria.Checked == true)
+            {
+                TipoComprobante = "AUD";
+               
+            }
+            string WbookCode = "AND bookcode='" + TipoComprobante.ToString()+  "' ";
+
+            string wbooknumber = "AND 1=1 ";
+            if (cbComprobante.SelectedItem != null) { wbooknumber = " AND booknumber='" + cbComprobante.SelectedItem.ToString() + "' "; }
+          
+
+          //  if (cbComprobante.SelectedItem != null) { WbookCode = " AND bookCode='" + cbComprobante.SelectedItem.ToString() + "' "; }
+            string wnumber = "AND 1=1 ";
+
+            if (cbNumero.SelectedItem != null ) { wnumber = " AND number='" + cbComprobante.SelectedItem.ToString() + "' "; }
+            string wlevel = "AND 1=1 ";
+
+            if (cbNivel.SelectedItem != null) { wlevel = " AND level='" + cbNivel.SelectedItem.ToString() + "' "; }
+
+
+
+
+
+            string sqlQuery = "select * " +
+" FROM rooms r" +
+" INNER JOIN edilizia.assets_by_room abr ON abr.idRoom = r.idRooms" +
+" INNER JOIN assets a on a.id_assets = abr.idAsset" +
+" INNER JOIN assets_status s on a.idStatus = s.idstatus" +
+" LEFT OUTER JOIN rooms_by_users rbu on r.idRooms = rbu.id_room" +
+" LEFT OUTER JOIN users u on u.idUsers = rbu.id_user_responsible" +
+" INNER JOIN assets_room_Transaction art on art.id_Asset = abr.idAsset" +
+" inner join transaction t on t.idtransaction = art.idtransaction" +
+" and art.id_Room = abr.idRoom" +
+ " WHERE  idTransaction_status ='2' and date between '" + dtdesde.Value.ToShortDateString() + "' and '" + dthasta.Value.ToShortDateString() + "'" +
+
+ WbookCode + wbooknumber + wnumber + wlevel;
+
+            
+             DBConnection DB = new DBConnection();
+            MySqlDataReader comprobantes = DB.GetData(sqlQuery);
+            richTextBox1.Text = sqlQuery;
+
+
+            if (comprobantes.HasRows)
+            {
+               
+                DataTable dgv = new DataTable();
+                dgv.Load(comprobantes);
+                dgvDiferencias.DataSource = dgv;
+
+
+            }
+
+        }
+
+        }
 }
 
 
