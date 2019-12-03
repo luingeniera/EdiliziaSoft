@@ -82,8 +82,8 @@ namespace WindowsFormsApplication1
 
         private void comprobantesToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            Comprobantes Comprobantes = new Comprobantes();
-            Comprobantes.Show();
+            Reimpresion Reimpresion = new Reimpresion();
+            Reimpresion.Show();
         }
 
         private void gestiónDeDiferenciasToolStripMenuItem_Click(object sender, EventArgs e)

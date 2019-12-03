@@ -92,22 +92,22 @@
             // comprobantesToolStripMenuItem
             // 
             this.comprobantesToolStripMenuItem.Name = "comprobantesToolStripMenuItem";
-            this.comprobantesToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
+            this.comprobantesToolStripMenuItem.Size = new System.Drawing.Size(238, 22);
             this.comprobantesToolStripMenuItem.Text = "Gestión de Local";
             this.comprobantesToolStripMenuItem.Click += new System.EventHandler(this.comprobantesToolStripMenuItem_Click);
             // 
             // gestiónDeDiferenciasToolStripMenuItem
             // 
             this.gestiónDeDiferenciasToolStripMenuItem.Name = "gestiónDeDiferenciasToolStripMenuItem";
-            this.gestiónDeDiferenciasToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
+            this.gestiónDeDiferenciasToolStripMenuItem.Size = new System.Drawing.Size(238, 22);
             this.gestiónDeDiferenciasToolStripMenuItem.Text = "Gestión de Diferencias";
             this.gestiónDeDiferenciasToolStripMenuItem.Click += new System.EventHandler(this.gestiónDeDiferenciasToolStripMenuItem_Click);
             // 
             // comprobantesToolStripMenuItem1
             // 
             this.comprobantesToolStripMenuItem1.Name = "comprobantesToolStripMenuItem1";
-            this.comprobantesToolStripMenuItem1.Size = new System.Drawing.Size(191, 22);
-            this.comprobantesToolStripMenuItem1.Text = "Comprobantes";
+            this.comprobantesToolStripMenuItem1.Size = new System.Drawing.Size(238, 22);
+            this.comprobantesToolStripMenuItem1.Text = "Reimpresión de Comprobantes";
             this.comprobantesToolStripMenuItem1.Click += new System.EventHandler(this.comprobantesToolStripMenuItem1_Click);
             // 
             // bienesToolStripMenuItem
@@ -139,7 +139,7 @@
             this.btPreferencias.ForeColor = System.Drawing.Color.Transparent;
             this.btPreferencias.Image = ((System.Drawing.Image)(resources.GetObject("btPreferencias.Image")));
             this.btPreferencias.Location = new System.Drawing.Point(628, 2);
-            this.btPreferencias.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btPreferencias.Margin = new System.Windows.Forms.Padding(2);
             this.btPreferencias.Name = "btPreferencias";
             this.btPreferencias.Size = new System.Drawing.Size(33, 33);
             this.btPreferencias.TabIndex = 2;
@@ -152,7 +152,7 @@
             this.tcNotificaciones.Controls.Add(this.TbNoti);
             this.tcNotificaciones.ItemSize = new System.Drawing.Size(90, 21);
             this.tcNotificaciones.Location = new System.Drawing.Point(9, 37);
-            this.tcNotificaciones.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tcNotificaciones.Margin = new System.Windows.Forms.Padding(2);
             this.tcNotificaciones.Name = "tcNotificaciones";
             this.tcNotificaciones.SelectedIndex = 0;
             this.tcNotificaciones.Size = new System.Drawing.Size(643, 113);
@@ -162,7 +162,7 @@
             // 
             this.TbNoti.BackColor = System.Drawing.Color.WhiteSmoke;
             this.TbNoti.Location = new System.Drawing.Point(4, 25);
-            this.TbNoti.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.TbNoti.Margin = new System.Windows.Forms.Padding(2);
             this.TbNoti.Name = "TbNoti";
             this.TbNoti.Size = new System.Drawing.Size(635, 84);
             this.TbNoti.TabIndex = 0;
@@ -178,7 +178,7 @@
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "home";
             this.Text = "Principal";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
