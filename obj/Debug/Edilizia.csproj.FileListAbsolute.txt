@@ -38,6 +38,7 @@ C:\Users\Leandro\Documents\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication
 C:\Users\Leandro\Documents\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.exe
 C:\Users\Leandro\Documents\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.pdb
 C:\Users\Leandro\Documents\GitHub\EdiliziaSoft\obj\Debug\Edilizia.csprojResolveAssemblyReference.cache
+<<<<<<< HEAD
 C:\Users\lucia\OneDrive\Documentos\GitHub\EdiliziaSoft\bin\Debug\WindowsFormsApplication1.exe.config
 C:\Users\lucia\OneDrive\Documentos\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.exe
 C:\Users\lucia\OneDrive\Documentos\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.pdb
@@ -78,3 +79,6 @@ C:\Users\lucia\OneDrive\Documentos\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApp
 C:\Users\lucia\OneDrive\Documentos\GitHub\EdiliziaSoft\obj\Debug\Edilizia.csproj.GenerateResource.Cache
 C:\Users\lucia\OneDrive\Documentos\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.exe.manifest
 C:\Users\lucia\OneDrive\Documentos\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.application
+=======
+C:\Users\Leandro\Documents\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.Reimpresion.resources
+>>>>>>> 57fcb13ec8dc4c17ebb2125b8e652414a50e1154
