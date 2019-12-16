@@ -73,7 +73,7 @@ namespace WindowsFormsApplication1
                 if (rbEntrega.Checked == true)
                 {
                     //Con esta consulta busco el nombre de la oficina, dueño y cantidad de bienes que tiene.
-                    sqlQuery = "select CONCAT('[',rooms.code,'] - ', rooms.description) as 'Local' , CONCAT(resp.name,', ',resp.last_name) as 'responsable', " +
+                    sqlQuery = "select CONCAT('[',rooms.code,'] - ', rooms.description) as 'Local' , CONCAT(resp.last_name,', ',resp.name) as 'responsable', " +
                     "count(abr.idasset) as 'bienes', rooms.idRooms,CONCAT(tra.bookCode,'-',tra.bookNumber) as 'comprobante' from rooms LEFT JOIN edilizia.rooms_by_users ON idRooms = id_room " +
                     "LEFT JOIN edilizia.users resp on resp.idUsers = id_user_owner LEFT JOIN edilizia.assets_by_room abr on abr.idRoom = rooms.idRooms " +
                     "LEFT JOIN edilizia.diferences dif on id_room = dif.idLocalOrig and dif.Semaforo <> 1 LEFT JOIN edilizia.transaction tra on dif.idComprobante = tra.idtransaction " +
@@ -81,7 +81,7 @@ namespace WindowsFormsApplication1
                 }
                 else {
                     //En el caso de una auditoria o devolucion el responsable no es el 'id_user_owner', sino el 'id_user_responsible' porque ya tiene alguien asignado.
-                    sqlQuery = "select CONCAT('[',rooms.code,'] - ', rooms.description) as 'Local' , CONCAT(resp.name,', ',resp.last_name) as 'responsable', " +
+                    sqlQuery = "select CONCAT('[',rooms.code,'] - ', rooms.description) as 'Local' , CONCAT(resp.last_name,', ',resp.name) as 'responsable', " +
                     "count(abr.idasset) as 'bienes', rooms.idRooms,CONCAT(tra.bookCode,'-',tra.bookNumber) as 'comprobante' from rooms LEFT JOIN edilizia.rooms_by_users ON idRooms = id_room " +
                     "LEFT JOIN edilizia.users resp on resp.idUsers = id_user_responsible LEFT JOIN edilizia.assets_by_room abr on abr.idRoom = rooms.idRooms " +
                     "LEFT JOIN edilizia.diferences dif on id_room = dif.idLocalOrig and dif.Semaforo <> 1 LEFT JOIN edilizia.transaction tra on dif.idComprobante = tra.idtransaction " +
@@ -96,7 +96,7 @@ namespace WindowsFormsApplication1
                     lblResponsable.Text = "Responsable: " + dtInfo.Rows[0][1].ToString();
                     lblActivos.Text = "Cant. Bienes: " + dtInfo.Rows[0][2].ToString();
                     IdRoomSelected = int.Parse(dtInfo.Rows[0][3].ToString());
-                    if (dtInfo.Rows[0][4].ToString() == null) {
+                    if (dtInfo.Rows[0][4].ToString() != "") {
                         MessageBox.Show("No puede generar un comprobante nuevo hasta gestionar las diferencias que el local posee. Comprobante relacionado: " + dtInfo.Rows[0][4].ToString());
                         btPicking.Enabled = false;
                         btnEntregar.Visible = false;
@@ -206,6 +206,23 @@ namespace WindowsFormsApplication1
                                     dgLocales["Eval", i].Style.BackColor = Color.Red;
                                 dgLocales["Eval", i].Value = null;
                             }
+                        }
+                    }
+                }
+                else
+                {
+                    btPicking.Enabled = false;
+                    if (rbEntrega.Checked != true)
+                    {
+                        for (int i = 0; i < dgLocales.Rows.Count - 1; i++)
+                        {
+                            if (dgLocales["Eval", i].Value.ToString() == "1")
+                                dgLocales["Eval", i].Style.BackColor = Color.Green;
+                            if (dgLocales["Eval", i].Value.ToString() == "2")
+                                dgLocales["Eval", i].Style.BackColor = Color.Yellow;
+                            if (dgLocales["Eval", i].Value.ToString() == "3")
+                                dgLocales["Eval", i].Style.BackColor = Color.Red;
+                            dgLocales["Eval", i].Value = null;
                         }
                     }
                 }

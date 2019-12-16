@@ -244,7 +244,7 @@ namespace WindowsFormsApplication1
                     "INNER JOIN edilizia.assets a on a.id_assets = d.idBien INNER JOIN edilizia.assets_status ast on ast.idstatus = ifnull(d.idEstadoOrig,a.idStatus) " +
                     "LEFT JOIN  edilizia.assets_status astObs on astObs.idstatus = d.idEstadoObs INNER JOIN edilizia.rooms r on d.idLocalPicking = r.idRooms " +
                     "INNER JOIN edilizia.assets_room_transaction art on d.idComprobante = art.idtransaction and d.idBien = art.id_Asset " +
-                    "where art.color =1 and art.idtransaction =" + comprobante.ToString() + " order by art.color, a.code";
+                    "where art.color <> 1 and art.idtransaction =" + comprobante.ToString() + " order by art.color, a.code";
 
                     MySqlDataReader Ryellow = DB.GetData(yellow);
                     DataTable DTy = new DataTable();
