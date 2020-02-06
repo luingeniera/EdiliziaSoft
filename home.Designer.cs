@@ -42,6 +42,7 @@
             this.btPreferencias = new System.Windows.Forms.Button();
             this.tcNotificaciones = new System.Windows.Forms.TabControl();
             this.TbNoti = new System.Windows.Forms.TabPage();
+            this.limpiarBDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.tcNotificaciones.SuspendLayout();
             this.SuspendLayout();
@@ -126,6 +127,8 @@
             // 
             // calendarioToolStripMenuItem
             // 
+            this.calendarioToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.limpiarBDToolStripMenuItem});
             this.calendarioToolStripMenuItem.Name = "calendarioToolStripMenuItem";
             this.calendarioToolStripMenuItem.Size = new System.Drawing.Size(76, 30);
             this.calendarioToolStripMenuItem.Text = "Calendario";
@@ -168,6 +171,13 @@
             this.TbNoti.TabIndex = 0;
             this.TbNoti.Text = "NOTIFICACIONES";
             // 
+            // limpiarBDToolStripMenuItem
+            // 
+            this.limpiarBDToolStripMenuItem.Name = "limpiarBDToolStripMenuItem";
+            this.limpiarBDToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.limpiarBDToolStripMenuItem.Text = "limpiar BD";
+            this.limpiarBDToolStripMenuItem.Click += new System.EventHandler(this.limpiarBDToolStripMenuItem_Click);
+            // 
             // home
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -206,5 +216,6 @@
         private System.Windows.Forms.ToolStripMenuItem comprobantesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem gestiónDeDiferenciasToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem comprobantesToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem limpiarBDToolStripMenuItem;
     }
 }

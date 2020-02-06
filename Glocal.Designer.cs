@@ -45,6 +45,8 @@
             this.btnConfirmar = new System.Windows.Forms.Button();
             this.lblComprobante = new System.Windows.Forms.Label();
             this.btPicking = new System.Windows.Forms.Button();
+            this.lblEntregar = new System.Windows.Forms.Label();
+            this.cbEdificio = new System.Windows.Forms.ComboBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgLocales)).BeginInit();
             this.SuspendLayout();
@@ -94,8 +96,9 @@
             // 
             // cbNivel
             // 
+            this.cbNivel.Enabled = false;
             this.cbNivel.FormattingEnabled = true;
-            this.cbNivel.Location = new System.Drawing.Point(14, 49);
+            this.cbNivel.Location = new System.Drawing.Point(195, 49);
             this.cbNivel.Name = "cbNivel";
             this.cbNivel.Size = new System.Drawing.Size(152, 21);
             this.cbNivel.TabIndex = 4;
@@ -106,7 +109,7 @@
             // 
             this.cbNumero.Enabled = false;
             this.cbNumero.FormattingEnabled = true;
-            this.cbNumero.Location = new System.Drawing.Point(190, 49);
+            this.cbNumero.Location = new System.Drawing.Point(371, 49);
             this.cbNumero.Name = "cbNumero";
             this.cbNumero.Size = new System.Drawing.Size(145, 21);
             this.cbNumero.TabIndex = 5;
@@ -154,7 +157,7 @@
             // 
             this.btBuscar.Image = ((System.Drawing.Image)(resources.GetObject("btBuscar.Image")));
             this.btBuscar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btBuscar.Location = new System.Drawing.Point(358, 33);
+            this.btBuscar.Location = new System.Drawing.Point(529, 33);
             this.btBuscar.Name = "btBuscar";
             this.btBuscar.Size = new System.Drawing.Size(71, 35);
             this.btBuscar.TabIndex = 10;
@@ -182,7 +185,6 @@
             this.cbEntrega.Name = "cbEntrega";
             this.cbEntrega.Size = new System.Drawing.Size(183, 21);
             this.cbEntrega.TabIndex = 13;
-            this.cbEntrega.Text = "Entregar a:";
             // 
             // btnConfirmar
             // 
@@ -209,7 +211,7 @@
             this.btPicking.Enabled = false;
             this.btPicking.Image = ((System.Drawing.Image)(resources.GetObject("btPicking.Image")));
             this.btPicking.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btPicking.Location = new System.Drawing.Point(464, 33);
+            this.btPicking.Location = new System.Drawing.Point(635, 33);
             this.btPicking.Name = "btPicking";
             this.btPicking.Size = new System.Drawing.Size(93, 35);
             this.btPicking.TabIndex = 16;
@@ -218,6 +220,25 @@
             this.btPicking.UseVisualStyleBackColor = true;
             this.btPicking.Click += new System.EventHandler(this.btPicking_Click);
             // 
+            // lblEntregar
+            // 
+            this.lblEntregar.AutoSize = true;
+            this.lblEntregar.Location = new System.Drawing.Point(24, 618);
+            this.lblEntregar.Name = "lblEntregar";
+            this.lblEntregar.Size = new System.Drawing.Size(59, 13);
+            this.lblEntregar.TabIndex = 17;
+            this.lblEntregar.Text = "Entregar a:";
+            // 
+            // cbEdificio
+            // 
+            this.cbEdificio.FormattingEnabled = true;
+            this.cbEdificio.Location = new System.Drawing.Point(26, 49);
+            this.cbEdificio.Name = "cbEdificio";
+            this.cbEdificio.Size = new System.Drawing.Size(150, 21);
+            this.cbEdificio.TabIndex = 18;
+            this.cbEdificio.Text = "Edificio";
+            this.cbEdificio.SelectedValueChanged += new System.EventHandler(this.cbEdificio_SelectedValueChanged);
+            // 
             // Glocal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -225,6 +246,8 @@
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(1253, 723);
+            this.Controls.Add(this.cbEdificio);
+            this.Controls.Add(this.lblEntregar);
             this.Controls.Add(this.btPicking);
             this.Controls.Add(this.lblComprobante);
             this.Controls.Add(this.btnConfirmar);
@@ -269,5 +292,7 @@
         private System.Windows.Forms.Button btnConfirmar;
         private System.Windows.Forms.Label lblComprobante;
         private System.Windows.Forms.Button btPicking;
+        private System.Windows.Forms.Label lblEntregar;
+        private System.Windows.Forms.ComboBox cbEdificio;
     }
 }

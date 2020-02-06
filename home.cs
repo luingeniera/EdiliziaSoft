@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MySql.Data.MySqlClient;
 
 namespace WindowsFormsApplication1
 {
@@ -59,8 +60,9 @@ namespace WindowsFormsApplication1
 
         private void calendarioToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Calendario Cal = new Calendario();
-            Cal.Show();
+            //Por ahora lo comento.
+            //Calendario Cal = new Calendario();
+            //Cal.Show();
         }
 
         private void gestiónDeLocalToolStripMenuItem_Click(object sender, EventArgs e)
@@ -90,6 +92,16 @@ namespace WindowsFormsApplication1
         {
             GDif Diferencias = new GDif();
             Diferencias.Show();
+        }
+
+        private void limpiarBDToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            WindowsFormsApplication1.DBConnection DB = new WindowsFormsApplication1.DBConnection();
+            string sqlQuery = "";
+
+            sqlQuery = "use edilizia; SET SQL_SAFE_UPDATES = 0; delete FROM edilizia.assets_room_transaction; delete FROM edilizia.transaction; " +
+            " delete from edilizia.diferences; update edilizia.assets_by_room set idRoom = 2 where idRoom = 1; update edilizia.rooms_by_users set id_user_responsible = null where id_user_responsible is not null; ";
+            MySqlDataReader dataReaderTrans = DB.GetData(sqlQuery);
         }
     }
 }

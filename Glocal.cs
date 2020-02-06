@@ -232,49 +232,27 @@ namespace WindowsFormsApplication1
         private void Glocal_Load(object sender, EventArgs e)
         {
             WindowsFormsApplication1.DBConnection DB = new WindowsFormsApplication1.DBConnection();
-            MySqlDataReader dataReaderLevel = DB.GetData("select distinct level from rooms");
+            MySqlDataReader dataReaderLevel = DB.GetData("select distinct description from buildings");
+            //MySqlDataReader dataReaderLevel = DB.GetData("select distinct level from rooms");
             if (dataReaderLevel.HasRows)
             {
                 DataTable dt = new DataTable();
                 dt.Load(dataReaderLevel);
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
+                    /*
                     cbNivel.ValueMember = "Valor";
                     cbNivel.DisplayMember = "Nivel";
                     cbNivel.Items.Add(dt.Rows[i][0]);
+                    */
+                    cbEdificio.ValueMember = "Valor";
+                    cbEdificio.DisplayMember = "Edificio";
+                    cbEdificio.Items.Add(dt.Rows[i][0]);
                 }                
             }
          }
 
-        private void cbNivel_SelectedValueChanged(object sender, EventArgs e)
-        {
-            WindowsFormsApplication1.DBConnection DB = new WindowsFormsApplication1.DBConnection();
-            string sql = "";
-            cbNumero.Items.Clear();
-
-            if (cbNivel.SelectedIndex > -1)
-            {
-                sql = "select distinct number from rooms where level = " + cbNivel.SelectedItem;
-                cbNumero.Enabled = true;
-            }
-            else
-            {
-                sql = "select distinct number from rooms";
-                cbNumero.Enabled = false;
-            }
-                MySqlDataReader dataReaderNumber = DB.GetData(sql);
-            if (dataReaderNumber.HasRows)
-            {
-                DataTable dtNro = new DataTable();
-                dtNro.Load(dataReaderNumber);
-                for (int i = 0; i < dtNro.Rows.Count; i++)
-                {
-                    cbNumero.ValueMember = "Valor";
-                    cbNumero.DisplayMember = "Nro.";
-                    cbNumero.Items.Add(dtNro.Rows[i][0]);
-                }
-            }
-        }
+        
         
         private void btnEntregar_Click(object sender, EventArgs e)
         {
@@ -488,7 +466,8 @@ namespace WindowsFormsApplication1
                     if (dgLocales.Rows[j].Cells["Referencia"].FormattedValue.ToString() == dtReturnPicking.Rows[i][0].ToString().ToUpper())
                     {
                         dgLocales["Eval", j].Style.BackColor = Color.Green;
-                        dtReturnPicking.Rows[i][1] = "1";                  
+                        dtReturnPicking.Rows[i][1] = "1";
+                        
                     }
                 }
             }
@@ -565,6 +544,15 @@ namespace WindowsFormsApplication1
                         dgLocales["Estado Obs.", j].ErrorText = "No habilitado.";
                         dgLocales["Estado Obs.", j].ReadOnly = true;
                         
+                    } else
+                    {
+                        dgLocales["Estado Obs.", j].ReadOnly = false;
+                        dgLocales["Estado Obs.", j].ErrorText = string.Empty;
+                        for (int r = 0; r < dtReturnPicking.Rows.Count; r++)
+                        {
+                            if (dgLocales[0, j].FormattedValue.ToString() == dtReturnPicking.Rows[r][0].ToString())
+                                dgLocales["Observaciones", j].Value = "";
+                        }
                     }
                 }
             }
@@ -584,8 +572,76 @@ namespace WindowsFormsApplication1
             {
                 if (dgLocales[e.ColumnIndex, e.RowIndex].FormattedValue.ToString() != dgLocales["Estado", e.RowIndex].Value.ToString())
                     dgLocales["Eval", e.RowIndex].Style.BackColor = Color.Yellow;
-                else
+                else 
                     dgLocales["Eval", e.RowIndex].Style.BackColor = Color.Green;
+                //Dentro del for comparo si el articulo al que le cambio el estado es un articulo pickeado que no pertenecia al local originalmente, en este caso
+                //por mas q coincida el estado lo dejo en amarillo ya que no coincidira el local.
+                for (int j = 0; j < dtReturnPicking.Rows.Count; j++)
+                {
+                    if (dgLocales[0, e.RowIndex].FormattedValue.ToString() == dtReturnPicking.Rows[j][0].ToString() && dtReturnPicking.Rows[j][1].ToString() == "0")
+                        dgLocales["Eval", e.RowIndex].Style.BackColor = Color.Yellow;
+                }
+            }
+        }
+
+        private void cbEdificio_SelectedValueChanged(object sender, EventArgs e)
+        {
+            WindowsFormsApplication1.DBConnection DB = new WindowsFormsApplication1.DBConnection();
+            string sql = "";
+            cbNivel.Items.Clear();
+
+            if (cbEdificio.SelectedIndex > -1)
+            {
+                sql = "select distinct level from rooms inner join buildings b on bulding = b.idbuilding " +
+                " where b.description = '" + cbEdificio.SelectedItem +"'";
+                cbNivel.Enabled = true;
+            }
+            else
+            {
+                sql = "select distinct number from rooms";
+                cbNivel.Enabled = false;
+            }
+            MySqlDataReader dataReaderNumber = DB.GetData(sql);
+            if (dataReaderNumber.HasRows)
+            {
+                DataTable dtNro = new DataTable();
+                dtNro.Load(dataReaderNumber);
+                for (int i = 0; i < dtNro.Rows.Count; i++)
+                {
+                    cbNivel.ValueMember = "Valor";
+                    cbNivel.DisplayMember = "Nivel";
+                    cbNivel.Items.Add(dtNro.Rows[i][0]);
+                }
+            }
+        }
+
+        private void cbNivel_SelectedValueChanged(object sender, EventArgs e)
+        {
+            WindowsFormsApplication1.DBConnection DB = new WindowsFormsApplication1.DBConnection();
+            string sql = "";
+            cbNumero.Items.Clear();
+
+            if (cbNivel.SelectedIndex > -1)
+            {
+                sql = "select distinct number from rooms where level = " + cbNivel.SelectedItem;
+                cbNumero.Enabled = true;
+            }
+            else
+            {
+                sql = "select distinct number from rooms";
+                cbNumero.Enabled = false;
+            }
+            MySqlDataReader dataReaderNumber = DB.GetData(sql);
+            if (dataReaderNumber.HasRows)
+            {
+                DataTable dtNro = new DataTable();
+                dtNro.Load(dataReaderNumber);
+                for (int i = 0; i < dtNro.Rows.Count; i++)
+                {
+                    cbNumero.ValueMember = "Valor";
+                    cbNumero.DisplayMember = "Nro.";
+                    cbNumero.Items.Add(dtNro.Rows[i][0]);
+                }
             }
         }
     }
