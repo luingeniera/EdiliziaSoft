@@ -103,5 +103,10 @@ namespace WindowsFormsApplication1
             " delete from edilizia.diferences; update edilizia.assets_by_room set idRoom = 2 where idRoom = 1; update edilizia.rooms_by_users set id_user_responsible = null where id_user_responsible is not null; ";
             MySqlDataReader dataReaderTrans = DB.GetData(sqlQuery);
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+         
+        }
     }
 }

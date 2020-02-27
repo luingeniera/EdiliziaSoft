@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>WindowsFormsApplication1</RootNamespace>
-    <AssemblyName>WindowsFormsApplication1</AssemblyName>
+    <AssemblyName>IntegracionActivos</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -59,6 +59,13 @@
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup>
+    <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="BouncyCastle.Crypto, Version=1.8.3.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
@@ -192,7 +199,6 @@
     <Compile Include="home.Designer.cs">
       <DependentUpon>home.cs</DependentUpon>
     </Compile>
-    <Compile Include="OdooConnect.cs" />
     <Compile Include="PDF_plano.cs" />
     <Compile Include="PDF2.cs" />
     <Compile Include="Picking.cs">
@@ -221,6 +227,12 @@
     </Compile>
     <Compile Include="Reimpresion.Designer.cs">
       <DependentUpon>Reimpresion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Revit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Revit.Designer.cs">
+      <DependentUpon>Revit.cs</DependentUpon>
     </Compile>
     <Compile Include="Sincro.cs">
       <SubType>Form</SubType>
@@ -274,9 +286,13 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="Reimpresion.resx">
       <DependentUpon>Reimpresion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Revit.resx">
+      <DependentUpon>Revit.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Sincro.resx">
       <DependentUpon>Sincro.cs</DependentUpon>

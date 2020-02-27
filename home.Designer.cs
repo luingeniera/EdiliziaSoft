@@ -39,10 +39,11 @@
             this.bienesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sincronizaciónSIPRECOREVIT = new System.Windows.Forms.ToolStripMenuItem();
             this.calendarioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.limpiarBDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btPreferencias = new System.Windows.Forms.Button();
             this.tcNotificaciones = new System.Windows.Forms.TabControl();
             this.TbNoti = new System.Windows.Forms.TabPage();
-            this.limpiarBDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.button1 = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.tcNotificaciones.SuspendLayout();
             this.SuspendLayout();
@@ -60,22 +61,22 @@
             this.calendarioToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Padding = new System.Windows.Forms.Padding(4, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(665, 34);
+            this.menuStrip1.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
+            this.menuStrip1.Size = new System.Drawing.Size(887, 42);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
             // Solicitudes
             // 
             this.Solicitudes.Name = "Solicitudes";
-            this.Solicitudes.Size = new System.Drawing.Size(76, 30);
+            this.Solicitudes.Size = new System.Drawing.Size(93, 38);
             this.Solicitudes.Text = "Solicitudes";
             this.Solicitudes.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
             // GSolicitudes
             // 
             this.GSolicitudes.Name = "GSolicitudes";
-            this.GSolicitudes.Size = new System.Drawing.Size(134, 30);
+            this.GSolicitudes.Size = new System.Drawing.Size(166, 38);
             this.GSolicitudes.Text = "Gestión de solicitudes";
             this.GSolicitudes.Click += new System.EventHandler(this.gestiónESToolStripMenuItem_Click);
             // 
@@ -86,42 +87,42 @@
             this.gestiónDeDiferenciasToolStripMenuItem,
             this.comprobantesToolStripMenuItem1});
             this.gestiónDeLocalToolStripMenuItem.Name = "gestiónDeLocalToolStripMenuItem";
-            this.gestiónDeLocalToolStripMenuItem.Size = new System.Drawing.Size(58, 30);
+            this.gestiónDeLocalToolStripMenuItem.Size = new System.Drawing.Size(70, 38);
             this.gestiónDeLocalToolStripMenuItem.Text = "Locales";
             this.gestiónDeLocalToolStripMenuItem.Click += new System.EventHandler(this.gestiónDeLocalToolStripMenuItem_Click);
             // 
             // comprobantesToolStripMenuItem
             // 
             this.comprobantesToolStripMenuItem.Name = "comprobantesToolStripMenuItem";
-            this.comprobantesToolStripMenuItem.Size = new System.Drawing.Size(238, 22);
+            this.comprobantesToolStripMenuItem.Size = new System.Drawing.Size(290, 26);
             this.comprobantesToolStripMenuItem.Text = "Gestión de Local";
             this.comprobantesToolStripMenuItem.Click += new System.EventHandler(this.comprobantesToolStripMenuItem_Click);
             // 
             // gestiónDeDiferenciasToolStripMenuItem
             // 
             this.gestiónDeDiferenciasToolStripMenuItem.Name = "gestiónDeDiferenciasToolStripMenuItem";
-            this.gestiónDeDiferenciasToolStripMenuItem.Size = new System.Drawing.Size(238, 22);
+            this.gestiónDeDiferenciasToolStripMenuItem.Size = new System.Drawing.Size(290, 26);
             this.gestiónDeDiferenciasToolStripMenuItem.Text = "Gestión de Diferencias";
             this.gestiónDeDiferenciasToolStripMenuItem.Click += new System.EventHandler(this.gestiónDeDiferenciasToolStripMenuItem_Click);
             // 
             // comprobantesToolStripMenuItem1
             // 
             this.comprobantesToolStripMenuItem1.Name = "comprobantesToolStripMenuItem1";
-            this.comprobantesToolStripMenuItem1.Size = new System.Drawing.Size(238, 22);
+            this.comprobantesToolStripMenuItem1.Size = new System.Drawing.Size(290, 26);
             this.comprobantesToolStripMenuItem1.Text = "Reimpresión de Comprobantes";
             this.comprobantesToolStripMenuItem1.Click += new System.EventHandler(this.comprobantesToolStripMenuItem1_Click);
             // 
             // bienesToolStripMenuItem
             // 
             this.bienesToolStripMenuItem.Name = "bienesToolStripMenuItem";
-            this.bienesToolStripMenuItem.Size = new System.Drawing.Size(53, 30);
+            this.bienesToolStripMenuItem.Size = new System.Drawing.Size(64, 38);
             this.bienesToolStripMenuItem.Text = "Bienes";
             this.bienesToolStripMenuItem.Click += new System.EventHandler(this.bienesToolStripMenuItem_Click);
             // 
             // sincronizaciónSIPRECOREVIT
             // 
             this.sincronizaciónSIPRECOREVIT.Name = "sincronizaciónSIPRECOREVIT";
-            this.sincronizaciónSIPRECOREVIT.Size = new System.Drawing.Size(179, 30);
+            this.sincronizaciónSIPRECOREVIT.Size = new System.Drawing.Size(222, 38);
             this.sincronizaciónSIPRECOREVIT.Text = "Sincronización SIPRECO-REVIT";
             this.sincronizaciónSIPRECOREVIT.Click += new System.EventHandler(this.sincronizaciónSIPRECOREVITToolStripMenuItem_Click);
             // 
@@ -130,9 +131,16 @@
             this.calendarioToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.limpiarBDToolStripMenuItem});
             this.calendarioToolStripMenuItem.Name = "calendarioToolStripMenuItem";
-            this.calendarioToolStripMenuItem.Size = new System.Drawing.Size(76, 30);
+            this.calendarioToolStripMenuItem.Size = new System.Drawing.Size(93, 38);
             this.calendarioToolStripMenuItem.Text = "Calendario";
             this.calendarioToolStripMenuItem.Click += new System.EventHandler(this.calendarioToolStripMenuItem_Click);
+            // 
+            // limpiarBDToolStripMenuItem
+            // 
+            this.limpiarBDToolStripMenuItem.Name = "limpiarBDToolStripMenuItem";
+            this.limpiarBDToolStripMenuItem.Size = new System.Drawing.Size(155, 26);
+            this.limpiarBDToolStripMenuItem.Text = "limpiar BD";
+            this.limpiarBDToolStripMenuItem.Click += new System.EventHandler(this.limpiarBDToolStripMenuItem_Click);
             // 
             // btPreferencias
             // 
@@ -141,10 +149,10 @@
             this.btPreferencias.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btPreferencias.ForeColor = System.Drawing.Color.Transparent;
             this.btPreferencias.Image = ((System.Drawing.Image)(resources.GetObject("btPreferencias.Image")));
-            this.btPreferencias.Location = new System.Drawing.Point(628, 2);
-            this.btPreferencias.Margin = new System.Windows.Forms.Padding(2);
+            this.btPreferencias.Location = new System.Drawing.Point(837, 2);
+            this.btPreferencias.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btPreferencias.Name = "btPreferencias";
-            this.btPreferencias.Size = new System.Drawing.Size(33, 33);
+            this.btPreferencias.Size = new System.Drawing.Size(44, 41);
             this.btPreferencias.TabIndex = 2;
             this.btPreferencias.TextAlign = System.Drawing.ContentAlignment.TopLeft;
             this.btPreferencias.UseVisualStyleBackColor = false;
@@ -154,41 +162,45 @@
             // 
             this.tcNotificaciones.Controls.Add(this.TbNoti);
             this.tcNotificaciones.ItemSize = new System.Drawing.Size(90, 21);
-            this.tcNotificaciones.Location = new System.Drawing.Point(9, 37);
-            this.tcNotificaciones.Margin = new System.Windows.Forms.Padding(2);
+            this.tcNotificaciones.Location = new System.Drawing.Point(12, 46);
+            this.tcNotificaciones.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tcNotificaciones.Name = "tcNotificaciones";
             this.tcNotificaciones.SelectedIndex = 0;
-            this.tcNotificaciones.Size = new System.Drawing.Size(643, 113);
+            this.tcNotificaciones.Size = new System.Drawing.Size(857, 139);
             this.tcNotificaciones.TabIndex = 3;
             // 
             // TbNoti
             // 
             this.TbNoti.BackColor = System.Drawing.Color.WhiteSmoke;
             this.TbNoti.Location = new System.Drawing.Point(4, 25);
-            this.TbNoti.Margin = new System.Windows.Forms.Padding(2);
+            this.TbNoti.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.TbNoti.Name = "TbNoti";
-            this.TbNoti.Size = new System.Drawing.Size(635, 84);
+            this.TbNoti.Size = new System.Drawing.Size(849, 110);
             this.TbNoti.TabIndex = 0;
             this.TbNoti.Text = "NOTIFICACIONES";
             // 
-            // limpiarBDToolStripMenuItem
+            // button1
             // 
-            this.limpiarBDToolStripMenuItem.Name = "limpiarBDToolStripMenuItem";
-            this.limpiarBDToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.limpiarBDToolStripMenuItem.Text = "limpiar BD";
-            this.limpiarBDToolStripMenuItem.Click += new System.EventHandler(this.limpiarBDToolStripMenuItem_Click);
+            this.button1.Location = new System.Drawing.Point(181, 203);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 4;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // home
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(665, 342);
+            this.ClientSize = new System.Drawing.Size(887, 421);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.tcNotificaciones);
             this.Controls.Add(this.btPreferencias);
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
-            this.Margin = new System.Windows.Forms.Padding(2);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "home";
             this.Text = "Principal";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
@@ -217,5 +229,6 @@
         private System.Windows.Forms.ToolStripMenuItem gestiónDeDiferenciasToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem comprobantesToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem limpiarBDToolStripMenuItem;
+        private System.Windows.Forms.Button button1;
     }
 }

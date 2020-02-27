@@ -12,7 +12,7 @@ using OdooRpc.CoreCLR;
 
 namespace WindowsFormsApplication1
 {
-    class DBConnection
+   public class DBConnection
     {
         private MySqlDataAdapter mySqlDataAdapter = new MySqlDataAdapter();
 
