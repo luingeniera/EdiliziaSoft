@@ -43,7 +43,6 @@
             this.btPreferencias = new System.Windows.Forms.Button();
             this.tcNotificaciones = new System.Windows.Forms.TabControl();
             this.TbNoti = new System.Windows.Forms.TabPage();
-            this.button1 = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.tcNotificaciones.SuspendLayout();
             this.SuspendLayout();
@@ -179,22 +178,11 @@
             this.TbNoti.TabIndex = 0;
             this.TbNoti.Text = "NOTIFICACIONES";
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(181, 203);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
             // home
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(887, 421);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.tcNotificaciones);
             this.Controls.Add(this.btPreferencias);
             this.Controls.Add(this.menuStrip1);
@@ -229,6 +217,5 @@
         private System.Windows.Forms.ToolStripMenuItem gestiónDeDiferenciasToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem comprobantesToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem limpiarBDToolStripMenuItem;
-        private System.Windows.Forms.Button button1;
     }
 }

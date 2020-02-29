@@ -10,10 +10,11 @@ namespace WindowsFormsApplication1.Preferencias
 {
     class Usuario
     {
-
+       
 
         public static string PassUsuario(string usuariologueado)
         {
+          
             DBConnection DB = new DBConnection();
         string sqlQuery = "";
         sqlQuery ="SELECT  pass FROM edilizia.users where user='" + usuariologueado + "';";

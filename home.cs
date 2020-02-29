@@ -100,13 +100,10 @@ namespace WindowsFormsApplication1
             string sqlQuery = "";
 
             sqlQuery = "use edilizia; SET SQL_SAFE_UPDATES = 0; delete FROM edilizia.assets_room_transaction; delete FROM edilizia.transaction; " +
-            " delete from edilizia.diferences; update edilizia.assets_by_room set idRoom = 2 where idRoom = 1; update edilizia.rooms_by_users set id_user_responsible = null where id_user_responsible is not null; ";
+            " delete from edilizia.diferences;  ";
             MySqlDataReader dataReaderTrans = DB.GetData(sqlQuery);
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-         
-        }
+      
     }
 }

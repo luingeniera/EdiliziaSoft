@@ -332,8 +332,10 @@
             this.Controls.Add(this.btnBuscar);
             this.Controls.Add(this.cbResponsable);
             this.Controls.Add(this.cbComprobante);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "GDif";
-            this.Text = " ";
+            this.Text = " Gestión de Diferencias";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.GDif_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
