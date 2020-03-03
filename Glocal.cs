@@ -592,7 +592,7 @@ namespace WindowsFormsApplication1
 
             if (cbEdificio.SelectedIndex > -1)
             {
-                sql = "select distinct level from rooms inner join buildings b on bulding = b.idbuilding " +
+                sql = "select distinct level from rooms inner join buildings b on building = b.idbuilding " +
                 " where b.description = '" + cbEdificio.SelectedItem +"'";
                 cbNivel.Enabled = true;
             }

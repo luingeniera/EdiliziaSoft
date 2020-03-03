@@ -43,6 +43,7 @@
             this.btPreferencias = new System.Windows.Forms.Button();
             this.tcNotificaciones = new System.Windows.Forms.TabControl();
             this.TbNoti = new System.Windows.Forms.TabPage();
+            this.revitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.tcNotificaciones.SuspendLayout();
             this.SuspendLayout();
@@ -57,7 +58,8 @@
             this.gestiónDeLocalToolStripMenuItem,
             this.bienesToolStripMenuItem,
             this.sincronizaciónSIPRECOREVIT,
-            this.calendarioToolStripMenuItem});
+            this.calendarioToolStripMenuItem,
+            this.revitToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
@@ -137,7 +139,7 @@
             // limpiarBDToolStripMenuItem
             // 
             this.limpiarBDToolStripMenuItem.Name = "limpiarBDToolStripMenuItem";
-            this.limpiarBDToolStripMenuItem.Size = new System.Drawing.Size(155, 26);
+            this.limpiarBDToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
             this.limpiarBDToolStripMenuItem.Text = "limpiar BD";
             this.limpiarBDToolStripMenuItem.Click += new System.EventHandler(this.limpiarBDToolStripMenuItem_Click);
             // 
@@ -178,6 +180,13 @@
             this.TbNoti.TabIndex = 0;
             this.TbNoti.Text = "NOTIFICACIONES";
             // 
+            // revitToolStripMenuItem
+            // 
+            this.revitToolStripMenuItem.Name = "revitToolStripMenuItem";
+            this.revitToolStripMenuItem.Size = new System.Drawing.Size(54, 38);
+            this.revitToolStripMenuItem.Text = "Revit";
+            this.revitToolStripMenuItem.Click += new System.EventHandler(this.revitToolStripMenuItem_Click);
+            // 
             // home
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -217,5 +226,6 @@
         private System.Windows.Forms.ToolStripMenuItem gestiónDeDiferenciasToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem comprobantesToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem limpiarBDToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem revitToolStripMenuItem;
     }
 }

@@ -104,6 +104,10 @@ namespace WindowsFormsApplication1
             MySqlDataReader dataReaderTrans = DB.GetData(sqlQuery);
         }
 
-      
+        private void revitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Revit rev = new Revit();
+            rev.Show();
+        }
     }
 }

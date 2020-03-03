@@ -15,8 +15,8 @@ namespace WindowsFormsApplication1
         public Login()
         {
             InitializeComponent();
-            txtNombre.Text = "poy";
-            txtPassword.Text = "poy";
+            txtNombre.Text = "Admin";
+            txtPassword.Text = "Admin";
         }
 
         private void button1_Click(object sender, EventArgs e)

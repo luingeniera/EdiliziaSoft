@@ -21,7 +21,7 @@ namespace WindowsFormsApplication1
             // este es el que va pero para rapides de pruebas    
           //    Application.Run(new Login());
             
-        Application.Run(new home());
+        Application.Run(new Login());
             //Application.Run(new Bienes());
         //  Application.Run(new GDif());
             //Application.Run(new Glocal());
