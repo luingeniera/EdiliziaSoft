@@ -166,7 +166,7 @@ namespace WindowsFormsApplication1
                     "ast.description as 'Estado Obs', r.code as Local, '' as Eval, art.observation as Observaciones " +
                     "FROM edilizia.assets_room_transaction art INNER JOIN edilizia.assets a on a.id_assets = art.id_Asset " +
                     "INNER JOIN edilizia.assets_status ast on ast.idstatus = art.delivery_status " +
-                    "INNER JOIN edilizia.rooms r on art.id_Room = r.idRooms where art.idtransaction =" + comprobante.ToString() + " order by art.color, a.code";
+                    "INNER JOIN edilizia.rooms r on art.id_Room = r.idRooms where art.color = 1 and art.idtransaction =" + comprobante.ToString() + " order by art.color, a.code";
                 else
                     green = "SELECT a.code as Referencia, a.description as 'Nombre de Activo', ast.description as Estado, " +
                     "ast.description as 'Estado Obs', r.code as Local, '' as Eval, art.observation as Observaciones " +
@@ -231,50 +231,52 @@ namespace WindowsFormsApplication1
                 tableR.AddCell("Responsable del Local");
                 doc.Add(tableR);
 
-            
-                if (TipoComp != "AUD")
+
+                //if (TipoComp != "AUD")
+                //{
+                if (l != 0) // pedido 30/01  de que en original no salga amarillos y rojos
                 {
-                    if (l != 0) // pedido 30/01  de que en original no salga amarillos y rojos
+
+                    //string yellow = "SELECT * FROM edilizia.assets_room_transaction where color <> 1 and idtransaction =" + comprobante.ToString();
+                    string yellow = "SELECT  a.code as Referencia, a.description as 'Nombre de Activo', ast.description as Estado, " +
+                    "astObs.description as 'Estado Obs',r.code as Local, '' as Eval, art.observation as Observaciones FROM edilizia.diferences d " +
+                    "INNER JOIN edilizia.assets a on a.id_assets = d.idBien INNER JOIN edilizia.assets_status ast on ast.idstatus = ifnull(d.idEstadoOrig,a.idStatus) " +
+                    "LEFT JOIN  edilizia.assets_status astObs on astObs.idstatus = d.idEstadoObs INNER JOIN edilizia.rooms r on d.idLocalPicking = r.idRooms " +
+                    "INNER JOIN edilizia.assets_room_transaction art on d.idComprobante = art.idtransaction and d.idBien = art.id_Asset " +
+                    "where art.color =2 and art.idtransaction =" + comprobante.ToString() + " order by art.color, a.code";
+
+                    MySqlDataReader Ryellow = DB.GetData(yellow);
+                    DataTable DTy = new DataTable();
+                    DTy.Load(Ryellow);
+
+                    #region tabla cabecera
+                    PdfPTable Tyellow = new PdfPTable(DTy.Columns.Count);
+                    Tyellow.WidthPercentage = 100;
+                    Tyellow.HorizontalAlignment = Element.ALIGN_CENTER;
+                    Tyellow.DefaultCell.VerticalAlignment = Element.ALIGN_CENTER;
+
+
+
+                    //comienzo mostrado elementos en yelloe y red
+
+                    // valido si hay diferencias sino no pongo titulo
+                    string diferencias = "SELECT count(*) as cant FROM edilizia.diferences d " +
+                  "INNER JOIN edilizia.assets a on a.id_assets = d.idBien INNER JOIN edilizia.assets_status ast on ast.idstatus = ifnull(d.idEstadoOrig,a.idStatus) " +
+                  "LEFT JOIN  edilizia.assets_status astObs on astObs.idstatus = d.idEstadoObs INNER JOIN edilizia.rooms r on d.idLocalPicking = r.idRooms " +
+                  "INNER JOIN edilizia.assets_room_transaction art on d.idComprobante = art.idtransaction and d.idBien = art.id_Asset " +
+                  "where art.color <> 1 and art.idtransaction =" + comprobante.ToString() + " order by art.color, a.code";
+
+                    MySqlDataReader cuentaDif = DB.GetData(diferencias);
+
+                    // si tiene diferencias imprimo dicha parte sino no.
+                    //if (cuentaDif["cant"].ToString() != "0")
+                    //{
+                    if (cuentaDif.HasRows)
                     {
-
-                        //string yellow = "SELECT * FROM edilizia.assets_room_transaction where color <> 1 and idtransaction =" + comprobante.ToString();
-                        string yellow = "SELECT  a.code as Referencia, a.description as 'Nombre de Activo', ast.description as Estado, " +
-                        "astObs.description as 'Estado Obs',r.code as Local, '' as Eval, art.observation as Observaciones FROM edilizia.diferences d " +
-                        "INNER JOIN edilizia.assets a on a.id_assets = d.idBien INNER JOIN edilizia.assets_status ast on ast.idstatus = ifnull(d.idEstadoOrig,a.idStatus) " +
-                        "LEFT JOIN  edilizia.assets_status astObs on astObs.idstatus = d.idEstadoObs INNER JOIN edilizia.rooms r on d.idLocalPicking = r.idRooms " +
-                        "INNER JOIN edilizia.assets_room_transaction art on d.idComprobante = art.idtransaction and d.idBien = art.id_Asset " +
-                        "where art.color =2 and art.idtransaction =" + comprobante.ToString() + " order by art.color, a.code";
-
-                        MySqlDataReader Ryellow = DB.GetData(yellow);
-                        DataTable DTy = new DataTable();
-                        DTy.Load(Ryellow);
-
-                        #region tabla cabecera
-                        PdfPTable Tyellow = new PdfPTable(DTy.Columns.Count);
-                        Tyellow.WidthPercentage = 100;
-                        Tyellow.HorizontalAlignment = Element.ALIGN_CENTER;
-                        Tyellow.DefaultCell.VerticalAlignment = Element.ALIGN_CENTER;
-
-
-
-                        //comienzo mostrado elementos en yelloe y red
-
-                        // valido si hay diferencias sino no pongo titulo
-                        string diferencias = "SELECT count(*) as cant FROM edilizia.diferences d " +
-                      "INNER JOIN edilizia.assets a on a.id_assets = d.idBien INNER JOIN edilizia.assets_status ast on ast.idstatus = ifnull(d.idEstadoOrig,a.idStatus) " +
-                      "LEFT JOIN  edilizia.assets_status astObs on astObs.idstatus = d.idEstadoObs INNER JOIN edilizia.rooms r on d.idLocalPicking = r.idRooms " +
-                      "INNER JOIN edilizia.assets_room_transaction art on d.idComprobante = art.idtransaction and d.idBien = art.id_Asset " +
-                      "where art.color <> 1 and art.idtransaction =" + comprobante.ToString() + " order by art.color, a.code";
-
-                        MySqlDataReader cuentaDif = DB.GetData(diferencias);
-                        
-
-                        // si tiene diferencias imprimo dicha parte sino no.
-                        if (cuentaDif["cant"].ToString() != "0")
+                        DataTable DTDif = new DataTable();
+                        DTDif.Load(cuentaDif);
+                        if (DTDif.Rows[0][0].ToString() != "0")
                         {
-                            DataTable DTDif = new DataTable();
-                            DTDif.Load(cuentaDif);
-
                             doc.Add(new Paragraph("\nLos siguientes bienes no serán asignados bajo la reponsabilidad de " + responsable + " por no haberse encontrado fisícamente en el local o por diferir sus estados.\n"));
 
                             doc.Add(new Paragraph("\n"));
@@ -293,23 +295,16 @@ namespace WindowsFormsApplication1
                                     {
                                         //DTVerde.Columns[j].ColumnName = "Eval")
                                         this.celdas(Tyellow, DTy.Rows[i][j].ToString(), "2");
-
                                     }
                                     else
-
                                     {
                                         this.celdas(Tyellow, DTy.Rows[i][j].ToString(), "0");
                                     }
                                 }
-
-
-
                                 doc.Add(Tyellow);
                             }
                             #endregion
 
-
-                            //string yellowgreen = "SELECT * FROM edilizia.assets_room_transaction where color <> 1 and idtransaction =" + comprobante.ToString();
                             string red = "SELECT  a.code as Referencia, a.description as 'Nombre de Activo', ast.description as Estado, " +
                             "astObs.description as 'Estado Obs',r.code as Local, '' as Eval, art.observation as Observaciones FROM edilizia.diferences d " +
                             "INNER JOIN edilizia.assets a on a.id_assets = d.idBien INNER JOIN edilizia.assets_status ast on ast.idstatus = ifnull(d.idEstadoOrig,a.idStatus) " +
@@ -326,12 +321,7 @@ namespace WindowsFormsApplication1
                             Tred.WidthPercentage = 100;
                             Tred.HorizontalAlignment = Element.ALIGN_CENTER;
                             Tred.DefaultCell.VerticalAlignment = Element.ALIGN_CENTER;
-
-                            //titulos
-                            //for (int i = 0; i < DTr.Columns.Count; i++)
-                            //{
-                            //    Tred.AddCell(new Phrase(DTr.Columns[i].ToString()));
-                            //}
+                            #region valores
                             // valores
                             for (int i = 0; i < DTr.Rows.Count; i++)
                             {
@@ -342,85 +332,68 @@ namespace WindowsFormsApplication1
                                     {
                                         //DTVerde.Columns[j].ColumnName = "Eval")
                                         this.celdas(Tred, DTr.Rows[i][j].ToString(), "3");
-
                                     }
                                     else
-
                                     {
                                         this.celdas(Tred, DTr.Rows[i][j].ToString(), "0");
                                     }
                                 }
                             }
-
-
                             doc.Add(Tred);
+                            #endregion
                         }
                         #endregion
                     }
+
+                    PdfPTable table = new PdfPTable(2);
+                    table.DefaultCell.Border = Rectangle.NO_BORDER;
+                    PdfPCell cell = new PdfPCell(new Phrase("\n\n\n", FontFactory.GetFont(FontFactory.TIMES, 10f)));
+                    cell.Border = 0;
+                    cell.Colspan = 2;
+                    cell.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+                    table.AddCell(cell);
+                    table.AddCell("......................................................");
+                    table.AddCell("......................................................");
+                    table.AddCell("Responsable de Inventario");
+                    table.AddCell("Secretaria Administrativa");
+                    doc.Add(table);
+
+
+                    //Pie de pagina + version
+                    #region pie de pagina
+                    Paragraph _Piedepagina = new Paragraph();
+                    _Piedepagina.Font = FontFactory.GetFont(FontFactory.TIMES, 10f);
+                    _Piedepagina.Alignment = Element.ALIGN_RIGHT;
+                    _Piedepagina.SpacingBefore = 5;
+                    _Piedepagina.Add("Pagina nro: 1");
+
+                    doc.Add(_Piedepagina);
+                    //armo versionado para los 3 pdf
+                    Paragraph _version = new Paragraph();
+                    _version.Font = FontFactory.GetFont(FontFactory.TIMES, 10f);
+                    _version.Alignment = Element.ALIGN_LEFT;
+
+                    switch (l)
+                    {
+                        case 0:
+                            _version.Add("Original");
+                            break;
+                        case 1:
+                            _version.Add("Duplicado");
+                            break;
+                        case 2:
+                            _version.Add("Triplicado");
+                            break;
+                        default:
+                            _version.Add("default");
+                            break;
+                    }
+                    #endregion
+                    doc.Add(_version);
+
+                    doc.Close();
+                    Process.Start(nombre);
                 }
-
-                //agrego la firma
-                //Paragraph _firmas2 = new Paragraph();
-                //_firmas2.Font = FontFactory.GetFont(FontFactory.TIMES, 10f);
-                //_firmas2.Alignment = Element.ALIGN_RIGHT;
-                //_firmas2.Add(new Phrase("\n\n\n.............................\n Secretaria Administrativa", _firmas.Font));
-                ////doc.Add(_firmas2);
-
-                ////Paragraph _firmas3 = new Paragraph();
-                //_firmas2.Font = FontFactory.GetFont(FontFactory.TIMES, 10f);
-                //_firmas2.Alignment = Element.ALIGN_LEFT;
-                //_firmas2.Add(new Phrase(".............................\n Responsable de Inventario", _firmas.Font));
-                //doc.Add(_firmas2);
-
-                PdfPTable table = new PdfPTable(2);
-                table.DefaultCell.Border = Rectangle.NO_BORDER;
-                PdfPCell cell = new PdfPCell(new Phrase("\n\n\n", FontFactory.GetFont(FontFactory.TIMES, 10f)));
-                cell.Border = 0;
-                cell.Colspan = 2;
-                cell.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
-                table.AddCell(cell);
-                table.AddCell("......................................................");
-                table.AddCell("......................................................");
-                table.AddCell("Responsable de Inventario");
-                table.AddCell("Secretaria Administrativa");
-                doc.Add(table);
-
-
-                //Pie de pagina + version
-                #region pie de pagina
-                Paragraph _Piedepagina = new Paragraph();
-                _Piedepagina.Font = FontFactory.GetFont(FontFactory.TIMES, 10f);
-                _Piedepagina.Alignment = Element.ALIGN_RIGHT;
-                _Piedepagina.SpacingBefore = 5;
-                _Piedepagina.Add("Pagina nro: 1");
-
-                doc.Add(_Piedepagina);
-                //armo versionado para los 3 pdf
-                Paragraph _version = new Paragraph();
-                _version.Font = FontFactory.GetFont(FontFactory.TIMES, 10f);
-                _version.Alignment = Element.ALIGN_LEFT;
-
-                switch (l)
-                {
-                    case 0:
-                        _version.Add("Original");
-                        break;
-                    case 1:
-                        _version.Add("Duplicado");
-                        break;
-                    case 2:
-                        _version.Add("Triplicado");
-                        break;
-                    default:
-                        _version.Add("default");
-                        break;
-                }
-                #endregion
-                doc.Add(_version);
-
-                doc.Close();
-                Process.Start(nombre);
-
             }
         }
         //funcion reutilizada para armar celdas en tablas

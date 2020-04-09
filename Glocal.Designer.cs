@@ -40,9 +40,9 @@
             this.lblActivos = new System.Windows.Forms.Label();
             this.dgLocales = new System.Windows.Forms.DataGridView();
             this.btBuscar = new System.Windows.Forms.Button();
-            this.btnEntregar = new System.Windows.Forms.Button();
-            this.cbEntrega = new System.Windows.Forms.ComboBox();
             this.btnConfirmar = new System.Windows.Forms.Button();
+            this.cbEntrega = new System.Windows.Forms.ComboBox();
+            this.btnSalir = new System.Windows.Forms.Button();
             this.lblComprobante = new System.Windows.Forms.Label();
             this.btPicking = new System.Windows.Forms.Button();
             this.lblEntregar = new System.Windows.Forms.Label();
@@ -54,7 +54,7 @@
             // rbEntrega
             // 
             this.rbEntrega.AutoSize = true;
-            this.rbEntrega.Location = new System.Drawing.Point(14, 3);
+            this.rbEntrega.Location = new System.Drawing.Point(3, 3);
             this.rbEntrega.Name = "rbEntrega";
             this.rbEntrega.Size = new System.Drawing.Size(106, 17);
             this.rbEntrega.TabIndex = 0;
@@ -65,7 +65,7 @@
             // rbDevolucion
             // 
             this.rbDevolucion.AutoSize = true;
-            this.rbDevolucion.Location = new System.Drawing.Point(126, 3);
+            this.rbDevolucion.Location = new System.Drawing.Point(168, 5);
             this.rbDevolucion.Name = "rbDevolucion";
             this.rbDevolucion.Size = new System.Drawing.Size(123, 17);
             this.rbDevolucion.TabIndex = 1;
@@ -76,7 +76,7 @@
             // rbAuditoria
             // 
             this.rbAuditoria.AutoSize = true;
-            this.rbAuditoria.Location = new System.Drawing.Point(251, 3);
+            this.rbAuditoria.Location = new System.Drawing.Point(344, 5);
             this.rbAuditoria.Name = "rbAuditoria";
             this.rbAuditoria.Size = new System.Drawing.Size(68, 17);
             this.rbAuditoria.TabIndex = 2;
@@ -89,16 +89,16 @@
             this.panel1.Controls.Add(this.rbEntrega);
             this.panel1.Controls.Add(this.rbAuditoria);
             this.panel1.Controls.Add(this.rbDevolucion);
-            this.panel1.Location = new System.Drawing.Point(12, 12);
+            this.panel1.Location = new System.Drawing.Point(27, 17);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(324, 25);
+            this.panel1.Size = new System.Drawing.Size(489, 25);
             this.panel1.TabIndex = 3;
             // 
             // cbNivel
             // 
             this.cbNivel.Enabled = false;
             this.cbNivel.FormattingEnabled = true;
-            this.cbNivel.Location = new System.Drawing.Point(195, 49);
+            this.cbNivel.Location = new System.Drawing.Point(195, 56);
             this.cbNivel.Name = "cbNivel";
             this.cbNivel.Size = new System.Drawing.Size(152, 21);
             this.cbNivel.TabIndex = 4;
@@ -109,7 +109,7 @@
             // 
             this.cbNumero.Enabled = false;
             this.cbNumero.FormattingEnabled = true;
-            this.cbNumero.Location = new System.Drawing.Point(371, 49);
+            this.cbNumero.Location = new System.Drawing.Point(371, 56);
             this.cbNumero.Name = "cbNumero";
             this.cbNumero.Size = new System.Drawing.Size(145, 21);
             this.cbNumero.TabIndex = 5;
@@ -167,15 +167,15 @@
             this.btBuscar.Visible = false;
             this.btBuscar.Click += new System.EventHandler(this.btBuscar_Click);
             // 
-            // btnEntregar
+            // btnConfirmar
             // 
-            this.btnEntregar.Location = new System.Drawing.Point(1054, 630);
-            this.btnEntregar.Name = "btnEntregar";
-            this.btnEntregar.Size = new System.Drawing.Size(151, 27);
-            this.btnEntregar.TabIndex = 12;
-            this.btnEntregar.Text = "Confirmar";
-            this.btnEntregar.UseVisualStyleBackColor = true;
-            this.btnEntregar.Click += new System.EventHandler(this.btnEntregar_Click);
+            this.btnConfirmar.Location = new System.Drawing.Point(1054, 630);
+            this.btnConfirmar.Name = "btnConfirmar";
+            this.btnConfirmar.Size = new System.Drawing.Size(151, 27);
+            this.btnConfirmar.TabIndex = 12;
+            this.btnConfirmar.Text = "Confirmar";
+            this.btnConfirmar.UseVisualStyleBackColor = true;
+            this.btnConfirmar.Click += new System.EventHandler(this.btnConfirmar_Click);
             // 
             // cbEntrega
             // 
@@ -186,16 +186,16 @@
             this.cbEntrega.Size = new System.Drawing.Size(183, 21);
             this.cbEntrega.TabIndex = 13;
             // 
-            // btnConfirmar
+            // btnSalir
             // 
-            this.btnConfirmar.Location = new System.Drawing.Point(893, 630);
-            this.btnConfirmar.Name = "btnConfirmar";
-            this.btnConfirmar.Size = new System.Drawing.Size(151, 27);
-            this.btnConfirmar.TabIndex = 14;
-            this.btnConfirmar.Text = "Salir";
-            this.btnConfirmar.UseVisualStyleBackColor = true;
-            this.btnConfirmar.Visible = false;
-            this.btnConfirmar.Click += new System.EventHandler(this.btnConfirmar_Click);
+            this.btnSalir.Location = new System.Drawing.Point(893, 630);
+            this.btnSalir.Name = "btnSalir";
+            this.btnSalir.Size = new System.Drawing.Size(151, 27);
+            this.btnSalir.TabIndex = 14;
+            this.btnSalir.Text = "Salir";
+            this.btnSalir.UseVisualStyleBackColor = true;
+            this.btnSalir.Visible = false;
+            this.btnSalir.Click += new System.EventHandler(this.btnSalir_Click);
             // 
             // lblComprobante
             // 
@@ -232,7 +232,7 @@
             // cbEdificio
             // 
             this.cbEdificio.FormattingEnabled = true;
-            this.cbEdificio.Location = new System.Drawing.Point(26, 49);
+            this.cbEdificio.Location = new System.Drawing.Point(26, 56);
             this.cbEdificio.Name = "cbEdificio";
             this.cbEdificio.Size = new System.Drawing.Size(150, 21);
             this.cbEdificio.TabIndex = 18;
@@ -250,9 +250,9 @@
             this.Controls.Add(this.lblEntregar);
             this.Controls.Add(this.btPicking);
             this.Controls.Add(this.lblComprobante);
-            this.Controls.Add(this.btnConfirmar);
+            this.Controls.Add(this.btnSalir);
             this.Controls.Add(this.cbEntrega);
-            this.Controls.Add(this.btnEntregar);
+            this.Controls.Add(this.btnConfirmar);
             this.Controls.Add(this.btBuscar);
             this.Controls.Add(this.dgLocales);
             this.Controls.Add(this.lblActivos);
@@ -287,9 +287,9 @@
         private System.Windows.Forms.Label lblActivos;
         private System.Windows.Forms.DataGridView dgLocales;
         private System.Windows.Forms.Button btBuscar;
-        private System.Windows.Forms.Button btnEntregar;
-        private System.Windows.Forms.ComboBox cbEntrega;
         private System.Windows.Forms.Button btnConfirmar;
+        private System.Windows.Forms.ComboBox cbEntrega;
+        private System.Windows.Forms.Button btnSalir;
         private System.Windows.Forms.Label lblComprobante;
         private System.Windows.Forms.Button btPicking;
         private System.Windows.Forms.Label lblEntregar;
