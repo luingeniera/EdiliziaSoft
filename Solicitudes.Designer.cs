@@ -37,6 +37,7 @@
             this.ClientSize = new System.Drawing.Size(1054, 543);
             this.Name = "Solicitudes";
             this.Text = "Solicitudes";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.ResumeLayout(false);
 
         }

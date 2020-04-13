@@ -135,7 +135,7 @@ private void btnBuscar_Click(object sender, EventArgs e)
 
 //}
 
-while (dgvDiferencias.RowCount >= 1)
+while (dgvDiferencias.RowCount > 1)
 {
     dgvDiferencias.Rows.Remove(dgvDiferencias.CurrentRow);
 

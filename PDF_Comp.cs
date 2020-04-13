@@ -161,18 +161,34 @@ namespace WindowsFormsApplication1
                 //comienzo mostrado elementos en verde
                 //string green = "SELECT * FROM edilizia.bienes_pdf where Semaforo =1 and id =" + comprobante.ToString();
                 string green = "";
+                string cantgreen = "";
+
                 if (TipoComp != "ENT")
-                    green = "SELECT a.code as Referencia, a.description as 'Nombre de Activo', ast.description as Estado, " +
-                    "ast.description as 'Estado Obs', r.code as Local, '' as Eval, art.observation as Observaciones " +
-                    "FROM edilizia.assets_room_transaction art INNER JOIN edilizia.assets a on a.id_assets = art.id_Asset " +
-                    "INNER JOIN edilizia.assets_status ast on ast.idstatus = art.delivery_status " +
-                    "INNER JOIN edilizia.rooms r on art.id_Room = r.idRooms where art.idtransaction =" + comprobante.ToString() + " order by art.color, a.code";
+                { green = "SELECT a.code as Referencia, a.description as 'Nombre de Activo', ast.description as Estado, " +
+                   "ast.description as 'Estado Obs', r.code as Local, '' as Eval, art.observation as Observaciones " +
+                   "FROM edilizia.assets_room_transaction art INNER JOIN edilizia.assets a on a.id_assets = art.id_Asset " +
+                   "INNER JOIN edilizia.assets_status ast on ast.idstatus = art.delivery_status " +
+                   "INNER JOIN edilizia.rooms r on art.id_Room = r.idRooms where art.idtransaction =" + comprobante.ToString() + " order by art.color, a.code";
+                    // aca cuento cantidad para mostrar o no la tabla
+                    cantgreen = "SELECT count(*) as cant  FROM edilizia.assets_room_transaction art INNER JOIN edilizia.assets a on a.id_assets = art.id_Asset " +
+                        "INNER JOIN edilizia.assets_status ast on ast.idstatus = art.delivery_status " +
+                        "INNER JOIN edilizia.rooms r on art.id_Room = r.idRooms where art.idtransaction =" + comprobante.ToString() + " order by art.color, a.code";
+                }
+
                 else
+                { 
                     green = "SELECT a.code as Referencia, a.description as 'Nombre de Activo', ast.description as Estado, " +
                     "ast.description as 'Estado Obs', r.code as Local, '' as Eval, art.observation as Observaciones " +
                     "FROM edilizia.assets_room_transaction art INNER JOIN edilizia.assets a on a.id_assets = art.id_Asset " +
                     "INNER JOIN edilizia.assets_status ast on ast.idstatus = art.delivery_status " +
                     "INNER JOIN edilizia.rooms r on art.id_Room = r.idRooms where art.color = 1 and art.idtransaction =" + comprobante.ToString() + " order by art.color, a.code";
+                // aca cuento cantidad para mostrar o no la tabla
+                cantgreen = "SELECT count(*) as cant FROM edilizia.assets_room_transaction art INNER JOIN edilizia.assets a on a.id_assets = art.id_Asset " +
+                    "INNER JOIN edilizia.assets_status ast on ast.idstatus = art.delivery_status " +
+                    "INNER JOIN edilizia.rooms r on art.id_Room = r.idRooms where art.color = 1 and art.idtransaction =" + comprobante.ToString() + " order by art.color, a.code";
+
+                }
+
 
                 MySqlDataReader Rgreen = DB.GetData(green);
                 DataTable DTVerde = new DataTable();
@@ -184,8 +200,19 @@ namespace WindowsFormsApplication1
                 Tverde.HorizontalAlignment = Element.ALIGN_CENTER;
                 Tverde.DefaultCell.VerticalAlignment = Element.ALIGN_CENTER;
 
-                //titulos
-                for (int i = 0; i < DTVerde.Columns.Count; i++)
+                // valido si hay verdes sino no pongo tabla - definido marzo 2020 Wup
+
+                MySqlDataReader Cantverde = DB.GetData(cantgreen);
+
+              if(  Cantverde.Read())
+                { 
+
+                if (Cantverde["cant"].ToString() != "0")
+                {
+                
+
+                    //titulos
+                    for (int i = 0; i < DTVerde.Columns.Count; i++)
                 {
                     Tverde.AddCell(new Phrase(DTVerde.Columns[i].ToString()));
                 }
@@ -209,11 +236,20 @@ namespace WindowsFormsApplication1
 
 
                     }
-                    //   DTVerde.Rows[i]["Eval"] = ' ';
+
+                    
+                }
+                    doc.Add(Tverde);
+                }
+                else
+                {
+                    doc.Add(new Paragraph("No hay bienes para enlistar\n"));
                 }
 
-                doc.Add(Tverde);
+                }
+
                 #endregion
+
                 //agrego la firma
                 //Paragraph _firmas = new Paragraph();
                 //_firmas.Font = FontFactory.GetFont(FontFactory.TIMES, 10f);
@@ -267,10 +303,12 @@ namespace WindowsFormsApplication1
                       "where art.color <> 1 and art.idtransaction =" + comprobante.ToString() + " order by art.color, a.code";
 
                         MySqlDataReader cuentaDif = DB.GetData(diferencias);
-                        
 
-                        // si tiene diferencias imprimo dicha parte sino no.
-                        if (cuentaDif["cant"].ToString() != "0")
+
+                        // si tiene diferencias ( rojas o amarillas) imprimo dicha parte sino no.
+
+                        if (cuentaDif.Read()) { 
+                        if (  cuentaDif["cant"].ToString() != "0")
                         {
                             DataTable DTDif = new DataTable();
                             DTDif.Load(cuentaDif);
@@ -278,11 +316,14 @@ namespace WindowsFormsApplication1
                             doc.Add(new Paragraph("\nLos siguientes bienes no serán asignados bajo la reponsabilidad de " + responsable + " por no haberse encontrado fisícamente en el local o por diferir sus estados.\n"));
 
                             doc.Add(new Paragraph("\n"));
+                          
                             //titulos
                             for (int i = 0; i < DTy.Columns.Count; i++)
                             {
                                 Tyellow.AddCell(new Phrase(DTy.Columns[i].ToString()));
                             }
+                            
+                            
                             // valores
                             for (int i = 0; i < DTy.Rows.Count; i++)
                             {
@@ -305,6 +346,7 @@ namespace WindowsFormsApplication1
 
 
                                 doc.Add(Tyellow);
+                            }
                             }
                             #endregion
 
