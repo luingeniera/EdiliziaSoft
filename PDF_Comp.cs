@@ -164,7 +164,7 @@ namespace WindowsFormsApplication1
                 string cantgreen = "";
 
                 if (TipoComp != "ENT")
-<<<<<<< HEAD
+                
                 { green = "SELECT a.code as Referencia, a.description as 'Nombre de Activo', ast.description as Estado, " +
                    "ast.description as 'Estado Obs', r.code as Local, '' as Eval, art.observation as Observaciones " +
                    "FROM edilizia.assets_room_transaction art INNER JOIN edilizia.assets a on a.id_assets = art.id_Asset " +
@@ -176,13 +176,8 @@ namespace WindowsFormsApplication1
                         "INNER JOIN edilizia.rooms r on art.id_Room = r.idRooms where art.idtransaction =" + comprobante.ToString() + " order by art.color, a.code";
                 }
 
-=======
-                    green = "SELECT a.code as Referencia, a.description as 'Nombre de Activo', ast.description as Estado, " +
-                    "ast.description as 'Estado Obs', r.code as Local, '' as Eval, art.observation as Observaciones " +
-                    "FROM edilizia.assets_room_transaction art INNER JOIN edilizia.assets a on a.id_assets = art.id_Asset " +
-                    "INNER JOIN edilizia.assets_status ast on ast.idstatus = art.delivery_status " +
-                    "INNER JOIN edilizia.rooms r on art.id_Room = r.idRooms where art.color = 1 and art.idtransaction =" + comprobante.ToString() + " order by art.color, a.code";
->>>>>>> fab0595df86f0a10f635063efeb375f8b3b75f59
+
+    
                 else
                 { 
                     green = "SELECT a.code as Referencia, a.description as 'Nombre de Activo', ast.description as Estado, " +
@@ -276,8 +271,8 @@ namespace WindowsFormsApplication1
                 doc.Add(tableR);
 
 
-                //if (TipoComp != "AUD")
-                //{
+                if (TipoComp != "AUD")
+                {
                 if (l != 0) // pedido 30/01  de que en original no salga amarillos y rojos
                 {
 
@@ -310,97 +305,95 @@ namespace WindowsFormsApplication1
                   "INNER JOIN edilizia.assets_room_transaction art on d.idComprobante = art.idtransaction and d.idBien = art.id_Asset " +
                   "where art.color <> 1 and art.idtransaction =" + comprobante.ToString() + " order by art.color, a.code";
 
-<<<<<<< HEAD
+
                         MySqlDataReader cuentaDif = DB.GetData(diferencias);
 
 
-                        // si tiene diferencias ( rojas o amarillas) imprimo dicha parte sino no.
+                    // si tiene diferencias ( rojas o amarillas) imprimo dicha parte sino no.
 
-                        if (cuentaDif.Read()) { 
-                        if (  cuentaDif["cant"].ToString() != "0")
-=======
-                    MySqlDataReader cuentaDif = DB.GetData(diferencias);
-
-                    // si tiene diferencias imprimo dicha parte sino no.
-                    //if (cuentaDif["cant"].ToString() != "0")
-                    //{
-                    if (cuentaDif.HasRows)
+                    if (cuentaDif.Read())
                     {
-                        DataTable DTDif = new DataTable();
-                        DTDif.Load(cuentaDif);
-                        if (DTDif.Rows[0][0].ToString() != "0")
->>>>>>> fab0595df86f0a10f635063efeb375f8b3b75f59
-                        {
-                            doc.Add(new Paragraph("\nLos siguientes bienes no serán asignados bajo la reponsabilidad de " + responsable + " por no haberse encontrado fisícamente en el local o por diferir sus estados.\n"));
-
-                            doc.Add(new Paragraph("\n"));
-                          
-                            //titulos
-                            for (int i = 0; i < DTy.Columns.Count; i++)
-                            {
-                                Tyellow.AddCell(new Phrase(DTy.Columns[i].ToString()));
-                            }
-                            
-                            
-                            // valores
-                            for (int i = 0; i < DTy.Rows.Count; i++)
-                            {
-                                for (int j = 0; j < DTy.Columns.Count; j++)
+                     
+                                // si tiene diferencias imprimo dicha parte sino no.
+                                if (cuentaDif["cant"].ToString() != "0")
                                 {
-                                    // this.celdas(Tyellowred, DTyr.Rows[i][j].ToString(), DTyr.Rows[i][j].ToString());
-                                    if (DTy.Columns[j].ColumnName == "Eval")
+                            
+                                DataTable DTDif = new DataTable();
+                                DTDif.Load(cuentaDif);
+                                if (DTDif.Rows[0][0].ToString() != "0")
+
+                                {
+                                    doc.Add(new Paragraph("\nLos siguientes bienes no serán asignados bajo la reponsabilidad de " + responsable + " por no haberse encontrado fisícamente en el local o por diferir sus estados.\n"));
+
+                                    doc.Add(new Paragraph("\n"));
+
+                                    //titulos
+                                    for (int i = 0; i < DTy.Columns.Count; i++)
                                     {
-                                        //DTVerde.Columns[j].ColumnName = "Eval")
-                                        this.celdas(Tyellow, DTy.Rows[i][j].ToString(), "2");
+                                        Tyellow.AddCell(new Phrase(DTy.Columns[i].ToString()));
                                     }
-                                    else
+
+
+                                    // valores
+                                    for (int i = 0; i < DTy.Rows.Count; i++)
                                     {
-                                        this.celdas(Tyellow, DTy.Rows[i][j].ToString(), "0");
+                                        for (int j = 0; j < DTy.Columns.Count; j++)
+                                        {
+                                            // this.celdas(Tyellowred, DTyr.Rows[i][j].ToString(), DTyr.Rows[i][j].ToString());
+                                            if (DTy.Columns[j].ColumnName == "Eval")
+                                            {
+                                                //DTVerde.Columns[j].ColumnName = "Eval")
+                                                this.celdas(Tyellow, DTy.Rows[i][j].ToString(), "2");
+                                            }
+                                            else
+                                            {
+                                                this.celdas(Tyellow, DTy.Rows[i][j].ToString(), "0");
+                                            }
+                                        }
+                                        doc.Add(Tyellow);
                                     }
                                 }
-                                doc.Add(Tyellow);
-                            }
-                            }
-                            #endregion
+                                #endregion
 
-                            string red = "SELECT  a.code as Referencia, a.description as 'Nombre de Activo', ast.description as Estado, " +
-                            "astObs.description as 'Estado Obs',r.code as Local, '' as Eval, art.observation as Observaciones FROM edilizia.diferences d " +
-                            "INNER JOIN edilizia.assets a on a.id_assets = d.idBien INNER JOIN edilizia.assets_status ast on ast.idstatus = ifnull(d.idEstadoOrig,a.idStatus) " +
-                            "LEFT JOIN  edilizia.assets_status astObs on astObs.idstatus = d.idEstadoObs INNER JOIN edilizia.rooms r on d.idLocalPicking = r.idRooms " +
-                            "INNER JOIN edilizia.assets_room_transaction art on d.idComprobante = art.idtransaction and d.idBien = art.id_Asset " +
-                            "where art.color = 3 and art.idtransaction =" + comprobante.ToString() + " order by art.color, a.code";
+                                string red = "SELECT  a.code as Referencia, a.description as 'Nombre de Activo', ast.description as Estado, " +
+                                "astObs.description as 'Estado Obs',r.code as Local, '' as Eval, art.observation as Observaciones FROM edilizia.diferences d " +
+                                "INNER JOIN edilizia.assets a on a.id_assets = d.idBien INNER JOIN edilizia.assets_status ast on ast.idstatus = ifnull(d.idEstadoOrig,a.idStatus) " +
+                                "LEFT JOIN  edilizia.assets_status astObs on astObs.idstatus = d.idEstadoObs INNER JOIN edilizia.rooms r on d.idLocalPicking = r.idRooms " +
+                                "INNER JOIN edilizia.assets_room_transaction art on d.idComprobante = art.idtransaction and d.idBien = art.id_Asset " +
+                                "where art.color = 3 and art.idtransaction =" + comprobante.ToString() + " order by art.color, a.code";
 
-                            MySqlDataReader Rr = DB.GetData(red);
-                            DataTable DTr = new DataTable();
-                            DTr.Load(Rr);
+                                MySqlDataReader Rr = DB.GetData(red);
+                                DataTable DTr = new DataTable();
+                                DTr.Load(Rr);
 
-                            #region tabla cabecera
-                            PdfPTable Tred = new PdfPTable(DTr.Columns.Count);
-                            Tred.WidthPercentage = 100;
-                            Tred.HorizontalAlignment = Element.ALIGN_CENTER;
-                            Tred.DefaultCell.VerticalAlignment = Element.ALIGN_CENTER;
-                            #region valores
-                            // valores
-                            for (int i = 0; i < DTr.Rows.Count; i++)
-                            {
-                                for (int j = 0; j < DTr.Columns.Count; j++)
+                                #region tabla cabecera
+                                PdfPTable Tred = new PdfPTable(DTr.Columns.Count);
+                                Tred.WidthPercentage = 100;
+                                Tred.HorizontalAlignment = Element.ALIGN_CENTER;
+                                Tred.DefaultCell.VerticalAlignment = Element.ALIGN_CENTER;
+                                #region valores
+                                // valores
+                                for (int i = 0; i < DTr.Rows.Count; i++)
                                 {
-                                    // this.celdas(Tyellowred, DTyr.Rows[i][j].ToString(), DTyr.Rows[i][j].ToString());
-                                    if (DTr.Columns[j].ColumnName == "Eval")
+                                    for (int j = 0; j < DTr.Columns.Count; j++)
                                     {
-                                        //DTVerde.Columns[j].ColumnName = "Eval")
-                                        this.celdas(Tred, DTr.Rows[i][j].ToString(), "3");
-                                    }
-                                    else
-                                    {
-                                        this.celdas(Tred, DTr.Rows[i][j].ToString(), "0");
+                                        // this.celdas(Tyellowred, DTyr.Rows[i][j].ToString(), DTyr.Rows[i][j].ToString());
+                                        if (DTr.Columns[j].ColumnName == "Eval")
+                                        {
+                                            //DTVerde.Columns[j].ColumnName = "Eval")
+                                            this.celdas(Tred, DTr.Rows[i][j].ToString(), "3");
+                                        }
+                                        else
+                                        {
+                                            this.celdas(Tred, DTr.Rows[i][j].ToString(), "0");
+                                        }
                                     }
                                 }
+                                doc.Add(Tred);
+                                #endregion
                             }
-                            doc.Add(Tred);
                             #endregion
                         }
-                        #endregion
                     }
 
                     PdfPTable table = new PdfPTable(2);
@@ -453,7 +446,8 @@ namespace WindowsFormsApplication1
                     Process.Start(nombre);
                 }
             }
-        }
+            }
+        
         //funcion reutilizada para armar celdas en tablas
         private void celdas(PdfPTable tabla, String strText, string color)
         {
