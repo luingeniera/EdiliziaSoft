@@ -33,9 +33,17 @@ namespace WindowsFormsApplication1
                 "INNER JOIN edilizia.users u on u.idUsers = rbu.id_user_responsible where t.idtransaction = " + comprobante.ToString();
 
                 String tipo = "SELECT bookcode FROM edilizia.transaction where idtransaction = " + comprobante.ToString();
-
+                
                 MySqlDataReader RTipo = DB.GetData(tipo);
+                RTipo.Read();
 
+                if (RTipo.GetString(0) == "DEV")
+                {
+                    Movimiento = " SELECT distinct r.code, r.description,CONCAT(u.last_name,', ',u.name) as Responsable, " +
+                    "CONCAT(t.bookCode,' - ',t.bookNumber) as Comp,DATE_FORMAT(t.date,'%d/%m/%Y') as date FROM edilizia.transaction t INNER JOIN edilizia.assets_room_transaction art ON t.idtransaction = art.idtransaction " +
+                    "INNER JOIN edilizia.rooms r on art.id_Room = r.idRooms INNER JOIN edilizia.rooms_by_users rbu on rbu.id_room = r.idRooms " +
+                    "INNER JOIN edilizia.users u on u.idUsers = rbu.id_user_owner where t.idtransaction = " + comprobante.ToString();
+                }
                 MySqlDataReader RComp = DB.GetData(Movimiento);
                 DataTable dtmovi = new DataTable();
                 dtmovi.Load(RComp);

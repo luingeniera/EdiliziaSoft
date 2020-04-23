@@ -344,7 +344,7 @@ namespace WindowsFormsApplication1
                         string Status = "";
                         string idAsset = "";
                         string observaciones = "";
-                        if ((rbEntrega.Checked == true && dgLocales["Estado Obs.", j].Value != null) || rbAuditoria.Checked == true)
+                        if ((rbEntrega.Checked == true && dgLocales["Estado Obs.", j].Value != null) || rbAuditoria.Checked == true || (rbDevolucion.Checked == true && dgLocales["Estado Obs.", j].Value != null))
                         {
                             idAsset = dgLocales["idAsset", j].Value.ToString();
                             if (rbAuditoria.Checked != true)
@@ -431,7 +431,7 @@ namespace WindowsFormsApplication1
                                 " values (" + IDTransaction + ", " + dgLocales["idAsset", j].Value.ToString() + ", " + dgLocales["idRoom", j].Value.ToString() + ", '1','3','','')";
                                 //En la grilla deberia guardar el idStatus del bien y ocultarlo. Ojo q me cambia el for
                                 long idDifference = DB.InsertData(sql);
-                            }
+                            }                            
                         }
                     }
                     //}
