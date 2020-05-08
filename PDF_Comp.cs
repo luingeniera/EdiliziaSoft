@@ -279,9 +279,10 @@ namespace WindowsFormsApplication1
                 doc.Add(tableR);
 
 
-                if (TipoComp != "AUD")
+                //pedido 22&04 que no discrimine auditoria.CAMBIAR
+                if (TipoComp != "AUD") 
                 {
-                if (l != 0) // pedido 30/01  de que en original no salga amarillos y rojos
+                if (l != 0) // pedido 30/01  de que en original no salga amarillos y rojos ...en entrega
                 {
 
                     //string yellow = "SELECT * FROM edilizia.assets_room_transaction where color <> 1 and idtransaction =" + comprobante.ToString();
@@ -453,6 +454,8 @@ namespace WindowsFormsApplication1
                     doc.Close();
                     Process.Start(nombre);
                 }
+
+
             }
             }
         
