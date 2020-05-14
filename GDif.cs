@@ -547,7 +547,7 @@ namespace WindowsFormsApplication1
                     //actualizo el local en tabla de bienes por local
                     string updateassetbyrrom = "update edilizia.assets_by_room set idroom =" + idlocalfinal + " where idasset = (select idbien from edilizia.diferences where idDiferences = " + dgvDiferencias[12, i].Value.ToString() + ")";
                     //actualizo el comprobante
-                    string updateassetstatus = "update edilizia.assets_room_transaction set delivery_status = " + idestadofinal + " where id_Asset = (select idComprobante from edilizia.diferences where idDiferences = " + dgvDiferencias[12, i].Value.ToString() + ")   and idtransaction = (select idbien from edilizia.diferences where idDiferences = " + dgvDiferencias[12, i].Value.ToString() + ")";
+                    string updateassetstatus = "update edilizia.assets_room_transaction set color = '1' ,  delivery_status = " + idestadofinal + " where id_Asset = (select idbien from edilizia.diferences where idDiferences = " + dgvDiferencias[12, i].Value.ToString() + ")   and idtransaction = (select idComprobante from edilizia.diferences where idDiferences = " + dgvDiferencias[12, i].Value.ToString() + ")";
                     
                     
                     //habria que ver si necesita hacer un rollback completo por las tres tansacci
@@ -555,9 +555,33 @@ namespace WindowsFormsApplication1
                     DB.GetData(updatediferencias);
                     DB.GetData(updateassetbyrrom);
                     DB.GetData(updateassetstatus);
+
+
+                    // valido momento a momento si puedo actualizar 
+                    string actualizartransaccion ="SELECT count(*) as cuenta FROM edilizia.assets_room_transaction where color <> 1 and idtransaction =  (select idComprobante from edilizia.diferences where idDiferences = " + dgvDiferencias[12, i].Value.ToString() + ")";
+
+                    MySqlDataReader count = DB.GetData(actualizartransaccion);
+
+
+                    string cuenta = "";
+                    if (count.Read())
+                    {  cuenta = count["cuenta"].ToString(); }
+
+                    // chequeo si la transaccion esta para ser aprobada y lo pasamos a estado 3 que es cuando esta aprobada
+                   if (cuenta == "0")
+                    {
+
+                        string actualizartransacciones = "update edilizia.transaction set idTransaction_status = 3  where idtransaction = (select idComprobante from edilizia.diferences where idDiferences = " + dgvDiferencias[12, i].Value.ToString() + ")";
+                        DB.GetData(actualizartransacciones);
+
+                    }
                     MessageBox.Show("Se saldaron las diferencias cargadas");
 
                     #endregion
+
+                   
+
+                
                 }
 
 
@@ -575,6 +599,10 @@ namespace WindowsFormsApplication1
                     }
 
                 }
+
+
+
+
 
             }
         }
