@@ -17,8 +17,6 @@ namespace WindowsFormsApplication1
         public GDif()
         {
             InitializeComponent();
-
-
         }
 
         private void GDif_Load(object sender, EventArgs e)
@@ -32,7 +30,7 @@ namespace WindowsFormsApplication1
             MySqlDataReader drReposnsable = DB.GetData("SELECT concat(last_name, ', ', name) as 'Responsable', u.idUsers  FROM edilizia.users u inner JOIN rooms_by_users rbu on u.idUsers = rbu.id_user_responsible; ");
             MySqlDataReader drNroloc = DB.GetData("select  distinct number as Nivel from edilizia.rooms;");
             MySqlDataReader drLocal = DB.GetData("select CONCAT('[',rooms.code,'] - ', rooms.description) as 'Local'  from edilizia.rooms;");
-            //  MySqlDataReader drLevel = DB.GetData("select distinct level from rooms");
+           
             MySqlDataReader drNroComp = DB.GetData("SELECT booknumber as NroComprobante FROM edilizia.transaction;");
             MySqlDataReader drEdificio = DB.GetData("select distinct description from buildings");
 
@@ -49,35 +47,7 @@ namespace WindowsFormsApplication1
                 }
             }
 
-            #region level y local desde base
-            /*
-
-            if (drNroloc.HasRows)
-            {
-                DataTable dt = new DataTable();
-                dt.Load(drNroloc);
-                for (int i = 0; i < dt.Rows.Count; i++)
-                {
-                    cbNumero.ValueMember = "Valor";
-                    cbNumero.DisplayMember = "Nivel";
-                    cbNumero.Items.Add(dt.Rows[i][0]);
-                }
-            }
-
-            
-            if (drLevel.HasRows)
-            {
-                DataTable dt = new DataTable();
-                dt.Load(drLevel);
-                for (int i = 0; i < dt.Rows.Count; i++)
-                {
-                    cbNivel.ValueMember = "Valor";
-                    cbNivel.DisplayMember = "Nivel";
-                    cbNivel.Items.Add(dt.Rows[i][0]);
-                }
-            }
-             */
-            #endregion
+           
 
             if (drLocal.HasRows)
             {
@@ -124,16 +94,6 @@ namespace WindowsFormsApplication1
         private void btnBuscar_Click(object sender, EventArgs e)
         {
 
-            // falta ver como limpio y vuelvo a cargar
-
-
-            //btnBuscar.Enabled = false;
-            //while (dgvDiferencias.RowCount > 1)
-            //{
-
-            //    dgvDiferencias.Rows.Remove(dgvDiferencias.CurrentRow);
-
-            //}
 
             while (dgvDiferencias.RowCount > 1)
             {
@@ -241,9 +201,7 @@ namespace WindowsFormsApplication1
                 { col3.ReadOnly = false; }
 
 
-
-
-
+                
                 dgvDiferencias.Columns.Insert(5, col);
                 dgvDiferencias.Columns.Insert(6, col1);
                 dgvDiferencias.Columns.Insert(9, col2);
@@ -316,30 +274,13 @@ namespace WindowsFormsApplication1
 
         }
 
-        private void dthasta_ValueChanged(object sender, EventArgs e)
-        {
-            dthasta.CustomFormat = "yyyyMMdd";
-        }
-
-        private void dtdesde_ValueChanged(object sender, EventArgs e)
-        {
-            dtdesde.CustomFormat = "yyyyMMdd";
-        }
-
-        void grouper_DisplayGroup(object sender, Subro.Controls.GroupDisplayEventArgs e)
-        {
-            e.BackColor = (e.Group.GroupIndex % 2) == 0 ? Color.Blue : Color.LightBlue;
-            e.Header = "[" + e.Header + "], grp: " + e.Group.GroupIndex;
-            e.DisplayValue = "Value is " + e.DisplayValue;
-            e.Summary = "contains " + e.Group.Count + " rows";
-        }
-
-        private void dgvDiferencias_CellClick(object sender, DataGridViewCellEventArgs e)
+        private void dgvDiferencias_CellClick_1(object sender, DataGridViewCellEventArgs e)
         {
 
 
             if (e.RowIndex >= 0 & e.ColumnIndex >= 0)
             {
+
 
                 // reviso si las celdas son distintas para poder marcar cual quiero sino no no dejo editar
                 if (dgvDiferencias[4, e.RowIndex].Value.ToString() != dgvDiferencias[7, e.RowIndex].Value.ToString())
@@ -373,8 +314,24 @@ namespace WindowsFormsApplication1
 
             }
         }
+        private void dthasta_ValueChanged(object sender, EventArgs e)
+        {
+            dthasta.CustomFormat = "yyyyMMdd";
+        }
 
+        private void dtdesde_ValueChanged(object sender, EventArgs e)
+        {
+            dtdesde.CustomFormat = "yyyyMMdd";
+        }
 
+        void grouper_DisplayGroup(object sender, Subro.Controls.GroupDisplayEventArgs e)
+        {
+            e.BackColor = (e.Group.GroupIndex % 2) == 0 ? Color.Blue : Color.LightBlue;
+            e.Header = "[" + e.Header + "], grp: " + e.Group.GroupIndex;
+            e.DisplayValue = "Value is " + e.DisplayValue;
+            e.Summary = "contains " + e.Group.Count + " rows";
+        }
+            
         private void dgvDiferencias_Sorted(object sender, EventArgs e)
         {
 
@@ -506,7 +463,7 @@ namespace WindowsFormsApplication1
             //recorro todos las filas de la grilla
             for (int i = 0; i <= dgvDiferencias.Rows.Count - 2; i++)
             {
-
+                
                 //tengo que buscar valores que estan tildados.
                 //PRINERO LOCAL /// 4 local original 7 local observado 5 y 6 contienen los tildes
                 DBConnection DB = new DBConnection();
@@ -520,21 +477,12 @@ namespace WindowsFormsApplication1
                     #region saldo diferencia
 
 
-                    //si son iguales da lo mismo cual de los dos busque por que son iguales
-                    //    if (dgvDiferencias[5, i].Value.ToString() == dgvDiferencias[6, i].Value.ToString())
-                    //{
-                    //    string sqlroom = "select idRooms from edilizia.rooms where description = ' "+ dgvDiferencias[4, i].Value.ToString() + "'";
 
-                    //    MySqlDataReader idroom = DB.GetData(sqlroom);
-                    //    if (idroom.Read())
-                    //    {
-                    //        idlocalfinal = idroom["idRooms"].ToString();
-                    //    }
-                    //}
+                    if (dgvDiferencias.Rows[i].Cells[5].Value == null) { dgvDiferencias.Rows[i].Cells[5].Value = false; };
 
-                    //else
-                    //   //sino pregunto si el original esta tildado
-                    //  CheckBox ls = dgvDiferencias[5, i].Value.;
+                    if (dgvDiferencias.Rows[i].Cells[6].Value == null) { dgvDiferencias.Rows[i].Cells[5].Value = false; };
+
+
                     string idlocalfinal = " ";
                     if (dgvDiferencias[5, i].Value.ToString() == "True")
                     {
@@ -561,23 +509,14 @@ namespace WindowsFormsApplication1
 
 
 
-                    //si son iguales da lo mismo cual de los dos busque por que son iguales
-                    // 8 estado sistema 11 estado observado , 9 y 10 contienen los tildes
-                    //if (dgvDiferencias[9, i].Value.ToString() == dgvDiferencias[10, i].Value.ToString())
-                    //{
-                    //    string sqlroom = "SELECT idstatus FROM edilizia.assets_status where description =' " + dgvDiferencias[8, i].Value.ToString() + "'";
+                    //valido que alo que esta en nulo le pongo falso sino pincha
+                    if (dgvDiferencias.Rows[i].Cells[9].Value == null) { dgvDiferencias.Rows[i].Cells[9].Value = false; };
+                    if (dgvDiferencias.Rows[i].Cells[10].Value == null) { dgvDiferencias.Rows[i].Cells[10].Value = false; };
 
-                    //    MySqlDataReader idestado = DB.GetData(sqlroom);
-                    //    if (idestado.Read())
-                    //    { idestadofinal = idestado["idstatus"].ToString(); }
 
-                    //}
-
-                    //else
-                    //sino pregunto si el original esta tildado
                     //ESTADO FINAL
                     string idestadofinal = " ";
-                    if (dgvDiferencias[9, i].Value.ToString() == "True")
+                    if (dgvDiferencias[9, i].Value.ToString() == "True" )
                     {
                         #region estado por sistema
                         //busco el id del original
@@ -607,9 +546,11 @@ namespace WindowsFormsApplication1
                     string updatediferencias = "update edilizia.diferences set fechagestiondiferencia = now(), idlocalFinal=" + idlocalfinal + " , idestadofinal=" + idestadofinal + "  where idDiferences= " + dgvDiferencias[12, i].Value.ToString();
                     //actualizo el local en tabla de bienes por local
                     string updateassetbyrrom = "update edilizia.assets_by_room set idroom =" + idlocalfinal + " where idasset = (select idbien from edilizia.diferences where idDiferences = " + dgvDiferencias[12, i].Value.ToString() + ")";
-
-                    string updateassetstatus = "update edilizia.assets_room_transaction set delivery_status = " + idestadofinal + "where id_Asset = (select idComprobante from edilizia.diferences where idDiferences = " + dgvDiferencias[12, i].Value.ToString() + ")   and idtransaction = (select idbien from edilizia.diferences where idDiferences = " + dgvDiferencias[12, i].Value.ToString() + ")";
-                    //
+                    //actualizo el comprobante
+                    string updateassetstatus = "update edilizia.assets_room_transaction set delivery_status = " + idestadofinal + " where id_Asset = (select idComprobante from edilizia.diferences where idDiferences = " + dgvDiferencias[12, i].Value.ToString() + ")   and idtransaction = (select idbien from edilizia.diferences where idDiferences = " + dgvDiferencias[12, i].Value.ToString() + ")";
+                    
+                    
+                    //habria que ver si necesita hacer un rollback completo por las tres tansacci
 
                     DB.GetData(updatediferencias);
                     DB.GetData(updateassetbyrrom);
@@ -625,9 +566,7 @@ namespace WindowsFormsApplication1
 
                 // si todo nulo quiere decir q no hizo nada sobre la linea
                 {
-                    if ((dgvDiferencias.Rows[i].Cells[5].Value == null && dgvDiferencias.Rows[i].Cells[6].Value == null) &&
-
-                         (dgvDiferencias.Rows[i].Cells[9].Value == null && dgvDiferencias.Rows[i].Cells[10].Value == null))
+                    if ((dgvDiferencias.Rows[i].Cells[5].Value == null && dgvDiferencias.Rows[i].Cells[6].Value == null) &&  (dgvDiferencias.Rows[i].Cells[9].Value == null && dgvDiferencias.Rows[i].Cells[10].Value == null))
                     { }
 
                     else
@@ -640,6 +579,7 @@ namespace WindowsFormsApplication1
             }
         }
 
+      
     }
     }
 

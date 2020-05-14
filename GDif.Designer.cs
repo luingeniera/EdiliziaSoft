@@ -261,6 +261,7 @@
             this.dgvDiferencias.RowTemplate.Height = 24;
             this.dgvDiferencias.Size = new System.Drawing.Size(1082, 262);
             this.dgvDiferencias.TabIndex = 45;
+            this.dgvDiferencias.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDiferencias_CellClick_1);
             // 
             // cbReimprimir
             // 

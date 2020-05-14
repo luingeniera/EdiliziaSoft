@@ -67,14 +67,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="IntegracionCRM.exe" size="1068944">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="IntegracionCRM.exe" size="1069456">
       <assemblyIdentity name="IntegracionCRM" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>UcWGewI+D6S9HIRVppsLrPjIpz4thHKxoC4GQNobdSo=</dsig:DigestValue>
+        <dsig:DigestValue>6kBgWYV3p8vD0foHUCPlWPlmaJh2ZlR+iRflTZzs7y4=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
