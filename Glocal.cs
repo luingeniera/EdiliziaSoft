@@ -21,9 +21,8 @@ namespace WindowsFormsApplication1
         private BindingSource bindingSource1 = new BindingSource();
         public DataTable dtReturnPicking { get; set; }
         private DataTable dataTableDgLocales;
-        //private SqlDataAdapter dataAdapter = new SqlDataAdapter();
-        //private MySqlDataReader dataReader;
         private int IdRoomSelected;
+        private string CodeLastTransaction;
         WindowsFormsApplication1.DBConnection DB = new WindowsFormsApplication1.DBConnection();
         public Glocal()
         {
@@ -73,7 +72,7 @@ namespace WindowsFormsApplication1
                 //Busco cual es el ultimo comprobante generado para el local, exceptuando auditorias.
                 string LastTransaction = "";
                 LastTransaction = "SELECT t.bookCode FROM edilizia.assets_room_transaction art inner join edilizia.transaction t on art.idtransaction = t.idtransaction " +
-                " inner join rooms r on r.idRooms = art.id_Room inner join buildings b on b.idbuilding = r.buildings where t.bookCode <> 'AUD' and r.level='" + cbNivel.SelectedItem + "' and r.number=" + cbNumero.SelectedItem + 
+                " inner join rooms r on r.idRooms = art.id_Room inner join buildings b on b.idbuilding = r.buildings where t.bookCode <> 'AUD' and r.level='" + cbNivel.SelectedItem + "' and r.number=" + cbNumero.SelectedItem +
                 " and b.description ='" + cbEdificio.SelectedItem + "' order by t.idtransaction desc limit 1 ";
 
                 MySqlDataReader dataReaderLastTrans = DB.GetData(LastTransaction);
@@ -81,8 +80,8 @@ namespace WindowsFormsApplication1
                 {
                     DataTable dtInfoLastTran = new DataTable();
                     dtInfoLastTran.Load(dataReaderLastTrans);
-
-                    if (TipoComprobante == "ENT" && dtInfoLastTran.Rows[0][0].ToString() == "ENT")
+                    CodeLastTransaction = dtInfoLastTran.Rows[0][0].ToString();
+                    if (TipoComprobante == "ENT" && CodeLastTransaction == "ENT")
                     {
                         MessageBox.Show("Este local ya presenta una entrega vigente. Debe realizar otro tipo de transacción.");
                         btnConfirmar.Visible = false;
@@ -90,10 +89,16 @@ namespace WindowsFormsApplication1
                         btnSalir.Visible = true;
                         btnSalir.Enabled = true;
                         cbEntrega.Enabled = false;
-                        datos_Grilla();
+                        rbAuditoria.Enabled = true;
+                        rbDevolucion.Enabled = true;
+                        rbEntrega.Enabled = true;
+                        cbNumero.SelectedIndex = -1;
+                        cbNivel.SelectedIndex = -1;
+                        cbEdificio.SelectedIndex = -1;
+                        //datos_Grilla();
                         return;
                     }
-                    if (TipoComprobante == "DEV" && dtInfoLastTran.Rows[0][0].ToString() == "DEV")
+                    if (TipoComprobante == "DEV" && CodeLastTransaction == "DEV")
                     {
                         MessageBox.Show("Este local ya presenta una devolución vigente. Debe realizar otro tipo de transacción.");
                         btnConfirmar.Visible = false;
@@ -101,7 +106,13 @@ namespace WindowsFormsApplication1
                         btnSalir.Visible = true;
                         btnSalir.Enabled = true;
                         cbEntrega.Enabled = false;
-                        datos_Grilla();
+                        rbAuditoria.Enabled = true;
+                        rbDevolucion.Enabled = true;
+                        rbEntrega.Enabled = true;
+                        cbNumero.SelectedIndex = -1;
+                        cbNivel.SelectedIndex = -1;
+                        cbEdificio.SelectedIndex = -1;
+                        //datos_Grilla();
                         return;
                     }
                 }
@@ -115,7 +126,7 @@ namespace WindowsFormsApplication1
                     "count(abr.idasset) as 'bienes', rooms.idRooms,CONCAT(tra.bookCode,'-',tra.bookNumber) as 'comprobante' from rooms LEFT JOIN edilizia.rooms_by_users ON idRooms = id_room " +
                     " inner join buildings b on b.idbuilding = rooms.buildings LEFT JOIN edilizia.users resp on resp.idUsers = id_user_owner LEFT JOIN edilizia.assets_by_room abr on abr.idRoom = rooms.idRooms " +
                     "LEFT JOIN edilizia.diferences dif on id_room = dif.idLocalOrig and dif.Semaforo <> 1 LEFT JOIN edilizia.transaction tra on dif.idComprobante = tra.idtransaction " +
-                    "WHERE rooms.level='" + cbNivel.SelectedItem + "' and rooms.number=" + cbNumero.SelectedItem + " and b.description ='"+ cbEdificio.SelectedItem +"'";
+                    "WHERE rooms.level='" + cbNivel.SelectedItem + "' and rooms.number=" + cbNumero.SelectedItem + " and b.description ='" + cbEdificio.SelectedItem + "'";
                 }
                 else
                 {
@@ -123,8 +134,8 @@ namespace WindowsFormsApplication1
                     sqlQuery = "select CONCAT('[',rooms.code,'] - ', rooms.description) as 'Local' , CONCAT(resp.last_name,', ',resp.name) as 'responsable', " +
                     "count(abr.idasset) as 'bienes', rooms.idRooms,CONCAT(tra.bookCode,'-',tra.bookNumber) as 'comprobante' from rooms LEFT JOIN edilizia.rooms_by_users ON idRooms = id_room " +
                     "inner join buildings b on b.idbuilding = rooms.buildings LEFT JOIN edilizia.users resp on resp.idUsers = id_user_responsible LEFT JOIN edilizia.assets_by_room abr on abr.idRoom = rooms.idRooms " +
-                    "LEFT JOIN edilizia.diferences dif on id_room = dif.idLocalOrig and dif.Semaforo <> 1 LEFT JOIN edilizia.transaction tra on dif.idComprobante = tra.idtransaction " +
-                    "WHERE rooms.level='" + cbNivel.SelectedItem + "' and rooms.number=" + cbNumero.SelectedItem + " and b.description ='"+ cbEdificio.SelectedItem+"'";
+                    "LEFT JOIN edilizia.diferences dif on id_room = dif.idLocalOrig and dif.FechaGestionDiferencia is null LEFT JOIN edilizia.transaction tra on dif.idComprobante = tra.idtransaction " +
+                    "WHERE rooms.level='" + cbNivel.SelectedItem + "' and rooms.number=" + cbNumero.SelectedItem + " and b.description ='" + cbEdificio.SelectedItem + "'";
                 }
                 MySqlDataReader dataReaderInfo = DB.GetData(sqlQuery);
                 if (dataReaderInfo.HasRows)
@@ -142,18 +153,18 @@ namespace WindowsFormsApplication1
                         btnConfirmar.Visible = false;
                         btnSalir.Visible = true;
                         HasDifference = "1";
-                    }                    
+                    }
                 }
                 //Busco datos de los bienes del local para completar la grilla.
                 if (rbEntrega.Checked != true)
                 {
-                    sqlQuery = "SELECT distinct a.code as 'Referencia', a.description as 'Nombre de activo' ,s.description as 'Estado', concat(last_name, ', ', name) as 'Responsible', '' as 'Comprobante' " +
+                    sqlQuery = "SELECT distinct a.code as 'Referencia', a.description as 'Nombre de activo' ,(select s.description from assets_room_transaction art INNER JOIN assets_status s on art.delivery_status = s.idstatus " +
+                    " where id_Asset = abr.idAsset and id_Room = abr.idRoom and return_date is null order by idtransaction desc limit 1)  as 'Estado', concat(last_name, ', ', name) as 'Responsible', '' as 'Comprobante' " +
                     " ,'' as idtransaction,abr.idAsset, abr.idRoom, (select color from assets_room_Transaction atr where atr.id_Asset = abr.idAsset and atr.id_Room = abr.idRoom order by idtransaction desc limit 1) as 'Eval' " + //art.color as 'Eval' 
                     " FROM rooms r INNER JOIN edilizia.assets_by_room abr ON abr.idRoom = r.idRooms INNER JOIN assets a on a.id_assets = abr.idAsset" +
-                    " INNER JOIN assets_status s on a.idStatus = s.idstatus LEFT OUTER JOIN rooms_by_users rbu on r.idRooms = rbu.id_room and rbu.end_date is null " +
-                    "  inner join edilizia.buildings bu on bu.idbuilding = r.buildings " +
-                    " LEFT OUTER JOIN users u on u.idUsers = rbu.id_user_responsible INNER JOIN assets_room_Transaction art on art.id_Asset = abr.idAsset and art.id_Room = abr.idRoom and art.return_date is null" +
-                    " WHERE  bu.Description  = '"+ cbEdificio.SelectedItem+ "' and level = '" + cbNivel.SelectedItem + "' and number = " + cbNumero.SelectedItem + " order by a.code";
+                    " LEFT OUTER JOIN rooms_by_users rbu on r.idRooms = rbu.id_room and rbu.end_date is null " +
+                    " inner join edilizia.buildings bu on bu.idbuilding = r.buildings LEFT OUTER JOIN users u on u.idUsers = rbu.id_user_responsible " +
+                    " WHERE  bu.Description  = '" + cbEdificio.SelectedItem + "' and level = '" + cbNivel.SelectedItem + "' and number = " + cbNumero.SelectedItem + " order by a.code";
                 }
                 else
                 {
@@ -183,7 +194,7 @@ namespace WindowsFormsApplication1
                     btPicking.Enabled = true;
                     dgLocales.Columns["Eval"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                     dgLocales.Columns["Nombre de activo"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                    
+
                 }
                 else if (rbDevolucion.Checked == true)
                 {
@@ -220,7 +231,7 @@ namespace WindowsFormsApplication1
                         //agrego la columna "estado observado" para que puedan realizar correciones.
                         if (TipoComprobante == "ENT")
                         {
-                            
+
                             btnConfirmar.Visible = false;
                             btnSalir.Visible = true;
                             cbEntrega.Enabled = false;
@@ -347,19 +358,20 @@ namespace WindowsFormsApplication1
                         if ((rbEntrega.Checked == true && dgLocales["Estado Obs.", j].Value != null) || rbAuditoria.Checked == true || (rbDevolucion.Checked == true && dgLocales["Estado Obs.", j].Value != null))
                         {
                             idAsset = dgLocales["idAsset", j].Value.ToString();
-                            if (rbAuditoria.Checked != true)
+                            //En el caso de un bien que no se encuentra (color rojo) no posee estado, por lo tanto no asigno el status.
+                            if (dgLocales["Eval", j].Style.BackColor != Color.Red)
                                 Status = dgLocales["Estado Obs.", j].Value.ToString();
-                            else
-                            {
-                                if (dgLocales["Estado", j].Value.ToString() == "Bueno")
-                                    Status = "1";
-                                if (dgLocales["Estado", j].Value.ToString() == "Regular")
-                                    Status = "2";
-                                if (dgLocales["Estado", j].Value.ToString() == "Malo")
-                                    Status = "3";
-                                if (dgLocales["Estado", j].Value.ToString() == "Nuevo")
-                                    Status = "10";
-                            }
+                            //else
+                            //{
+                            //    if (dgLocales["Estado", j].Value.ToString() == "Bueno")
+                            //        Status = "1";
+                            //    if (dgLocales["Estado", j].Value.ToString() == "Regular")
+                            //        Status = "2";
+                            //    if (dgLocales["Estado", j].Value.ToString() == "Malo")
+                            //        Status = "3";
+                            //    if (dgLocales["Estado", j].Value.ToString() == "Nuevo")
+                            //        Status = "10";
+                            //}
                             //Observaciones
                             if (dgLocales["Observaciones", j].Value != null)
                                 observaciones = dgLocales["Observaciones", j].Value.ToString();
@@ -371,7 +383,6 @@ namespace WindowsFormsApplication1
 
                                 sql = "INSERT INTO assets_room_transaction (delivery_status,delivery_date,observation,idTransaction,color,id_Asset,id_Room) " +
                                 " values ('" + Status + "', now(),'" + observaciones + "', " + IDTransaction + ",'1', " + idAsset + ", " + IdRoomSelected + ")";
-                                //sql = "call InsAssetsTransaction('" + Status + "','" + observaciones + "'," + IDTransaction + "," + idAsset + "," + IdRoomSelected + ")";
                                 long IDAssetRoomTrans = DB.InsertData(sql);
                             }
 
@@ -418,9 +429,9 @@ namespace WindowsFormsApplication1
                                 if (dgLocales["Observaciones", j].Value != null)
                                     observaciones = dgLocales["Observaciones", j].Value.ToString();
 
-                                //Por defecto tomo que el idRoom=1 es el deposito virtual.
+                                //Por defecto tomo que el idRoom=127 es el deposito virtual.
                                 idAsset = dgLocales["idAsset", j].Value.ToString();
-                                sql = "update assets_by_room set idRoom = 1 where idAsset=" + idAsset;
+                                sql = "update assets_by_room set idRoom = 127 where idAsset=" + idAsset;
                                 long IDAssetsByRoom = DB.InsertData(sql);
 
                                 sql = "INSERT INTO assets_room_transaction (delivery_date,observation,idTransaction,color,id_Asset,id_Room) " +
@@ -431,7 +442,7 @@ namespace WindowsFormsApplication1
                                 " values (" + IDTransaction + ", " + dgLocales["idAsset", j].Value.ToString() + ", " + dgLocales["idRoom", j].Value.ToString() + ", '1','3','','')";
                                 //En la grilla deberia guardar el idStatus del bien y ocultarlo. Ojo q me cambia el for
                                 long idDifference = DB.InsertData(sql);
-                            }                            
+                            }
                         }
                     }
                     //}
@@ -510,7 +521,7 @@ namespace WindowsFormsApplication1
                     {
                         dgLocales["Eval", j].Style.BackColor = Color.Green;
                         dtReturnPicking.Rows[i][1] = "1";
-                    }                    
+                    }
                 }
             }
             //Todos aquellos bienes pickeados que no estaban en la grilla original los agrego con color amarillo.
@@ -718,7 +729,7 @@ namespace WindowsFormsApplication1
                 lblResponsable.Text = "Responsable: " + dtInfo.Rows[0][1].ToString();
                 lblActivos.Text = "Cant. Bienes: " + dtInfo.Rows[0][2].ToString();
                 IdRoomSelected = int.Parse(dtInfo.Rows[0][3].ToString());
-                
+
             }
             //Busco datos de los bienes del local para completar la grilla.
             if (rbEntrega.Checked != true)
@@ -728,16 +739,16 @@ namespace WindowsFormsApplication1
                 " INNER JOIN assets_status s on a.idStatus = s.idstatus LEFT OUTER JOIN rooms_by_users rbu on r.idRooms = rbu.id_room and rbu.end_date is null " +
                 "  inner join edilizia.buildings bu on bu.idbuilding = r.buildings " +
                 " LEFT OUTER JOIN users u on u.idUsers = rbu.id_user_responsible INNER JOIN assets_room_Transaction art on art.id_Asset = abr.idAsset and art.id_Room = abr.idRoom and art.return_date is null" +
-                " WHERE  bu.Description  = '" + cbEdificio.SelectedItem + "' and level = '" + cbNivel.SelectedItem + "' and number = " + cbNumero.SelectedItem + " order by a.code";
+                " WHERE  bu.Description  = '" + cbEdificio.SelectedItem + "' and level = '" + cbNivel.SelectedItem + "' and number = " + cbNumero.SelectedItem + "  and t.idTransaction_status=3 order by a.code";
             }
             else
             {
                 sqlQuery = "SELECT a.code as 'Referencia', a.description as 'Nombre de activo' ,s.description as 'Estado', concat(last_name, ', ', name) as 'Responsible', concat(t.bookCode,'-',t.bookNumber) as 'Comprobante' " +
-                " ,art.idtransaction,abr.idAsset, abr.idRoom, '' as 'Eval' FROM rooms r INNER JOIN edilizia.assets_by_room abr ON abr.idRoom = r.idRooms INNER JOIN assets a on a.id_assets = abr.idAsset" +
+                " ,art.idtransaction,abr.idAsset, abr.idRoom, IFNULL(art.color,'') as 'Eval' FROM rooms r INNER JOIN edilizia.assets_by_room abr ON abr.idRoom = r.idRooms INNER JOIN assets a on a.id_assets = abr.idAsset" +
                 " INNER JOIN assets_status s on a.idStatus = s.idstatus LEFT OUTER JOIN rooms_by_users rbu on r.idRooms = rbu.id_room and rbu.end_date is null " +
                "  inner join edilizia.buildings bu on bu.idbuilding = r.buildings " +
                 " LEFT OUTER JOIN users u on u.idUsers = rbu.id_user_responsible LEFT OUTER JOIN assets_room_Transaction art on art.id_Asset = abr.idAsset and art.id_Room = abr.idRoom and art.return_date is null" +
-                " LEFT OUTER JOIN transaction t on t.idtransaction = art.idtransaction and t.bookCode='DEV' WHERE  bu.Description  = '" + cbEdificio.SelectedItem + "' and level = '" + cbNivel.SelectedItem + "' and number = " + cbNumero.SelectedItem + " order by a.code";
+                " LEFT OUTER JOIN transaction t on t.idtransaction = art.idtransaction and t.bookCode='" + CodeLastTransaction + "' WHERE  bu.Description  = '" + cbEdificio.SelectedItem + "' and level = '" + cbNivel.SelectedItem + "' and number = " + cbNumero.SelectedItem + "  and t.idTransaction_status=3 order by a.code";
             }
 
             MySqlDataReader dataReaderLocal = DB.GetData(sqlQuery);

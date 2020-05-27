@@ -62,11 +62,15 @@ namespace WindowsFormsApplication1
                 string Nom = "";
                 string responsable = "";
                 string TipoComp = "";
-                while (RNumber.Read())
+                //while (RNumber.Read())
+                if (RNumber.HasRows)
                 {
+                    RNumber.Read();
                     string numero = RNumber.GetString(0);
-                    while (RTipo.Read())
+                    //while (RTipo.Read())
+                    if (RTipo.HasRows)
                     {
+                        RTipo.Read();
                         TipoComp = RTipo.GetString(0);
                         switch (RTipo.GetString(0))
                         {
@@ -178,11 +182,11 @@ namespace WindowsFormsApplication1
                      "ast.description as 'Estado Obs', r.code as Local, '' as Eval, art.observation as Observaciones " +
                      "FROM edilizia.assets_room_transaction art INNER JOIN edilizia.assets a on a.id_assets = art.id_Asset " +
                      "INNER JOIN edilizia.assets_status ast on ast.idstatus = art.delivery_status " +
-                     "INNER JOIN edilizia.rooms r on art.id_Room = r.idRooms where art.color = 1 and art.idtransaction =" + comprobante.ToString() + " order by art.color, a.code";
+                     "INNER JOIN edilizia.rooms r on art.id_Room = r.idRooms where art.idtransaction =" + comprobante.ToString() + " order by art.color, a.code";
                     // aca cuento cantidad para mostrar o no la tabla
                     cantgreen = "SELECT count(*) as cant  FROM edilizia.assets_room_transaction art INNER JOIN edilizia.assets a on a.id_assets = art.id_Asset " +
                         "INNER JOIN edilizia.assets_status ast on ast.idstatus = art.delivery_status " +
-                        "INNER JOIN edilizia.rooms r on art.id_Room = r.idRooms where art.color = 1 and art.idtransaction =" + comprobante.ToString() + " order by art.color, a.code";
+                        "INNER JOIN edilizia.rooms r on art.id_Room = r.idRooms where art.idtransaction =" + comprobante.ToString() + " order by art.color, a.code";
                 }
 
 

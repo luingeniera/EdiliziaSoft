@@ -568,7 +568,7 @@ namespace WindowsFormsApplication1
                     {  cuenta = count["cuenta"].ToString(); }
 
                     // chequeo si la transaccion esta para ser aprobada y lo pasamos a estado 3 que es cuando esta aprobada
-                   if (cuenta == "0")
+                    if (cuenta == "0")
                     {
 
                         string actualizartransacciones = "update edilizia.transaction set idTransaction_status = 3  where idtransaction = (select idComprobante from edilizia.diferences where idDiferences = " + dgvDiferencias[12, i].Value.ToString() + ")";
