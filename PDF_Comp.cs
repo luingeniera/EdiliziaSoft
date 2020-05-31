@@ -26,6 +26,7 @@ namespace WindowsFormsApplication1
                 Document doc = new Document(PageSize.A4, 10f, 10f, 10f, 0f);
 
                 WindowsFormsApplication1.DBConnection DB = new WindowsFormsApplication1.DBConnection();
+                WindowsFormsApplication1.DBConnection DB2 = new WindowsFormsApplication1.DBConnection();
                 //String Movimiento = " select *  from comppdf  where id = " + comprobante.ToString();
                 String Movimiento = " SELECT distinct r.code, r.description,CONCAT(u.last_name,', ',u.name) as Responsable, " +
                 "CONCAT(t.bookCode,' - ',t.bookNumber) as Comp,DATE_FORMAT(t.date,'%d/%m/%Y') as date FROM edilizia.transaction t INNER JOIN edilizia.assets_room_transaction art ON t.idtransaction = art.idtransaction " +
@@ -34,7 +35,7 @@ namespace WindowsFormsApplication1
 
                 String tipo = "SELECT bookcode FROM edilizia.transaction where idtransaction = " + comprobante.ToString();
 
-                MySqlDataReader RTipo = DB.GetData(tipo);
+                MySqlDataReader RTipo = DB2.GetData(tipo);
                 RTipo.Read();
 
                 if (RTipo.GetString(0) == "DEV")
@@ -62,11 +63,12 @@ namespace WindowsFormsApplication1
                 string Nom = "";
                 string responsable = "";
                 string TipoComp = "";
+
                 while (RNumber.Read())
                 {
                     string numero = RNumber.GetString(0);
-                    while (RTipo.Read())
-                    {
+                    //while (RTipo.Read())
+                    //{
                         TipoComp = RTipo.GetString(0);
                         switch (RTipo.GetString(0))
                         {
@@ -84,7 +86,7 @@ namespace WindowsFormsApplication1
                                 Nom = "Auditoria_Nro_" + numero;
                                 break;
                         }
-                    }
+                    //}
                 }
                 switch (l)
                 {
@@ -268,6 +270,7 @@ namespace WindowsFormsApplication1
                 //_firmas.Alignment = Element.ALIGN_RIGHT;
                 //_firmas.Add(new Phrase("\n\n.............................\n Responsable del Local", _firmas.Font));
                 //doc.Add(_firmas);
+
                 PdfPTable tableR = new PdfPTable(1);
                 tableR.DefaultCell.Border = Rectangle.NO_BORDER;
                 PdfPCell cellR = new PdfPCell(new Phrase("\n\n", FontFactory.GetFont(FontFactory.TIMES, 10f)));
@@ -344,23 +347,24 @@ namespace WindowsFormsApplication1
 
 
                                 // valores
-                                for (int i = 0; i < DTy.Rows.Count; i++)
+                                for (int y = 0; y < DTy.Rows.Count; y++)
                                 {
-                                    for (int j = 0; j < DTy.Columns.Count; j++)
+                                    for (int z = 0; z < DTy.Columns.Count; z++)
                                     {
                                         // this.celdas(Tyellowred, DTyr.Rows[i][j].ToString(), DTyr.Rows[i][j].ToString());
-                                        if (DTy.Columns[j].ColumnName == "Eval")
+                                        if (DTy.Columns[z].ColumnName == "Eval")
                                         {
                                             //DTVerde.Columns[j].ColumnName = "Eval")
-                                            this.celdas(Tyellow, DTy.Rows[i][j].ToString(), "2");
+                                            this.celdas(Tyellow, DTy.Rows[y][z].ToString(), "2");
                                         }
                                         else
                                         {
-                                            this.celdas(Tyellow, DTy.Rows[i][j].ToString(), "0");
+                                            this.celdas(Tyellow, DTy.Rows[y][z].ToString(), "0");
                                         }
                                     }
-                                    doc.Add(Tyellow);
+                              
                                 }
+                                doc.Add(Tyellow);
                                 //}
                                 #endregion
 
