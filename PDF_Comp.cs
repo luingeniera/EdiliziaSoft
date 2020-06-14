@@ -23,7 +23,7 @@ namespace WindowsFormsApplication1
             for (int l = 0; l < 3; l++)
             {
 
-                Document doc = new Document(PageSize.A4, 10f, 10f, 10f, 0f);
+                Document doc = new Document(PageSize.A4, 7f, 7f, 7f, 0f);
 
                 WindowsFormsApplication1.DBConnection DB = new WindowsFormsApplication1.DBConnection();
                 WindowsFormsApplication1.DBConnection DB2 = new WindowsFormsApplication1.DBConnection();
@@ -123,11 +123,11 @@ namespace WindowsFormsApplication1
                 doc.Add(new Paragraph("\n\n"));
                 #endregion
                 //defino letra general
-                Font Fuente = FontFactory.GetFont("TIMES", size: 13);
+                Font Fuente = FontFactory.GetFont(FontFactory.COURIER, size: 11);
                 //agrego la tabla para la grilla
                 #region tabla cabecera
                 PdfPTable Tabla_cabecera = new PdfPTable(dtmovi.Columns.Count);
-                Tabla_cabecera.WidthPercentage = 95;
+                Tabla_cabecera.WidthPercentage = 98;
                 Tabla_cabecera.HorizontalAlignment = Element.ALIGN_CENTER;
                 Tabla_cabecera.DefaultCell.VerticalAlignment = Element.ALIGN_CENTER;
 
@@ -213,6 +213,7 @@ namespace WindowsFormsApplication1
                 Tverde.WidthPercentage = 100;
                 Tverde.HorizontalAlignment = Element.ALIGN_CENTER;
                 Tverde.DefaultCell.VerticalAlignment = Element.ALIGN_CENTER;
+                
 
                 // valido si hay verdes sino no pongo tabla - definido marzo 2020 Wup
 
@@ -335,8 +336,17 @@ namespace WindowsFormsApplication1
                                 //if (DTDif.Rows[0][0].ToString() != "0")
 
                                 //{
-                                doc.Add(new Paragraph("\nLos siguientes bienes no serán asignados bajo la reponsabilidad de " + responsable + " por no haberse encontrado fisícamente en el local o por diferir sus estados.\n"));
 
+                                if (TipoComp == "ENT")
+                                {
+                                    doc.Add(new Paragraph("\nLos siguientes bienes no serán asignados bajo la reponsabilidad de " + responsable + " por no haberse encontrado fisícamente en el local o por diferir sus estados.\n", FontFactory.GetFont(FontFactory.HELVETICA, 10f)));
+                                }
+
+                                else
+                                {
+                                    doc.Add(new Paragraph("\nLos bienes en amarillo tienen diferencias en sus estados observados o fueron encontrados en el local y no perteneces a él. Los bienes en rojo, no fueron encontrados en el local. Se procederá a gestionar estas diferencias.\n", FontFactory.GetFont(FontFactory.HELVETICA, 10f)));
+                                }
+                                
                                 doc.Add(new Paragraph("\n"));
 
                                 //titulos
@@ -411,7 +421,7 @@ namespace WindowsFormsApplication1
 
                     PdfPTable table = new PdfPTable(2);
                     table.DefaultCell.Border = Rectangle.NO_BORDER;
-                    PdfPCell cell = new PdfPCell(new Phrase("\n\n\n", FontFactory.GetFont(FontFactory.TIMES, 10f)));
+                    PdfPCell cell = new PdfPCell(new Phrase("\n\n\n", FontFactory.GetFont(FontFactory.HELVETICA, 10f)));
                     cell.Border = 0;
                     cell.Colspan = 2;
                     cell.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
@@ -426,7 +436,7 @@ namespace WindowsFormsApplication1
                     //Pie de pagina + version
                     #region pie de pagina
                     Paragraph _Piedepagina = new Paragraph();
-                    _Piedepagina.Font = FontFactory.GetFont(FontFactory.TIMES, 10f);
+                    _Piedepagina.Font = FontFactory.GetFont(FontFactory.HELVETICA, 9f);
                     _Piedepagina.Alignment = Element.ALIGN_RIGHT;
                     _Piedepagina.SpacingBefore = 5;
                     _Piedepagina.Add("Pagina nro: 1");
@@ -434,7 +444,7 @@ namespace WindowsFormsApplication1
                     doc.Add(_Piedepagina);
                     //armo versionado para los 3 pdf
                     Paragraph _version = new Paragraph();
-                    _version.Font = FontFactory.GetFont(FontFactory.TIMES, 10f);
+                    _version.Font = FontFactory.GetFont(FontFactory.TIMES, 9f);
                     _version.Alignment = Element.ALIGN_LEFT;
 
                     switch (l)
@@ -468,7 +478,7 @@ namespace WindowsFormsApplication1
             switch (color)
             {
                 case "1":
-                    cell.BackgroundColor = new iTextSharp.text.BaseColor(0, 255, 0); //cambiar a verde                    
+                    cell.BackgroundColor = new iTextSharp.text.BaseColor(0, 102, 0); //cambiar a verde                    
                     break;
                 case "2":
                     cell.BackgroundColor = new iTextSharp.text.BaseColor(225, 225, 0); //cambiar a amarillo                    

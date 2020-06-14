@@ -23,8 +23,12 @@ namespace WindowsFormsApplication1
         {
             dtdesde.CustomFormat = " ";
             dtdesde.Format = DateTimePickerFormat.Custom;
+           
+
             dthasta.CustomFormat = " ";
             dthasta.Format = DateTimePickerFormat.Custom;
+
+
 
             DBConnection DB = new DBConnection();
             MySqlDataReader drReposnsable = DB.GetData("SELECT concat(last_name, ', ', name) as 'Responsable', u.idUsers  FROM edilizia.users u inner JOIN rooms_by_users rbu on u.idUsers = rbu.id_user_responsible; ");
@@ -314,15 +318,8 @@ namespace WindowsFormsApplication1
 
             }
         }
-        private void dthasta_ValueChanged(object sender, EventArgs e)
-        {
-            dthasta.CustomFormat = "yyyyMMdd";
-        }
+       
 
-        private void dtdesde_ValueChanged(object sender, EventArgs e)
-        {
-            dtdesde.CustomFormat = "yyyyMMdd";
-        }
 
         void grouper_DisplayGroup(object sender, Subro.Controls.GroupDisplayEventArgs e)
         {
@@ -607,7 +604,15 @@ namespace WindowsFormsApplication1
             }
         }
 
-      
+        private void dtdesde_ValueChanged_1(object sender, EventArgs e)
+        {
+            dtdesde.CustomFormat = "yyyyMMdd";
+        }
+
+        private void dthasta_ValueChanged_1(object sender, EventArgs e)
+        {
+            dthasta.CustomFormat = "yyyyMMdd";
+        }
     }
     }
 

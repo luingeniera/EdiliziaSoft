@@ -24,8 +24,12 @@ namespace WindowsFormsApplication1
         {
             dateTimePicker1.CustomFormat = " ";
             dateTimePicker1.Format = DateTimePickerFormat.Custom;
+            DateTime dtnow = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+            dateTimePicker1.Value = dtnow;
+            dateTimePicker1.CustomFormat = " ";
             dateTimePicker2.CustomFormat = " ";
             dateTimePicker2.Format = DateTimePickerFormat.Custom;
+
 
             string sqlQuery = "";
 
@@ -138,6 +142,16 @@ namespace WindowsFormsApplication1
                 PDF_Comp callPDF = new PDF_Comp();
                 callPDF.PrintPDF(Convert.ToInt32(dataGridView1["idtransaction", i].Value.ToString()));
             }
+        }
+
+        private void btLimpiar_Click(object sender, EventArgs e)
+        {
+            dateTimePicker1.CustomFormat = " ";
+            dateTimePicker2.CustomFormat = " ";
+
+            cmbTransaction.Text = "";
+            cmbResponsible.Text = "";
+            textBox1.Text = "";
         }
     }
 }
