@@ -27,7 +27,8 @@ namespace WindowsFormsApplication1
 
                 WindowsFormsApplication1.DBConnection DB = new WindowsFormsApplication1.DBConnection();
                 WindowsFormsApplication1.DBConnection DB2 = new WindowsFormsApplication1.DBConnection();
-                //String Movimiento = " select *  from comppdf  where id = " + comprobante.ToString();
+                
+                // busco el comrpobante que me mandan por parametro, para ENT y AUD se hace de una manera la seleccion
                 String Movimiento = " SELECT distinct r.code, r.description,CONCAT(u.last_name,', ',u.name) as Responsable, " +
                 "CONCAT(t.bookCode,' - ',t.bookNumber) as Comp,DATE_FORMAT(t.date,'%d/%m/%Y') as date FROM edilizia.transaction t INNER JOIN edilizia.assets_room_transaction art ON t.idtransaction = art.idtransaction " +
                 "INNER JOIN edilizia.rooms r on art.id_Room = r.idRooms INNER JOIN edilizia.rooms_by_users rbu on rbu.id_room = r.idRooms " +
@@ -37,7 +38,7 @@ namespace WindowsFormsApplication1
 
                 MySqlDataReader RTipo = DB2.GetData(tipo);
                 RTipo.Read();
-
+                // en caso de que sea DEV se reevalua la seleccion
                 if (RTipo.GetString(0) == "DEV")
                 {
                     Movimiento = " SELECT distinct r.code, r.description,CONCAT(u.last_name,', ',u.name) as Responsable, " +
@@ -45,20 +46,22 @@ namespace WindowsFormsApplication1
                     "INNER JOIN edilizia.rooms r on art.id_Room = r.idRooms INNER JOIN edilizia.rooms_by_users rbu on rbu.id_room = r.idRooms " +
                     "INNER JOIN edilizia.users u on u.idUsers = rbu.id_user_owner where t.idtransaction = " + comprobante.ToString();
                 }
+
                 MySqlDataReader RComp = DB.GetData(Movimiento);
                 DataTable dtmovi = new DataTable();
                 dtmovi.Load(RComp);
-
+                //obtengo el nro de comprobante
                 String Number = "SELECT booknumber FROM edilizia.transaction where idtransaction = " + comprobante.ToString();
 
                 MySqlDataReader RNumber = DB.GetData(Number);
 
+                #region cabecera del PDF
+                // titulo
 
-                #region titulo
                 Paragraph _titulo = new Paragraph();
                 _titulo.Font = FontFactory.GetFont(FontFactory.TIMES, 13f);
 
-                #region Seleccion
+               
                 string Mov = "";
                 string Nom = "";
                 string responsable = "";
@@ -88,6 +91,8 @@ namespace WindowsFormsApplication1
                         }
                     //}
                 }
+
+                //nombre dle archivo
                 switch (l)
                 {
                     case 0:
@@ -100,16 +105,16 @@ namespace WindowsFormsApplication1
                         Nom = Nom + "_Triplicado";
                         break;
                 }
-                #endregion
+              
 
-                //armo el nombre del pd
+                //armo el nombre del pdf en si
                 String nombre = Nom + ".pdf";
                 //creo el pdfwriter
                 PdfWriter.GetInstance(doc, new FileStream(nombre, FileMode.Create));
                 //abro el doc para agregarle los datos
                 doc.Open();
 
-                // agrego linea titulo  linea al pdf
+                // agrego linea titulo   y una linea al pdf
                 iTextSharp.text.pdf.draw.LineSeparator line = new iTextSharp.text.pdf.draw.LineSeparator(0.0F, 100.0F, BaseColor.BLACK, Element.ALIGN_LEFT, 1);
                 doc.Add(new Chunk(line));
                 _titulo.Add(Mov);
@@ -121,10 +126,14 @@ namespace WindowsFormsApplication1
                 doc.Add(new Chunk(line1));
 
                 doc.Add(new Paragraph("\n\n"));
-                #endregion
+                
+
                 //defino letra general
                 Font Fuente = FontFactory.GetFont(FontFactory.COURIER, size: 11);
-                //agrego la tabla para la grilla
+
+                #endregion
+
+                //agrego la tabla  de cabecera con los datos generales
                 #region tabla cabecera
                 PdfPTable Tabla_cabecera = new PdfPTable(dtmovi.Columns.Count);
                 Tabla_cabecera.WidthPercentage = 98;
@@ -168,8 +177,13 @@ namespace WindowsFormsApplication1
                 #endregion
 
                 doc.Add(new Paragraph("\n\n"));
-                //comienzo mostrado elementos en verde
-                //string green = "SELECT * FROM edilizia.bienes_pdf where Semaforo =1 and id =" + comprobante.ToString();
+
+
+                //comienzo tratamiento de verdes
+                //esta seccion se ve siempre
+
+               
+                #region TABLA VERDE
                 string green = "";
                 string cantgreen = "";
 
@@ -181,6 +195,7 @@ namespace WindowsFormsApplication1
                      "FROM edilizia.assets_room_transaction art INNER JOIN edilizia.assets a on a.id_assets = art.id_Asset " +
                      "INNER JOIN edilizia.assets_status ast on ast.idstatus = art.delivery_status " +
                      "INNER JOIN edilizia.rooms r on art.id_Room = r.idRooms where art.color = 1 and art.idtransaction =" + comprobante.ToString() + " order by art.color, a.code";
+                   
                     // aca cuento cantidad para mostrar o no la tabla
                     cantgreen = "SELECT count(*) as cant  FROM edilizia.assets_room_transaction art INNER JOIN edilizia.assets a on a.id_assets = art.id_Asset " +
                         "INNER JOIN edilizia.assets_status ast on ast.idstatus = art.delivery_status " +
@@ -196,6 +211,7 @@ namespace WindowsFormsApplication1
                     "FROM edilizia.assets_room_transaction art INNER JOIN edilizia.assets a on a.id_assets = art.id_Asset " +
                     "INNER JOIN edilizia.assets_status ast on ast.idstatus = art.delivery_status " +
                     "INNER JOIN edilizia.rooms r on art.id_Room = r.idRooms where art.color = 1 and art.idtransaction =" + comprobante.ToString() + " order by art.color, a.code";
+                   
                     // aca cuento cantidad para mostrar o no la tabla
                     cantgreen = "SELECT count(*) as cant FROM edilizia.assets_room_transaction art INNER JOIN edilizia.assets a on a.id_assets = art.id_Asset " +
                         "INNER JOIN edilizia.assets_status ast on ast.idstatus = art.delivery_status " +
@@ -208,14 +224,14 @@ namespace WindowsFormsApplication1
                 DataTable DTVerde = new DataTable();
                 DTVerde.Load(Rgreen);
 
-                #region tabla cabecera
+                #region tabla 
                 PdfPTable Tverde = new PdfPTable(DTVerde.Columns.Count);
                 Tverde.WidthPercentage = 100;
                 Tverde.HorizontalAlignment = Element.ALIGN_CENTER;
                 Tverde.DefaultCell.VerticalAlignment = Element.ALIGN_CENTER;
                 
 
-                // valido si hay verdes sino no pongo tabla - definido marzo 2020 Wup
+                // valido  que existan , de lo contrario leyenda de no hay bienes para enlistar
 
                 MySqlDataReader Cantverde = DB.GetData(cantgreen);
 
@@ -258,19 +274,16 @@ namespace WindowsFormsApplication1
                     }
                     else
                     {
-                        doc.Add(new Paragraph("No hay bienes para enlistar\n"));
+                        doc.Add(new Paragraph("No hay bienes sin diferencias para enlistar\n"));
                     }
+                    #endregion
 
                 }
 
                 #endregion
 
                 //agrego la firma
-                //Paragraph _firmas = new Paragraph();
-                //_firmas.Font = FontFactory.GetFont(FontFactory.TIMES, 10f);
-                //_firmas.Alignment = Element.ALIGN_RIGHT;
-                //_firmas.Add(new Phrase("\n\n.............................\n Responsable del Local", _firmas.Font));
-                //doc.Add(_firmas);
+               
 
                 PdfPTable tableR = new PdfPTable(1);
                 tableR.DefaultCell.Border = Rectangle.NO_BORDER;
@@ -283,10 +296,9 @@ namespace WindowsFormsApplication1
                 tableR.AddCell("Responsable del Local");
                 doc.Add(tableR);
 
-
-                if (TipoComp != "AUD")
-                {
-                    if (l != 0) // pedido 30/01  de que en original no salga amarillos y rojos
+                #region tabla diferencias amarillos y rojos
+               
+                    if ((l != 0 && TipoComp == "ENT")  || (TipoComp != "ENT")) // pedido 30/01  de que en original no salga amarillos y rojos solo para entregas en el resto si
                     {
 
                         //string yellow = "SELECT * FROM edilizia.assets_room_transaction where color <> 1 and idtransaction =" + comprobante.ToString();
@@ -415,9 +427,10 @@ namespace WindowsFormsApplication1
                                 doc.Add(Tred);
                                 #endregion
                             }
+                        #endregion 
                             #endregion
-                        }
                     }
+                
 
                     PdfPTable table = new PdfPTable(2);
                     table.DefaultCell.Border = Rectangle.NO_BORDER;

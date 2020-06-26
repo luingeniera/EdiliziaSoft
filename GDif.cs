@@ -23,7 +23,9 @@ namespace WindowsFormsApplication1
         {
             dtdesde.CustomFormat = " ";
             dtdesde.Format = DateTimePickerFormat.Custom;
-           
+            DateTime dtnow = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+            dtdesde.Value = dtnow;
+            dtdesde.CustomFormat = " ";
 
             dthasta.CustomFormat = " ";
             dthasta.Format = DateTimePickerFormat.Custom;
@@ -457,6 +459,7 @@ namespace WindowsFormsApplication1
 
         private void btnConfirmar_Click_1(object sender, EventArgs e)
         {
+            #region ACTUALIZACION POR FILA
             //recorro todos las filas de la grilla
             for (int i = 0; i <= dgvDiferencias.Rows.Count - 2; i++)
             {
@@ -572,7 +575,7 @@ namespace WindowsFormsApplication1
                         DB.GetData(actualizartransacciones);
 
                     }
-                    MessageBox.Show("Se saldaron las diferencias cargadas");
+                 //cambio pedido revision 9/6 un solo cartel con todo.   MessageBox.Show("Se saldaron las diferencias cargadas");
 
                     #endregion
 
@@ -597,9 +600,9 @@ namespace WindowsFormsApplication1
 
                 }
 
+                #endregion
 
-
-
+                MessageBox.Show("Se saldaron las diferencias cargadas");
 
             }
         }
