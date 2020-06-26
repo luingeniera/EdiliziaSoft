@@ -427,12 +427,13 @@ namespace WindowsFormsApplication1
                                 doc.Add(Tred);
                                 #endregion
                             }
-                        #endregion 
-                            #endregion
+                        #endregion
+                        #endregion
                     }
-                
+                }
 
-                    PdfPTable table = new PdfPTable(2);
+
+                PdfPTable table = new PdfPTable(2);
                     table.DefaultCell.Border = Rectangle.NO_BORDER;
                     PdfPCell cell = new PdfPCell(new Phrase("\n\n\n", FontFactory.GetFont(FontFactory.HELVETICA, 10f)));
                     cell.Border = 0;
@@ -480,7 +481,7 @@ namespace WindowsFormsApplication1
 
                     doc.Close();
                     Process.Start(nombre);
-                }
+                
             }
         }
 
