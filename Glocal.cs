@@ -160,7 +160,7 @@ namespace WindowsFormsApplication1
                 {
                     sqlQuery = "SELECT distinct a.code as 'Referencia', a.description as 'Nombre de activo' ,(select s.description from assets_room_transaction art INNER JOIN assets_status s on art.delivery_status = s.idstatus " +
                     " where id_Asset = abr.idAsset and id_Room = abr.idRoom and return_date is null order by idtransaction desc limit 1)  as 'Estado', concat(last_name, ', ', name) as 'Responsible', '' as 'Comprobante' " +
-                    " ,'' as idtransaction,abr.idAsset, abr.idRoom, (select color from assets_room_Transaction atr where atr.id_Asset = abr.idAsset and atr.id_Room = abr.idRoom order by idtransaction desc limit 1) as 'Eval' " + //art.color as 'Eval' 
+                    " ,'' as idtransaction,abr.idAsset, abr.idRoom, /*(select color from assets_room_Transaction atr where atr.id_Asset = abr.idAsset and atr.id_Room = abr.idRoom order by idtransaction desc limit 1)*/ '' as 'Eval' " + //art.color as 'Eval' 
                     " FROM rooms r INNER JOIN edilizia.assets_by_room abr ON abr.idRoom = r.idRooms INNER JOIN assets a on a.id_assets = abr.idAsset" +
                     " LEFT OUTER JOIN rooms_by_users rbu on r.idRooms = rbu.id_room and rbu.end_date is null " +
                     " inner join edilizia.buildings bu on bu.idbuilding = r.buildings LEFT OUTER JOIN users u on u.idUsers = rbu.id_user_responsible " +
@@ -250,16 +250,16 @@ namespace WindowsFormsApplication1
                             cbEntrega.SelectedText = deliveriedTo;
                             lblComprobante.Text = comprobante;
                             //btPicking.Enabled = false;
-                            for (int i = 0; i < dgLocales.Rows.Count - 1; i++)
-                            {
-                                if (dgLocales["Eval", i].Value.ToString() == "1")
-                                    dgLocales["Eval", i].Style.BackColor = Color.Green;
-                                if (dgLocales["Eval", i].Value.ToString() == "2")
-                                    dgLocales["Eval", i].Style.BackColor = Color.Yellow;
-                                if (dgLocales["Eval", i].Value.ToString() == "3")
-                                    dgLocales["Eval", i].Style.BackColor = Color.Red;
-                                dgLocales["Eval", i].Value = null;
-                            }
+                            //for (int i = 0; i < dgLocales.Rows.Count - 1; i++)
+                            //{
+                            //    if (dgLocales["Eval", i].Value.ToString() == "1")
+                            //        dgLocales["Eval", i].Style.BackColor = Color.Green;
+                            //    if (dgLocales["Eval", i].Value.ToString() == "2")
+                            //        dgLocales["Eval", i].Style.BackColor = Color.Yellow;
+                            //    if (dgLocales["Eval", i].Value.ToString() == "3")
+                            //        dgLocales["Eval", i].Style.BackColor = Color.Red;
+                            //    dgLocales["Eval", i].Value = null;
+                            //}
                         }
                     }
                 }
@@ -545,6 +545,8 @@ namespace WindowsFormsApplication1
                         dr["idRoom"] = dtInfo.Rows[0][1].ToString();
                         dr["Nombre de activo"] = dtInfo.Rows[0][2].ToString();
                         dr["Estado"] = dtInfo.Rows[0][3].ToString();
+                        dr["Comprobante"] = "";
+                        dr["idTransaction"] = "";
                         dataTableDgLocales.Rows.Add(dr);
                         dgLocales.DataSource = dataTableDgLocales;
                         dgLocales["Eval", dgLocales.NewRowIndex - 1].Style.BackColor = Color.Yellow;
