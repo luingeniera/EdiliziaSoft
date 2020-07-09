@@ -107,7 +107,7 @@ namespace WindowsFormsApplication1
 
             }
 
-
+          
 
 
             string TipoComprobante = "";
@@ -617,6 +617,11 @@ namespace WindowsFormsApplication1
         private void dthasta_ValueChanged_1(object sender, EventArgs e)
         {
             dthasta.CustomFormat = "yyyyMMdd";
+        }
+
+        private void dgvDiferencias_ColumnAdded(object sender, DataGridViewColumnEventArgs e)
+        {
+            e.Column.SortMode = DataGridViewColumnSortMode.NotSortable;
         }
     }
     }

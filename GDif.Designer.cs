@@ -129,7 +129,7 @@
             this.cbNumero.Enabled = false;
             this.cbNumero.FormattingEnabled = true;
             this.cbNumero.Location = new System.Drawing.Point(420, 143);
-            this.cbNumero.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cbNumero.Margin = new System.Windows.Forms.Padding(4);
             this.cbNumero.Name = "cbNumero";
             this.cbNumero.Size = new System.Drawing.Size(192, 24);
             this.cbNumero.TabIndex = 36;
@@ -139,7 +139,7 @@
             this.cbNivel.Enabled = false;
             this.cbNivel.FormattingEnabled = true;
             this.cbNivel.Location = new System.Drawing.Point(211, 143);
-            this.cbNivel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cbNivel.Margin = new System.Windows.Forms.Padding(4);
             this.cbNivel.Name = "cbNivel";
             this.cbNivel.Size = new System.Drawing.Size(201, 24);
             this.cbNivel.TabIndex = 35;
@@ -179,7 +179,7 @@
             this.panel1.Controls.Add(this.rbAuditoria);
             this.panel1.Controls.Add(this.rbDevolucion);
             this.panel1.Location = new System.Drawing.Point(32, 30);
-            this.panel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(432, 31);
             this.panel1.TabIndex = 40;
@@ -189,7 +189,7 @@
             this.rbEntrega.AutoSize = true;
             this.rbEntrega.Checked = true;
             this.rbEntrega.Location = new System.Drawing.Point(19, 4);
-            this.rbEntrega.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.rbEntrega.Margin = new System.Windows.Forms.Padding(4);
             this.rbEntrega.Name = "rbEntrega";
             this.rbEntrega.Size = new System.Drawing.Size(137, 21);
             this.rbEntrega.TabIndex = 0;
@@ -201,7 +201,7 @@
             // 
             this.rbAuditoria.AutoSize = true;
             this.rbAuditoria.Location = new System.Drawing.Point(335, 4);
-            this.rbAuditoria.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.rbAuditoria.Margin = new System.Windows.Forms.Padding(4);
             this.rbAuditoria.Name = "rbAuditoria";
             this.rbAuditoria.Size = new System.Drawing.Size(85, 21);
             this.rbAuditoria.TabIndex = 2;
@@ -212,7 +212,7 @@
             // 
             this.rbDevolucion.AutoSize = true;
             this.rbDevolucion.Location = new System.Drawing.Point(168, 4);
-            this.rbDevolucion.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.rbDevolucion.Margin = new System.Windows.Forms.Padding(4);
             this.rbDevolucion.Name = "rbDevolucion";
             this.rbDevolucion.Size = new System.Drawing.Size(157, 21);
             this.rbDevolucion.TabIndex = 1;
@@ -259,14 +259,18 @@
             // 
             // dgvDiferencias
             // 
+            this.dgvDiferencias.AllowUserToAddRows = false;
+            this.dgvDiferencias.AllowUserToDeleteRows = false;
             this.dgvDiferencias.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvDiferencias.Location = new System.Drawing.Point(41, 197);
             this.dgvDiferencias.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dgvDiferencias.Name = "dgvDiferencias";
+            this.dgvDiferencias.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Sunken;
             this.dgvDiferencias.RowTemplate.Height = 24;
-            this.dgvDiferencias.Size = new System.Drawing.Size(1083, 262);
+            this.dgvDiferencias.Size = new System.Drawing.Size(1322, 632);
             this.dgvDiferencias.TabIndex = 45;
             this.dgvDiferencias.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDiferencias_CellClick_1);
+            this.dgvDiferencias.ColumnAdded += new System.Windows.Forms.DataGridViewColumnEventHandler(this.dgvDiferencias_ColumnAdded);
             // 
             // cbReimprimir
             // 
@@ -284,7 +288,7 @@
             this.btnConfirmar.Enabled = false;
             this.btnConfirmar.Image = ((System.Drawing.Image)(resources.GetObject("btnConfirmar.Image")));
             this.btnConfirmar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnConfirmar.Location = new System.Drawing.Point(971, 485);
+            this.btnConfirmar.Location = new System.Drawing.Point(1195, 852);
             this.btnConfirmar.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnConfirmar.Name = "btnConfirmar";
             this.btnConfirmar.Size = new System.Drawing.Size(168, 48);
@@ -317,7 +321,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1160, 544);
+            this.ClientSize = new System.Drawing.Size(1407, 933);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.cbEdificio);
             this.Controls.Add(this.btnConfirmar);

@@ -27,9 +27,11 @@ namespace WindowsFormsApplication1
             DateTime dtnow = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
             dateTimePicker1.Value = dtnow;
             dateTimePicker1.CustomFormat = " ";
-            dateTimePicker2.CustomFormat = " ";
+          
             dateTimePicker2.Format = DateTimePickerFormat.Custom;
-
+            
+            dateTimePicker2.Value = dtnow;
+            dateTimePicker2.CustomFormat = " ";
 
             string sqlQuery = "";
 
