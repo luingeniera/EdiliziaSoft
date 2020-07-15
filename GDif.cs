@@ -459,6 +459,7 @@ namespace WindowsFormsApplication1
         private void btnConfirmar_Click_1(object sender, EventArgs e)
         {
             #region ACTUALIZACION POR FILA
+            Boolean bandera = false;
             //recorro todos las filas de la grilla
             for (int i = 0; i <= dgvDiferencias.Rows.Count - 2; i++)
             {
@@ -474,7 +475,7 @@ namespace WindowsFormsApplication1
                        (dgvDiferencias.Rows[i].Cells[9].Value != null || dgvDiferencias.Rows[i].Cells[10].Value != null))
                 {
                     #region saldo diferencia
-
+                    bandera = true;
 
 
                     if (dgvDiferencias.Rows[i].Cells[5].Value == null) { dgvDiferencias.Rows[i].Cells[5].Value = false; };
@@ -592,10 +593,11 @@ namespace WindowsFormsApplication1
                     if ((dgvDiferencias.Rows[i].Cells[5].Value == null && dgvDiferencias.Rows[i].Cells[6].Value == null) &&  (dgvDiferencias.Rows[i].Cells[9].Value == null && dgvDiferencias.Rows[i].Cells[10].Value == null))
                     { }
 
-                    else
-                    {// si hay algo completo quiere decri que falta terminar
-                        MessageBox.Show("Debe completar la diferencia en su totalidad");
-                    }
+                    //minuta 9/7 pide que no se muestre
+                    //else
+                    //{// si hay algo completo quiere decri que falta terminar
+                    //    MessageBox.Show("Debe completar la diferencia en su totalidad");
+                    //}
 
                 }
 
@@ -604,8 +606,12 @@ namespace WindowsFormsApplication1
               
 
             }
+
+            //muestro solo si salde alguna diferencia sino no.
+            if (bandera == true) { 
             MessageBox.Show("Se saldaron las diferencias cargadas");
-           
+            }
+
             btnBuscar_Click(this, new EventArgs());
         }
 
