@@ -59,7 +59,7 @@ namespace WindowsFormsApplication1
                 // titulo
 
                 Paragraph _titulo = new Paragraph();
-                _titulo.Font = FontFactory.GetFont(FontFactory.TIMES, 13f);
+                _titulo.Font = FontFactory.GetFont(FontFactory.TIMES, 11f);
 
                
                 string Mov = "";
@@ -129,14 +129,14 @@ namespace WindowsFormsApplication1
                 
 
                 //defino letra general
-                Font Fuente = FontFactory.GetFont(FontFactory.COURIER, size: 11);
+                Font Fuente = FontFactory.GetFont(FontFactory.TIMES, size: 11);
 
                 #endregion
 
                 //agrego la tabla  de cabecera con los datos generales
                 #region tabla cabecera
                 PdfPTable Tabla_cabecera = new PdfPTable(dtmovi.Columns.Count);
-                Tabla_cabecera.WidthPercentage = 98;
+                Tabla_cabecera.WidthPercentage = 100;
                 Tabla_cabecera.HorizontalAlignment = Element.ALIGN_CENTER;
                 Tabla_cabecera.DefaultCell.VerticalAlignment = Element.ALIGN_CENTER;
 
