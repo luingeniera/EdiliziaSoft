@@ -11,6 +11,8 @@ using MySql.Data.MySqlClient;
 using System.Windows.Forms;
 using System.Data;
 
+
+
 namespace WindowsFormsApplication1
 
 {
@@ -19,8 +21,10 @@ namespace WindowsFormsApplication1
 
         public void PrintPDF(int comprobante)
         {
+
+            
             // aca puse l < 1 pero es a 3 para que salgan 3 pdf
-            for (int l = 0; l < 3; l++)
+            for (int l = 0; l < 1; l++)
             {
 
                 Document doc = new Document(PageSize.A4, 7f, 7f, 7f, 0f);
@@ -307,8 +311,8 @@ namespace WindowsFormsApplication1
                 #endregion
 
                 //agrego la firma
-               
-
+              
+              
                 PdfPTable tableR = new PdfPTable(1);
                 tableR.DefaultCell.Border = Rectangle.NO_BORDER;
                 PdfPCell cellR = new PdfPCell(new Phrase("\n\n", FontFactory.GetFont(FontFactory.TIMES, 10f)));
@@ -317,7 +321,9 @@ namespace WindowsFormsApplication1
                 cellR.HorizontalAlignment = 0; //0=Left, 1=Centre, 2=Right
                 tableR.AddCell(cellR);
                 tableR.AddCell("......................................................");
-                tableR.AddCell("Responsable del Local");
+                PdfPCell cellres = new PdfPCell(new Phrase("Responsable del Local", FontFactory.GetFont(FontFactory.HELVETICA, 10f)));
+                cellres.Border = 0;
+                tableR.AddCell(cellres);
                 doc.Add(tableR);
 
                 #region tabla diferencias amarillos y rojos
