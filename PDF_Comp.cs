@@ -59,7 +59,7 @@ namespace WindowsFormsApplication1
                 // titulo
 
                 Paragraph _titulo = new Paragraph();
-                _titulo.Font = FontFactory.GetFont(FontFactory.TIMES, 11f);
+                _titulo.Font = FontFactory.GetFont(FontFactory.COURIER_BOLD, 14f);
 
                
                 string Mov = "";
@@ -136,9 +136,16 @@ namespace WindowsFormsApplication1
                 //agrego la tabla  de cabecera con los datos generales
                 #region tabla cabecera
                 PdfPTable Tabla_cabecera = new PdfPTable(dtmovi.Columns.Count);
-                Tabla_cabecera.WidthPercentage = 100;
+               // Tabla_cabecera.WidthPercentage = 100;
                 Tabla_cabecera.HorizontalAlignment = Element.ALIGN_CENTER;
                 Tabla_cabecera.DefaultCell.VerticalAlignment = Element.ALIGN_CENTER;
+
+
+                //cabecera tama;os
+                Tabla_cabecera.TotalWidth = 550f;
+                Tabla_cabecera.LockedWidth = true;
+                float[] widthsc = new float[] { 18f, 60f, 30f, 30f, 20f };
+                Tabla_cabecera.SetWidths(widthsc);
 
 
                 //titulos
@@ -226,9 +233,16 @@ namespace WindowsFormsApplication1
 
                 #region tabla 
                 PdfPTable Tverde = new PdfPTable(DTVerde.Columns.Count);
-                Tverde.WidthPercentage = 100;
+                
                 Tverde.HorizontalAlignment = Element.ALIGN_CENTER;
                 Tverde.DefaultCell.VerticalAlignment = Element.ALIGN_CENTER;
+
+
+                //acomodo la tabla en long de celdas
+                 Tverde.TotalWidth = 550f;
+                Tverde.LockedWidth = true;
+                float[] widths = new float[] { 24f, 75f, 18f, 18f, 25f, 15f, 35f };
+                Tverde.SetWidths(widths);
                 
 
                 // valido  que existan , de lo contrario leyenda de no hay bienes para enlistar
@@ -245,7 +259,14 @@ namespace WindowsFormsApplication1
                         //titulos
                         for (int i = 0; i < DTVerde.Columns.Count; i++)
                         {
-                            Tverde.AddCell(new Phrase(DTVerde.Columns[i].ToString()));
+
+                            PdfPCell header = new PdfPCell(new Phrase(DTVerde.Columns[i].ToString()));
+
+                            Tverde.AddCell(header);
+
+                         //   Tverde.AddCell(new Phrase(DTVerde.Columns[i].ToString()));
+
+
                         }
 
                         // valores
@@ -254,7 +275,10 @@ namespace WindowsFormsApplication1
                             for (int j = 0; j < DTVerde.Columns.Count; j++)
                             {
 
-                                if (DTVerde.Columns[j].ColumnName == "Eval")
+                               
+
+
+                                    if (DTVerde.Columns[j].ColumnName == "Eval")
                                 {
                                     //DTVerde.Columns[j].ColumnName = "Eval")
                                     this.celdas(Tverde, DTVerde.Rows[i][j].ToString(), "1");
@@ -315,16 +339,21 @@ namespace WindowsFormsApplication1
 
                         #region tabla cabecera
                         PdfPTable Tyellow = new PdfPTable(DTy.Columns.Count);
-                        Tyellow.WidthPercentage = 100;
+                      
                         Tyellow.HorizontalAlignment = Element.ALIGN_CENTER;
                         Tyellow.DefaultCell.VerticalAlignment = Element.ALIGN_CENTER;
 
+                    //tamano de celdas de tabla amarilla
+                    Tyellow.TotalWidth = 550f;
+                    Tyellow.LockedWidth = true;
+                    float[] widthsy = new float[] { 24f, 75f, 18f, 18f, 25f, 15f, 35f };
+                    Tyellow.SetWidths(widthsy);
 
 
-                        //comienzo mostrado elementos en yelloe y red
+                    //comienzo mostrado elementos en yelloe y red
 
-                        // valido si hay diferencias sino no pongo titulo
-                        string diferencias = "SELECT count(*) as cant FROM edilizia.diferences d " +
+                    // valido si hay diferencias sino no pongo titulo
+                    string diferencias = "SELECT count(*) as cant FROM edilizia.diferences d " +
                       "INNER JOIN edilizia.assets a on a.id_assets = d.idBien INNER JOIN edilizia.assets_status ast on ast.idstatus = ifnull(d.idEstadoOrig,a.idStatus) " +
                       "LEFT JOIN  edilizia.assets_status astObs on astObs.idstatus = d.idEstadoObs INNER JOIN edilizia.rooms r on d.idLocalPicking = r.idRooms " +
                       "INNER JOIN edilizia.assets_room_transaction art on d.idComprobante = art.idtransaction and d.idBien = art.id_Asset " +
@@ -403,12 +432,20 @@ namespace WindowsFormsApplication1
 
                                 #region tabla cabecera
                                 PdfPTable Tred = new PdfPTable(DTr.Columns.Count);
-                                Tred.WidthPercentage = 100;
+                          
                                 Tred.HorizontalAlignment = Element.ALIGN_CENTER;
                                 Tred.DefaultCell.VerticalAlignment = Element.ALIGN_CENTER;
-                                #region valores
-                                // valores
-                                for (int i = 0; i < DTr.Rows.Count; i++)
+
+
+                            Tred.TotalWidth = 550f;
+                            Tred.LockedWidth = true;
+                            float[] widthsr = new float[] { 24f, 75f, 18f, 18f, 25f, 15f, 35f };
+                            Tred.SetWidths(widthsr);
+
+
+                            #region valores
+                            // valores
+                            for (int i = 0; i < DTr.Rows.Count; i++)
                                 {
                                     for (int j = 0; j < DTr.Columns.Count; j++)
                                     {
