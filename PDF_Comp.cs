@@ -24,7 +24,7 @@ namespace WindowsFormsApplication1
 
             
             // aca puse l < 1 pero es a 3 para que salgan 3 pdf
-            for (int l = 0; l < 1; l++)
+            for (int l = 0; l < 3; l++)
             {
 
                 Document doc = new Document(PageSize.A4, 7f, 7f, 7f, 0f);

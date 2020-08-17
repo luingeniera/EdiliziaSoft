@@ -34,13 +34,14 @@
             this.cbLocales = new System.Windows.Forms.ComboBox();
             this.cbTipo = new System.Windows.Forms.ComboBox();
             this.cbFamilia = new System.Windows.Forms.ComboBox();
-            this.button2 = new System.Windows.Forms.Button();
             this.PDF = new System.Windows.Forms.Button();
             this.cbRubro = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.cbResponsable = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgBienes)).BeginInit();
             this.SuspendLayout();
             // 
@@ -52,7 +53,7 @@
             this.dgBienes.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.dgBienes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgBienes.Location = new System.Drawing.Point(67, 127);
-            this.dgBienes.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dgBienes.Margin = new System.Windows.Forms.Padding(4);
             this.dgBienes.Name = "dgBienes";
             this.dgBienes.ReadOnly = true;
             this.dgBienes.Size = new System.Drawing.Size(1009, 405);
@@ -60,10 +61,10 @@
             // 
             // btnBuscar
             // 
-            this.btnBuscar.Location = new System.Drawing.Point(628, 39);
+            this.btnBuscar.Location = new System.Drawing.Point(869, 13);
             this.btnBuscar.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnBuscar.Name = "btnBuscar";
-            this.btnBuscar.Size = new System.Drawing.Size(68, 74);
+            this.btnBuscar.Size = new System.Drawing.Size(198, 74);
             this.btnBuscar.TabIndex = 21;
             this.btnBuscar.Text = "Buscar";
             this.btnBuscar.UseVisualStyleBackColor = true;
@@ -102,24 +103,14 @@
             this.cbFamilia.Text = "Todos";
             this.cbFamilia.SelectedValueChanged += new System.EventHandler(this.cbFamilia_SelectedValueChanged);
             // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(845, 57);
-            this.button2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 30);
-            this.button2.TabIndex = 17;
-            this.button2.Text = "Imprimir";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
             // PDF
             // 
+            this.PDF.Enabled = false;
             this.PDF.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.PDF.Location = new System.Drawing.Point(845, 25);
+            this.PDF.Location = new System.Drawing.Point(869, 91);
             this.PDF.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.PDF.Name = "PDF";
-            this.PDF.Size = new System.Drawing.Size(75, 26);
+            this.PDF.Size = new System.Drawing.Size(198, 26);
             this.PDF.TabIndex = 16;
             this.PDF.Text = "PDF";
             this.PDF.UseVisualStyleBackColor = true;
@@ -173,11 +164,32 @@
             this.label4.TabIndex = 25;
             this.label4.Text = "Locales";
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(616, 70);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(91, 17);
+            this.label5.TabIndex = 39;
+            this.label5.Text = "Responsable";
+            // 
+            // cbResponsable
+            // 
+            this.cbResponsable.FormattingEnabled = true;
+            this.cbResponsable.Location = new System.Drawing.Point(619, 89);
+            this.cbResponsable.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.cbResponsable.Name = "cbResponsable";
+            this.cbResponsable.Size = new System.Drawing.Size(222, 24);
+            this.cbResponsable.TabIndex = 38;
+            this.cbResponsable.Text = "Todos";
+            // 
             // Bienes
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1103, 590);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.cbResponsable);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -186,7 +198,6 @@
             this.Controls.Add(this.cbLocales);
             this.Controls.Add(this.cbTipo);
             this.Controls.Add(this.cbFamilia);
-            this.Controls.Add(this.button2);
             this.Controls.Add(this.PDF);
             this.Controls.Add(this.cbRubro);
             this.Controls.Add(this.dgBienes);
@@ -207,7 +218,6 @@
         private System.Windows.Forms.ComboBox cbLocales;
         private System.Windows.Forms.ComboBox cbTipo;
         private System.Windows.Forms.ComboBox cbFamilia;
-        private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button PDF;
         private System.Windows.Forms.ComboBox cbRubro;
         private System.Windows.Forms.Label label1;
@@ -215,5 +225,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.DataGridView dgBienes;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ComboBox cbResponsable;
     }
 }

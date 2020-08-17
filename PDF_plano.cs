@@ -57,85 +57,43 @@ namespace WindowsFormsApplication1
                 PdfWriter.GetInstance(doc, new FileStream(nombre, FileMode.Create));
                 doc.Open();
                 Paragraph _titulo = new Paragraph();
-                _titulo.Font = FontFactory.GetFont(FontFactory.TIMES, 13f);
+                _titulo.Font = FontFactory.GetFont(FontFactory.COURIER_BOLD, 14f);
 
 
 
-                // agrego titulo  del pdf
-                _titulo.Add(titulo);
+                // agrego linea titulo   y una linea al pdf
+                iTextSharp.text.pdf.draw.LineSeparator line = new iTextSharp.text.pdf.draw.LineSeparator(0.0F, 100.0F, BaseColor.BLACK, Element.ALIGN_LEFT, 1);
+                doc.Add(new Chunk(line));
+                _titulo.Add(encabezado);
                 _titulo.Alignment = Element.ALIGN_CENTER;
 
-                iTextSharp.text.pdf.draw.LineSeparator line1 = new iTextSharp.text.pdf.draw.LineSeparator(0.0F, 100.0F, BaseColor.BLACK, Element.ALIGN_LEFT, 1);
-
-                doc.Add(new Chunk(line1));
                 doc.Add(_titulo);
 
+                iTextSharp.text.pdf.draw.LineSeparator line1 = new iTextSharp.text.pdf.draw.LineSeparator(1.0F, 100.0F, BaseColor.BLACK, Element.ALIGN_LEFT, 1);
+                doc.Add(new Chunk(line1));
 
+                //defino letra general
+                iTextSharp.text.Font Fuente = FontFactory.GetFont(FontFactory.TIMES, size: 9);
 
-               
-                iTextSharp.text.pdf.draw.LineSeparator line2 = new iTextSharp.text.pdf.draw.LineSeparator(0.0F, 100F, BaseColor.BLACK, Element.ALIGN_LEFT, 1);
-
-                doc.Add(new Chunk(line2));
-
-                // 0 para defecto
-                // 1 movimiento de entrega dev o auditoria
-                // 2 para bienes
-                switch (o)
-                {
-                    case 0:
-                    case 2:
-                        {
-
-                            Paragraph _encabezado = new Paragraph();
-                            _encabezado.Font = FontFactory.GetFont(FontFactory.TIMES, 13f);
-                            //variable que debe usarse encabezado
-                            _encabezado.Add(encabezado + "\n\n\n");
-
-                            //_encabezado.Alignment = Element.ALIGN_CENTER;
-                            doc.Add(_encabezado);
-                            break;
-                        }
-
-
-                    case 1:
-                   
-
-                        {
-                            PdfPTable Tabla_cabecera = new PdfPTable(5);
-                            Tabla_cabecera.WidthPercentage = 85;
-                            Tabla_cabecera.HorizontalAlignment = Element.ALIGN_CENTER;
-
-
-                            for (int m = 0; m < tablacabecera.Columns.Count-1; m++)
-                            {
-                                this.celdas(Tabla_cabecera, tablacabecera.Columns[m].ToString());
-                            }
-
-
-
-                            Tabla_cabecera.AddCell(new Phrase(tablacabecera.Rows[0]["Rubro"].ToString()));
-                            Tabla_cabecera.AddCell(new Phrase(tablacabecera.Rows[0]["Tipo"].ToString()));
-                            Tabla_cabecera.AddCell(new Phrase(tablacabecera.Rows[0]["Local"].ToString()));
-                            Tabla_cabecera.AddCell(new Phrase(tablacabecera.Rows[0]["Codigo"].ToString()));
-                            Tabla_cabecera.AddCell(new Phrase(tablacabecera.Rows[0]["Descripcion"].ToString()));
-
-
-                            doc.Add(Tabla_cabecera);
-                            break;
-                        }
-                }
-                //concatenando cada parrafo que estará formado por una línea
-                doc.Add(new Paragraph("\n\n"));
-
+             
 
 
                 #region GrillaElementos
                 PdfPTable tabla = new PdfPTable(grilla.Columns.Count);
+                //cabecera tama;os
+                tabla.TotalWidth = 550f;
+                tabla.LockedWidth = true;
+                float[] widthsc = new float[] { 35f, 30f, 30f, 30f, 40f, 20f, 40f };
+                tabla.SetWidths(widthsc);
+
+
+
+
 
                 for (int i = 0; i < grilla.Columns.Count; i++)
                 {
 
-                    tabla.AddCell(new Phrase(grilla.Columns[i].HeaderText));
+                    tabla.AddCell(new Phrase(grilla.Columns[i].HeaderText, FontFactory.GetFont(FontFactory.TIMES, 12f)));
 
                 }
 
@@ -147,7 +105,7 @@ namespace WindowsFormsApplication1
                     {
                         if (grilla[k, i].Value != null)
                         {
-                            tabla.AddCell(new Phrase(grilla[k, i].Value.ToString()));
+                            tabla.AddCell(new Phrase(grilla[k, i].Value.ToString(), FontFactory.GetFont(FontFactory.TIMES, 10f)));
                         }
                     }
                 }
@@ -168,49 +126,7 @@ namespace WindowsFormsApplication1
                 doc.Add(saltoDeLinea2);
 
 
-            //    // aca hay que chequear que venga desde entrega,devolcuion o auditoria. tengo que agregar un parametro desde donde convoco pdf
-            //    PdfPTable tabla_faltantes = new PdfPTable(1);
-            //    tabla_faltantes.WidthPercentage = 70;
-            //    tabla_faltantes.HorizontalAlignment = Element.ALIGN_CENTER;
-             
-            //    tabla_faltantes.AddCell(".");
-
-
-
-            //    Paragraph _titulofaltantes = new Paragraph();
-            //    _titulofaltantes.Font = FontFactory.GetFont(FontFactory.TIMES, 13f);
-
-
-
-            //    _titulofaltantes.Add("Bienes no encontrados");
-            //    _titulofaltantes.Alignment = Element.ALIGN_CENTER;
-            //    doc.Add(_titulofaltantes);
-            //    Paragraph saltoDeLinea4 = new Paragraph("                                                                                                                                                                                                                                                                                                                                                                                   ");
-            //    doc.Add(saltoDeLinea4);
-
-            //    doc.Add(tabla_faltantes);
-
-            //    //concatenando cada parrafo que estará formado por una línea
-            //    doc.Add(new Paragraph("\n\n"));
-
-
-            //    #region Pie de paguina
-                
-
-            //    PdfPTable Tabla_cabecera2 = new PdfPTable(3);
-            //    Tabla_cabecera2.WidthPercentage = 95;
-            //    Tabla_cabecera2.HorizontalAlignment = Element.ALIGN_CENTER;
-            //    Tabla_cabecera2.DefaultCell.BorderColor = BaseColor.BLUE;
-                
-
-            //    Paragraph _fuentetabla = new Paragraph();
-            //    _fuentetabla.Font = FontFactory.GetFont(FontFactory.COURIER, 10f);
-            //    Tabla_cabecera2.AddCell(new PdfPCell(new Phrase("\n\n\n.............................\n Secretaria Administrativa", _fuentetabla.Font)));
-            //    Tabla_cabecera2.AddCell(new PdfPCell(new Phrase("\n\n\n.............................\n Responsable del Local", _fuentetabla.Font))); ;
-            //    Tabla_cabecera2.AddCell(new PdfPCell(new Phrase("\n\n\n.............................\n Responsable de Inventario", _fuentetabla.Font)));
-
-            //doc.Add(Tabla_cabecera2);
-               
+           
 
                 // Insertamos salto de linea
                 Paragraph saltoDeLinea3 = new Paragraph("                                                                                                                                                                                                                                                                                                                                                                                   ");

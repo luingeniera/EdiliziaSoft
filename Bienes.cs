@@ -30,29 +30,22 @@ namespace WindowsFormsApplication1
             InitializeComponent();
         }
 
-        //string icbFamilia;
-        //string icbLocales;
-        //string icbTipo;
-        //string icbRubro;
-
+     
        
         private void Bienes_Load(object sender, EventArgs e)
         {
 
 
-            cargacombos("Todos", "Todos", "Todos", "Todos");
-            //cbFamilia.Items.Add("Todos");
+            cargacombos("Todos", "Todos", "Todos", "Todos", "Todos");
+           
             cbFamilia.SelectedItem = "Todos";
-            //cbLocales.Items.Add("Todos");
             cbLocales.SelectedItem = "Todos";
-            //cbTipo.Items.Add("Todos");
             cbTipo.SelectedItem = "Todos";
-            //cbRubro.Items.Add("Todos");
             cbRubro.SelectedItem = "Todos";
-            
+            cbResponsable.SelectedItem = "Todos";
+
             bandera = 1;
-                //cbFamilia.SelectedValue.ToString(), cbLocales.SelectedValue.ToString()
-                //, cbRubro.SelectedValue.ToString(),cbTipo.SelectedValue.ToString());
+            
         }
 
 
@@ -65,30 +58,38 @@ namespace WindowsFormsApplication1
 
             string wrubro = " branch='" + cbRubro.SelectedItem.ToString() + "'";
             string wtipo = " type='" + cbTipo.SelectedItem.ToString() + "'";
-            string wlocal = " rooms.description='" + cbLocales.SelectedItem.ToString() + "'";
+
+            //cambio pedido 13/08/2020 para que se filtre por codigo y descr de local
+            //string wlocal = " rooms.description='" + cbLocales.SelectedItem.ToString() + "'";
+            string wlocal = " CONCAT('[',rooms.code,'] - ', rooms.description) like '%" + cbLocales.SelectedItem.ToString() + "%' ";
             string wfamilia = " family='" + cbFamilia.SelectedItem.ToString() + "'";
+
+            //pidio agregar responsable tmb
+          
+            string wresponsable = "  concat(u.last_name, ', ', u.name) = '" + cbResponsable.SelectedItem.ToString() + "' "; 
 
 
             if (cbRubro.SelectedItem.ToString() == "Todos") { wrubro = "1=1"; };
             if (cbTipo.SelectedItem.ToString() == "Todos") { wtipo = "1=1"; };
             if (cbLocales.SelectedItem.ToString() == "Todos") { wlocal = "1=1"; };
             if (cbFamilia.SelectedItem.ToString() == "Todos") { wfamilia = "1=1"; };
-
+            if (cbResponsable.SelectedItem.ToString() == "Todos") { wresponsable = "1=1"; };
 
             sqlQuery =
-             //" SELECT branch as Rubro,type as Tipo, rooms.description as Local, family as Familia,   a.code as Codigo, a.description as Descripcion " +
-             //" from edilizia.rooms_by_users inner join edilizia.users on users.idUsers = id_user_responsible" +
-             //" inner join edilizia.rooms on rooms.idrooms = id_room" +
-             //" inner join edilizia.assets_by_room abr on abr.idRoom = rooms.idrooms" +
-             //" inner join edilizia.assets a on a.id_assets = abr.idAsset" +
-             //" where id_user_responsible = '2'" +
-            " SELECT branch as Rubro,type as Tipo, rooms.description as Local, family as Familia, a.code as Codigo, a.description as Descripcion " +
+            //concat(u.last_name, ', ', u.name) as Responsable
+            " SELECT branch as Rubro,type as Tipo, CONCAT('[',rooms.code,'] - ', rooms.description) as Local, concat(u.last_name, ', ', u.name) as Responsable, family as Familia, a.code as Codigo, a.description as Descripcion " +
+           
             "from edilizia.assets a inner join edilizia.assets_by_room abr on a.id_assets = abr.idAsset " +
-            "inner join edilizia.rooms on abr.idRoom = rooms.idrooms where 1=1" +
+            "inner join edilizia.rooms on abr.idRoom = rooms.idrooms" +
+            " LEFT OUTER JOIN edilizia.rooms_by_users rbu on rooms.idRooms = rbu.id_room" +
+           " LEFT OUTER JOIN edilizia.users u on u.idUsers = rbu.id_user_responsible" +
+           " where 1=1" +
              " and " + wrubro +
              " and " + wlocal +
              " and " + wfamilia +
-             " and " + wtipo + " order by 3;";
+             " and " + wtipo +
+              " and " + wresponsable +
+             " order by 3;";
             
 
 
@@ -101,6 +102,8 @@ namespace WindowsFormsApplication1
                 dtBienes.Load(dataReaderLocal);
                 dgBienes.DataSource = dt;
             }
+
+            PDF.Enabled = true;
     }
 
         private void PDF_Click(object sender, EventArgs e)
@@ -112,82 +115,97 @@ namespace WindowsFormsApplication1
 
        
 
-        private void cargacombos( string familia, string local, string rubro, string tipo)
+        private void cargacombos( string familia, string local, string rubro, string tipo,string responsable)
         {
             DBConnection DB = new DBConnection();
             DBConnection DB1 = new DBConnection();
+
             string wrubro = " branch='" + rubro +"'";
             string wtipo = " type='" + tipo + "'";
             string wlocal = " rooms.description='" + local + "'";
             string wfamilia = " family='" + familia + "'";
+            string wresponsable = " AND concat(u.last_name, ', ', u.name) = '" + responsable + "'" ;
 
-          
             if (rubro == "Todos") { wrubro = "1=1"; };
             if (tipo == "Todos") { wtipo = "1=1"; };
             if (local == "Todos") { wlocal = "1=1"; };
             if (familia == "Todos") { wfamilia = "1=1";};
+            if (responsable == "Todos") { wresponsable = "1=1"; };
 
 
-MySqlDataReader drRubro = DB1.GetData(
-//" SELECT distinct branch as rubro " +
-//" from edilizia.rooms_by_users inner join edilizia.users on users.idUsers = id_user_responsible" +
-//" inner join edilizia.rooms on rooms.idrooms = id_room" +
-//" inner join edilizia.assets_by_room abr on abr.idRoom = rooms.idrooms" +
-//" inner join edilizia.assets a on a.id_assets = abr.idAsset" +
-//" where id_user_responsible = '2'" +
+            MySqlDataReader drRubro = DB1.GetData(
+
 "SELECT distinct branch as rubro from edilizia.assets a inner join edilizia.assets_by_room abr on a.id_assets = abr.idAsset " +
-"inner join edilizia.rooms on abr.idRoom = rooms.idrooms where 1=1" +
+"inner join edilizia.rooms on abr.idRoom = rooms.idrooms " +
+ "LEFT OUTER JOIN edilizia.rooms_by_users rbu on rooms.idRooms = rbu.id_room "+
+ "LEFT OUTER JOIN edilizia.users u on u.idUsers = rbu.id_user_responsible "+
+"where 1=1" +
 " and " + wtipo + 
 " and " + wlocal + 
 " and " + wfamilia + 
-" and " + wtipo + ";"
+" and " + wtipo +
+" and " + wresponsable + ";"
 );
 
 
 MySqlDataReader drfamilia = DB.GetData(
-//"SELECT distinct family as familia" +
-//" from edilizia.rooms_by_users inner join edilizia.users on users.idUsers = id_user_responsible" +
-//" inner join edilizia.rooms on rooms.idrooms = id_room" +
-//" inner join edilizia.assets_by_room abr on abr.idRoom = rooms.idrooms" +
-//" inner join edilizia.assets a on a.id_assets = abr.idAsset" +
-//" where id_user_responsible = '2'" +
+
 "SELECT distinct family as familia from edilizia.assets a inner join edilizia.assets_by_room abr on a.id_assets = abr.idAsset " +
-"inner join edilizia.rooms on abr.idRoom = rooms.idrooms where 1=1" +
+"inner join edilizia.rooms on abr.idRoom = rooms.idrooms " +
+ "LEFT OUTER JOIN edilizia.rooms_by_users rbu on rooms.idRooms = rbu.id_room " +
+ "LEFT OUTER JOIN edilizia.users u on u.idUsers = rbu.id_user_responsible " +
+"where 1=1" +
 " and " + wtipo +
 " and " + wlocal +
 " and " + wfamilia +
-" and " + wtipo + ";"
+" and " + wtipo +
+" and " + wresponsable + ";"
 );
 
-MySqlDataReader drtipo = DB.GetData(
-//"SELECT distinct type as tipo" +
-//" from edilizia.rooms_by_users inner join edilizia.users on users.idUsers = id_user_responsible" +
-//" inner join edilizia.rooms on rooms.idrooms = id_room" +
-//" inner join edilizia.assets_by_room abr on abr.idRoom = rooms.idrooms" +
-//" inner join edilizia.assets a on a.id_assets = abr.idAsset" +
-//" where id_user_responsible = '2'" +
+            MySqlDataReader drtipo = DB.GetData(
+
 "SELECT distinct type as tipo from edilizia.assets a inner join edilizia.assets_by_room abr on a.id_assets = abr.idAsset " +
-"inner join edilizia.rooms on abr.idRoom = rooms.idrooms where 1=1" +
+"inner join edilizia.rooms on abr.idRoom = rooms.idrooms " +
+ "LEFT OUTER JOIN edilizia.rooms_by_users rbu on rooms.idRooms = rbu.id_room " +
+ "LEFT OUTER JOIN edilizia.users u on u.idUsers = rbu.id_user_responsible " +
+
+" where 1=1" +
 " and " + wtipo +
 " and " + wlocal +
 " and " + wfamilia +
-" and " + wtipo + ";"
+" and " + wtipo +
+" and " + wresponsable + ";"
 );
 
-MySqlDataReader drlocales = DB.GetData(
-//"SELECT distinct rooms.description as local" +
-//" from edilizia.rooms_by_users inner join edilizia.users on users.idUsers = id_user_responsible" +
-//" inner join edilizia.rooms on rooms.idrooms = id_room" +
-//" inner join edilizia.assets_by_room abr on abr.idRoom = rooms.idrooms" +
-//" inner join edilizia.assets a on a.id_assets = abr.idAsset" +
-//" where id_user_responsible = '2'" +
-"SELECT distinct rooms.description as local from edilizia.assets a inner join edilizia.assets_by_room abr on a.id_assets = abr.idAsset " +
-"inner join edilizia.rooms on abr.idRoom = rooms.idrooms where 1=1" +
+            MySqlDataReader drlocales = DB.GetData(
+//cambio para que muestre por codigo y desc del local 13/08/2020
+"SELECT distinct CONCAT('[',rooms.code,'] - ', rooms.description) as 'Local'  from edilizia.assets a inner join edilizia.assets_by_room abr on a.id_assets = abr.idAsset " +
+"inner join edilizia.rooms on abr.idRoom = rooms.idrooms " +
+ "LEFT OUTER JOIN edilizia.rooms_by_users rbu on rooms.idRooms = rbu.id_room " +
+ "LEFT OUTER JOIN edilizia.users u on u.idUsers = rbu.id_user_responsible " +
+ "where 1=1" +
 " and " + wtipo +
 " and " + wlocal +
 " and " + wfamilia +
-" and " + wtipo + ";"
+" and " + wtipo +
+" and " + wresponsable +
+";"
 );
+
+
+ MySqlDataReader drReposnsable = DB.GetData("SELECT distinct concat(u.last_name, ', ', u.name) as 'Responsable'  from edilizia.assets a inner join edilizia.assets_by_room abr on a.id_assets = abr.idAsset " +
+"inner join edilizia.rooms on abr.idRoom = rooms.idrooms " +
+ "LEFT OUTER JOIN edilizia.rooms_by_users rbu on rooms.idRooms = rbu.id_room " +
+ "LEFT OUTER JOIN edilizia.users u on u.idUsers = rbu.id_user_responsible " +
+ "where 1=1" +
+" and " + wtipo +
+" and " + wlocal +
+" and " + wfamilia +
+" and " + wtipo +
+" and " + wresponsable +
+";"
+);
+
 
 
             if (drRubro.HasRows)
@@ -254,6 +272,19 @@ MySqlDataReader drlocales = DB.GetData(
                 }
             }
 
+            if (drReposnsable.HasRows)
+            {
+                DataTable dt = new DataTable();
+                dt.Load(drReposnsable);
+                cbResponsable.Items.Add("Todos");
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    cbResponsable.ValueMember = "Valor";
+                    cbResponsable.DisplayMember = "local";
+                    cbResponsable.Items.Add(dt.Rows[i][0]);
+                }
+            }
+
 
 
         }
@@ -261,25 +292,23 @@ MySqlDataReader drlocales = DB.GetData(
 
         private void cbRubro_SelectedValueChanged(object sender, EventArgs e)
         {
-            //if (bandera != 0)
-            //{
-            //    cargacombos(cbFamilia.SelectedItem.ToString(), cbLocales.SelectedItem.ToString(),
-            //        cbRubro.SelectedItem.ToString(), cbTipo.SelectedItem.ToString());
-            //}
-
           
+                //cargacombos(cbFamilia.SelectedItem.ToString(), cbLocales.SelectedItem.ToString(),
+                //    cbRubro.SelectedItem.ToString(), cbTipo.SelectedItem.ToString(), cbResponsable.SelectedItem.ToString());
+            
+
+
         }
 
         private void cbFamilia_SelectedValueChanged(object sender, EventArgs e)
         {
 
-            
-
+          
 
 
         }
 
-       
+
 
 
         private void cbLocales_SelectedValueChanged(object sender, EventArgs e)
