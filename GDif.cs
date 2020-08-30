@@ -230,7 +230,7 @@ namespace WindowsFormsApplication1
                 }
 
                
-                for (int i = 0; i <= dgvDiferencias.Rows.Count - 2; i++)
+                for (int i = 0; i <= dgvDiferencias.Rows.Count - 1; i++)
                 {
                     if (dgvDiferencias[4, i].Value.ToString() != dgvDiferencias[7, i].Value.ToString())
 
@@ -322,13 +322,6 @@ namespace WindowsFormsApplication1
        
 
 
-        //void grouper_DisplayGroup(object sender, Subro.Controls.GroupDisplayEventArgs e)
-        //{
-        //    e.BackColor = (e.Group.GroupIndex % 2) == 0 ? Color.Blue : Color.LightBlue;
-        //    e.Header = "[" + e.Header + "], grp: " + e.Group.GroupIndex;
-        //    e.DisplayValue = "Value is " + e.DisplayValue;
-        //    e.Summary = "contains " + e.Group.Count + " rows";
-        //}
             
         private void dgvDiferencias_Sorted(object sender, EventArgs e)
         {
@@ -460,6 +453,7 @@ namespace WindowsFormsApplication1
         {
             #region ACTUALIZACION POR FILA
             Boolean bandera = false;
+           
             //recorro todos las filas de la grilla
             for (int i = 0; i <= dgvDiferencias.Rows.Count - 2; i++)
             {
