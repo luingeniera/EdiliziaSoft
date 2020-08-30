@@ -149,10 +149,19 @@ namespace WindowsFormsApplication1
                     if (dtInfo.Rows[0][4].ToString() != "")
                     {
                         MessageBox.Show("No puede generar un comprobante nuevo hasta gestionar las diferencias que el local posee. Comprobante relacionado: " + dtInfo.Rows[0][4].ToString());
-                        //    btPicking.Enabled = false;
                         btnConfirmar.Visible = false;
                         btnSalir.Visible = true;
                         HasDifference = "1";
+                        rbAuditoria.Enabled = true;
+                        rbDevolucion.Enabled = true;
+                        rbEntrega.Enabled = true;
+                        cbNivel.SelectedIndex = -1;
+                        cbEdificio.SelectedIndex = -1;
+                        cbNumero.SelectedIndex = -1;
+                        lblLocal.Text = "Local: ";
+                        lblResponsable.Text = "Responsable: ";
+                        lblActivos.Text = "Cant. Activos: ";
+                        return;
                     }
                 }
                 //Busco datos de los bienes del local para completar la grilla.
@@ -524,39 +533,7 @@ namespace WindowsFormsApplication1
                     }
                 }
             }
-            //Todos aquellos bienes pickeados que no estaban en la grilla original los agrego con color amarillo.
-            for (int i = 0; i < dtReturnPicking.Rows.Count; i++)
-            {
-                if (dtReturnPicking.Rows[i][1].ToString() == "0")
-                {
-                    //Recupero el id_assets y el id_room
-                    sql = "SELECT a.id_assets,idRoom,a.description,s.description FROM edilizia.assets a inner join assets_by_room on a.id_assets = idAsset " +
-                        "INNER JOIN assets_status s on a.idStatus = s.idstatus where a.code = '" + dtReturnPicking.Rows[i][0].ToString().ToUpper() + "'";
-                    MySqlDataReader dataReaderInfo = DB.GetData(sql);
-                    //Si existe el bien lo agrego y pinto en amarillo, sino digo que no existe el bien.
-                    if (dataReaderInfo.HasRows)
-                    {
-                        DataRow dr = dataTableDgLocales.NewRow();
-                        dr["Referencia"] = dtReturnPicking.Rows[i][0].ToString().ToUpper();
-                        dr["Eval"] = "";
-                        DataTable dtInfo = new DataTable();
-                        dtInfo.Load(dataReaderInfo);
-                        dr["idAsset"] = dtInfo.Rows[0][0].ToString();
-                        dr["idRoom"] = dtInfo.Rows[0][1].ToString();
-                        dr["Nombre de activo"] = dtInfo.Rows[0][2].ToString();
-                        dr["Estado"] = dtInfo.Rows[0][3].ToString();
-                        dr["Comprobante"] = "";
-                        dr["idTransaction"] = "";
-                        dataTableDgLocales.Rows.Add(dr);
-                        dgLocales.DataSource = dataTableDgLocales;
-                        dgLocales["Eval", dgLocales.NewRowIndex - 1].Style.BackColor = Color.Yellow;
-                    }
-                    else
-                    {
-                        MessageBox.Show("El bien " + dtReturnPicking.Rows[i][0].ToString().ToUpper() + " no existe y no será agregado. Por favor asegurese que sea correcto.");
-                    }
-                }
-            }
+            //Sacado de aca la parte que pinta en amarillo los bienes pickeados.(1)
 
             //Agrego la columna "Estado Observado"
             if (dtReturnPicking.Rows.Count > 0)
@@ -588,6 +565,41 @@ namespace WindowsFormsApplication1
                     column1.Width = 250;
                     dgLocales.Columns.Add(column1);
                 }
+                //Agregado aca lo que pinta en amarillo. Ver(1).
+                //Todos aquellos bienes pickeados que no estaban en la grilla original los agrego con color amarillo.
+                for (int i = 0; i < dtReturnPicking.Rows.Count; i++)
+                {
+                    if (dtReturnPicking.Rows[i][1].ToString() == "0")
+                    {
+                        //Recupero el id_assets y el id_room
+                        sql = "SELECT a.id_assets,idRoom,a.description,s.description,r.code FROM edilizia.assets a inner join assets_by_room on a.id_assets = idAsset " +
+                            "INNER JOIN assets_status s on a.idStatus = s.idstatus INNER JOIN edilizia.rooms r on idRoom = r.idRooms where a.code = '" + dtReturnPicking.Rows[i][0].ToString().ToUpper() + "'";
+                        MySqlDataReader dataReaderInfo = DB.GetData(sql);
+                        //Si existe el bien lo agrego y pinto en amarillo, sino digo que no existe el bien.
+                        if (dataReaderInfo.HasRows)
+                        {
+                            DataRow dr = dataTableDgLocales.NewRow();
+                            dr["Referencia"] = dtReturnPicking.Rows[i][0].ToString().ToUpper();
+                            dr["Eval"] = "";
+                            DataTable dtInfo = new DataTable();
+                            dtInfo.Load(dataReaderInfo);
+                            dr["idAsset"] = dtInfo.Rows[0][0].ToString();
+                            dr["idRoom"] = dtInfo.Rows[0][1].ToString();
+                            dr["Nombre de activo"] = dtInfo.Rows[0][2].ToString();
+                            dr["Estado"] = dtInfo.Rows[0][3].ToString();
+                            dr["Comprobante"] = "";
+                            dr["idTransaction"] = "";
+                            dataTableDgLocales.Rows.Add(dr);
+                            dgLocales.DataSource = dataTableDgLocales;
+                            dgLocales["Eval", dgLocales.NewRowIndex - 1].Style.BackColor = Color.Yellow;
+                            dgLocales["Observaciones", dgLocales.NewRowIndex - 1].Value = "Por sistemas en " + dtInfo.Rows[0][4].ToString();
+                        }
+                        else
+                        {
+                            MessageBox.Show("El bien " + dtReturnPicking.Rows[i][0].ToString().ToUpper() + " no existe y no será agregado. Por favor asegurese que sea correcto.");
+                        }
+                    }
+                }
 
                 //El resto de los bienes que figuraban en el local y no fueron pickeados van a color rojo y deshabilito
                 //la posibilidad de cambiarles el estado.
@@ -606,7 +618,7 @@ namespace WindowsFormsApplication1
                         dgLocales["Estado Obs.", j].ErrorText = string.Empty;
                         for (int r = 0; r < dtReturnPicking.Rows.Count; r++)
                         {
-                            if (dgLocales[0, j].FormattedValue.ToString() == dtReturnPicking.Rows[r][0].ToString())
+                            if (dgLocales[0, j].FormattedValue.ToString() == dtReturnPicking.Rows[r][0].ToString() && dgLocales["Eval", j].Style.BackColor != Color.Yellow)
                                 dgLocales["Observaciones", j].Value = "";
                         }
                     }
