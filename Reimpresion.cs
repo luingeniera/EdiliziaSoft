@@ -27,9 +27,11 @@ namespace WindowsFormsApplication1
             DateTime dtnow = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
             dateTimePicker1.Value = dtnow;
             dateTimePicker1.CustomFormat = " ";
-            dateTimePicker2.CustomFormat = " ";
+          
             dateTimePicker2.Format = DateTimePickerFormat.Custom;
-
+            
+            dateTimePicker2.Value = dtnow;
+            dateTimePicker2.CustomFormat = " ";
 
             string sqlQuery = "";
 
@@ -96,9 +98,10 @@ namespace WindowsFormsApplication1
             {
                 string sqlTransactions = "";
                 sqlTransactions = "SELECT t.idtransaction, concat(t.bookCode,'-',t.bookNumber) as Comprobante, DATE_FORMAT(t.date,'%d/%m/%Y') as Fecha " +
-                ", concat(u.last_name, ',', u.name) as Responsable, r.description as Oficina, r.level as Nivel, r.number as Nro FROM edilizia.transaction t " +
+                ", concat(u.last_name, ',', u.name) as Responsable, r.description as Oficina,b.Description as Edificio, r.level as Nivel, r.number as Nro FROM edilizia.transaction t " +
                 "INNER JOIN edilizia.assets_room_transaction art on t.idtransaction = art.idtransaction INNER JOIN edilizia.rooms_by_users rbu " +
-                "on art.id_Room = rbu.id_room INNER JOIN edilizia.users u on rbu.id_user_responsible = u.idUsers INNER JOIN rooms r on art.id_Room = r.idRooms WHERE " + where;
+                "on art.id_Room = rbu.id_room INNER JOIN edilizia.users u on rbu.id_user_responsible = u.idUsers INNER JOIN rooms r on art.id_Room = r.idRooms "+
+               " inner join edilizia.buildings b on b.idbuilding = r.buildings WHERE " + where;
 
 
 

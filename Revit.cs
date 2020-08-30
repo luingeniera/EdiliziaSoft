@@ -58,26 +58,26 @@ namespace WindowsFormsApplication1
 
                 }
 
-                for (int i = 0; i <= dgvRevit.Rows.Count - 2; i++)
-                {
+                //for (int i = 0; i <= dgvRevit.Rows.Count - 2; i++)
+                //{
 
-                    //  MessageBox.Show(dgvRevit[2, i].Value.ToString() + dgvRevit[4, i].Value.ToString());
-                    if (dgvRevit[2, i].Value.ToString() != dgvRevit[4, i].Value.ToString())
+                //    //  MessageBox.Show(dgvRevit[2, i].Value.ToString() + dgvRevit[4, i].Value.ToString());
+                //    //if (dgvRevit[2, i].Value.ToString() != dgvRevit[4, i].Value.ToString())
 
-                    {
-                        for (int j = 0; j <= dgvRevit.Columns.Count - 1; j++)
-                            dgvRevit[j, i].Style.BackColor = System.Drawing.Color.Red;
+                //    //{
+                //    //    for (int j = 0; j <= dgvRevit.Columns.Count - 1; j++)
+                //    //    //    dgvRevit[j, i].Style.BackColor = System.Drawing.Color.Red;
 
-                    }
-                    else
-                    {
-                        for (int j = 0; j <= dgvRevit.Columns.Count - 1; j++)
-                            dgvRevit[j, i].Style.BackColor = System.Drawing.Color.DarkGreen;
+                //    //}
+                //    //else
+                //    //{
+                //    //    for (int j = 0; j <= dgvRevit.Columns.Count - 1; j++)
+                //    //        dgvRevit[j, i].Style.BackColor = System.Drawing.Color.DarkGreen;
 
-                    }
+                //    //}
 
 
-                }
+                //}
 
 
 

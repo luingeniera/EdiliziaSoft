@@ -23,7 +23,9 @@ namespace WindowsFormsApplication1
         {
             dtdesde.CustomFormat = " ";
             dtdesde.Format = DateTimePickerFormat.Custom;
-           
+            DateTime dtnow = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+            dtdesde.Value = dtnow;
+            dtdesde.CustomFormat = " ";
 
             dthasta.CustomFormat = " ";
             dthasta.Format = DateTimePickerFormat.Custom;
@@ -105,7 +107,7 @@ namespace WindowsFormsApplication1
 
             }
 
-
+          
 
 
             string TipoComprobante = "";
@@ -155,7 +157,7 @@ namespace WindowsFormsApplication1
 
 
 
-            string sqlQuery = " select bookCode as TipoComp, bookNumber as NroCompr, a.code,a.description, ori.code as 'Local por sistema' , pic.code as 'Local Observado'" +
+            string Consulta = " select bookCode as TipoComp, bookNumber as NroCompr, a.code,a.description, ori.code as 'Local por sistema' , pic.code as 'Local Observado'" +
                             " ,sori.description as 'Estado por sistema' , spic.description as 'Estado Observado' , iddiferences" +
                             "  FROM edilizia.diferences dif" +
                             " left join edilizia.assets a on a.id_assets = idbien" +
@@ -178,7 +180,7 @@ namespace WindowsFormsApplication1
 
 
             DBConnection DB = new DBConnection();
-            MySqlDataReader comprobantes = DB.GetData(sqlQuery);
+            MySqlDataReader comprobantes = DB.GetData(Consulta);
 
 
 
@@ -227,8 +229,8 @@ namespace WindowsFormsApplication1
 
                 }
 
-                // grouper.DisplayGroup += grouper_DisplayGroup;
-                for (int i = 0; i <= dgvDiferencias.Rows.Count - 2; i++)
+               
+                for (int i = 0; i <= dgvDiferencias.Rows.Count - 1; i++)
                 {
                     if (dgvDiferencias[4, i].Value.ToString() != dgvDiferencias[7, i].Value.ToString())
 
@@ -267,10 +269,9 @@ namespace WindowsFormsApplication1
 
 
                 }
-                sqlQuery = " ";
+                Consulta = " ";
 
-                //var grouper = new Subro.Controls.DataGridViewGrouper(dgvDiferencias);
-                //grouper.SetGroupOn("NroCompr");
+                
 
             }
             else
@@ -321,13 +322,6 @@ namespace WindowsFormsApplication1
        
 
 
-        void grouper_DisplayGroup(object sender, Subro.Controls.GroupDisplayEventArgs e)
-        {
-            e.BackColor = (e.Group.GroupIndex % 2) == 0 ? Color.Blue : Color.LightBlue;
-            e.Header = "[" + e.Header + "], grp: " + e.Group.GroupIndex;
-            e.DisplayValue = "Value is " + e.DisplayValue;
-            e.Summary = "contains " + e.Group.Count + " rows";
-        }
             
         private void dgvDiferencias_Sorted(object sender, EventArgs e)
         {
@@ -457,6 +451,9 @@ namespace WindowsFormsApplication1
 
         private void btnConfirmar_Click_1(object sender, EventArgs e)
         {
+            #region ACTUALIZACION POR FILA
+            Boolean bandera = false;
+           
             //recorro todos las filas de la grilla
             for (int i = 0; i <= dgvDiferencias.Rows.Count - 2; i++)
             {
@@ -472,7 +469,7 @@ namespace WindowsFormsApplication1
                        (dgvDiferencias.Rows[i].Cells[9].Value != null || dgvDiferencias.Rows[i].Cells[10].Value != null))
                 {
                     #region saldo diferencia
-
+                    bandera = true;
 
 
                     if (dgvDiferencias.Rows[i].Cells[5].Value == null) { dgvDiferencias.Rows[i].Cells[5].Value = false; };
@@ -572,7 +569,7 @@ namespace WindowsFormsApplication1
                         DB.GetData(actualizartransacciones);
 
                     }
-                    MessageBox.Show("Se saldaron las diferencias cargadas");
+                 //cambio pedido revision 9/6 un solo cartel con todo.   MessageBox.Show("Se saldaron las diferencias cargadas");
 
                     #endregion
 
@@ -590,18 +587,26 @@ namespace WindowsFormsApplication1
                     if ((dgvDiferencias.Rows[i].Cells[5].Value == null && dgvDiferencias.Rows[i].Cells[6].Value == null) &&  (dgvDiferencias.Rows[i].Cells[9].Value == null && dgvDiferencias.Rows[i].Cells[10].Value == null))
                     { }
 
-                    else
-                    {// si hay algo completo quiere decri que falta terminar
-                        MessageBox.Show("Debe completar la diferencia en su totalidad");
-                    }
+                    //minuta 9/7 pide que no se muestre
+                    //else
+                    //{// si hay algo completo quiere decri que falta terminar
+                    //    MessageBox.Show("Debe completar la diferencia en su totalidad");
+                    //}
 
                 }
 
+                #endregion
 
-
-
+              
 
             }
+
+            //muestro solo si salde alguna diferencia sino no.
+            if (bandera == true) { 
+            MessageBox.Show("Se saldaron las diferencias cargadas");
+            }
+
+            btnBuscar_Click(this, new EventArgs());
         }
 
         private void dtdesde_ValueChanged_1(object sender, EventArgs e)
@@ -612,6 +617,11 @@ namespace WindowsFormsApplication1
         private void dthasta_ValueChanged_1(object sender, EventArgs e)
         {
             dthasta.CustomFormat = "yyyyMMdd";
+        }
+
+        private void dgvDiferencias_ColumnAdded(object sender, DataGridViewColumnEventArgs e)
+        {
+            e.Column.SortMode = DataGridViewColumnSortMode.NotSortable;
         }
     }
     }
