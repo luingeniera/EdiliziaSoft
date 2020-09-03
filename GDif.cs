@@ -38,7 +38,7 @@ namespace WindowsFormsApplication1
             MySqlDataReader drLocal = DB.GetData("select CONCAT('[',rooms.code,'] - ', rooms.description) as 'Local'  from edilizia.rooms;");
            
             MySqlDataReader drNroComp = DB.GetData("SELECT booknumber as NroComprobante FROM edilizia.transaction;");
-            MySqlDataReader drEdificio = DB.GetData("select distinct description from buildings");
+            MySqlDataReader drEdificio = DB.GetData("select distinct description from buildings;");
 
 
             if (drEdificio.HasRows)
@@ -455,7 +455,7 @@ namespace WindowsFormsApplication1
             Boolean bandera = false;
            
             //recorro todos las filas de la grilla
-            for (int i = 0; i <= dgvDiferencias.Rows.Count - 2; i++)
+            for (int i = 0; i <= dgvDiferencias.Rows.Count - 1; i++)
             {
                 
                 //tengo que buscar valores que estan tildados.
