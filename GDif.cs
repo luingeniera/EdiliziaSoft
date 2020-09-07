@@ -158,7 +158,7 @@ namespace WindowsFormsApplication1
 
 
             string Consulta = " select bookCode as TipoComp, bookNumber as NroCompr, a.code,a.description, ori.code as 'Local por sistema' , pic.code as 'Local Observado'" +
-                            " ,sori.description as 'Estado por sistema' , spic.description as 'Estado Observado' , iddiferences" +
+                            " ,sori.description as 'Estado por sistema' , spic.description as 'Estado Observado' , iddiferences,at.observation as 'Observacion',at.delivery_status" +
                             "  FROM edilizia.diferences dif" +
                             " left join edilizia.assets a on a.id_assets = idbien" +
                             " left join edilizia.transaction t on t.idtransaction = idComprobante" +
@@ -166,6 +166,7 @@ namespace WindowsFormsApplication1
                             " left join edilizia.rooms pic  on idLocalPicking =  pic.idrooms" +
                             " left join edilizia.assets_status spic on spic.idstatus =  idestadoobs" +
                             " left join edilizia.assets_status sori on sori.idstatus = idestadoorig" +
+                            " left join edilizia.assets_room_transaction at on at.idtransaction = t.idtransaction and at.id_Asset = dif.idBien " +
                             "  where  dif.idComprobante in " +
 
                             "  (select  distinct t.idtransaction  " +
@@ -214,6 +215,7 @@ namespace WindowsFormsApplication1
                 dgvDiferencias.Columns.Insert(10, col3);
 
                 dgvDiferencias.Columns[12].Visible = false;
+                dgvDiferencias.Columns[14].Visible = false;
 
                 //Autoajusto grilla
                 for (int i = 0; i <= dgvDiferencias.Columns.Count - 1; i++)
@@ -510,11 +512,13 @@ namespace WindowsFormsApplication1
 
                     //ESTADO FINAL
                     string idestadofinal = " ";
-                    if (dgvDiferencias[9, i].Value.ToString() == "True" )
-                    {
-                        #region estado por sistema
-                        //busco el id del original
-                        string sqlroom = "SELECT idstatus FROM edilizia.assets_status where description ='" + dgvDiferencias[8, i].Value.ToString() + "'";
+
+                  
+                        if (dgvDiferencias[10, i].Value.ToString() == "True" && dgvDiferencias[11, i].Value.ToString() != "")
+                        {
+                        #region estado observado
+                        //busco el id del obs
+                        string sqlroom = "SELECT idstatus FROM edilizia.assets_status where description ='" + dgvDiferencias[11, i].Value.ToString() + "'";
 
 
                         MySqlDataReader idestado = DB.GetData(sqlroom);
@@ -523,21 +527,23 @@ namespace WindowsFormsApplication1
                         #endregion
                     }
                     else
-                    #region estado observado
-                    {//sino busco el observado
-                        string sqlroom = "SELECT idstatus FROM edilizia.assets_status where description ='" + dgvDiferencias[11, i].Value.ToString() + "'";
+                    #region estado sistema
+                    {// por defecto si no esta completo observado ponermos el de sistema
+                            
+                        //string sqlroom = "SELECT idstatus FROM edilizia.assets_status where description ='" + dgvDiferencias[11, i].Value.ToString() + "'";
 
-                        MySqlDataReader idestado = DB.GetData(sqlroom);
-                        if (idestado.Read())
-                        { idestadofinal = idestado["idstatus"].ToString(); }
+                        //MySqlDataReader idestado = DB.GetData(sqlroom);
+                        //if (idestado.Read())
+                        { idestadofinal = dgvDiferencias[14, i].Value.ToString(); }
 
 
                         #endregion
                     }
+                    
 
-                    // esta es el idtransaccion a actualizar dgvDiferencias[12, i].Value.ToString());
+                // esta es el idtransaccion a actualizar dgvDiferencias[12, i].Value.ToString());
 
-                    string updatediferencias = "update edilizia.diferences set fechagestiondiferencia = now(), idlocalFinal=" + idlocalfinal + " , idestadofinal=" + idestadofinal + "  where idDiferences= " + dgvDiferencias[12, i].Value.ToString();
+                   string updatediferencias = "update edilizia.diferences set fechagestiondiferencia = now(), idlocalFinal=" + idlocalfinal + " , idestadofinal=" + idestadofinal + "  where idDiferences= " + dgvDiferencias[12, i].Value.ToString();
                     //actualizo el local en tabla de bienes por local
                     string updateassetbyrrom = "update edilizia.assets_by_room set idroom =" + idlocalfinal + " where idasset = (select idbien from edilizia.diferences where idDiferences = " + dgvDiferencias[12, i].Value.ToString() + ")";
                     //actualizo el comprobante
@@ -605,6 +611,7 @@ namespace WindowsFormsApplication1
             if (bandera == true) { 
             MessageBox.Show("Se saldaron las diferencias cargadas");
             }
+         
 
             btnBuscar_Click(this, new EventArgs());
         }

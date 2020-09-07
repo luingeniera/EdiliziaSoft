@@ -496,12 +496,12 @@ namespace WindowsFormsApplication1
                     _Piedepagina.Font = FontFactory.GetFont(FontFactory.HELVETICA, 9f);
                     _Piedepagina.Alignment = Element.ALIGN_RIGHT;
                     _Piedepagina.SpacingBefore = 5;
-                  _Piedepagina.Add("Pagina nro: 1") 
-                    //doc.PageCount.ToString();
+                  _Piedepagina.Add("Pagina nro: 1");
+                //doc.PageCount.ToString();
 
-            
-               
-                    doc.Add(_Piedepagina);
+
+
+                doc.Add(_Piedepagina);
                     //armo versionado para los 3 pdf
                     Paragraph _version = new Paragraph();
                     _version.Font = FontFactory.GetFont(FontFactory.TIMES, 9f);
