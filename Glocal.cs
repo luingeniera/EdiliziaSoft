@@ -177,12 +177,19 @@ namespace WindowsFormsApplication1
                 }
                 else
                 {
-                    sqlQuery = "SELECT a.code as 'Referencia', a.description as 'Nombre de activo' ,s.description as 'Estado', concat(last_name, ', ', name) as 'Responsible', concat(t.bookCode,'-',t.bookNumber) as 'Comprobante' " +
+                    sqlQuery = "SELECT distinct a.code as 'Referencia', a.description as 'Nombre de activo' ,(select s.description from assets_room_transaction art INNER JOIN " +
+                    "assets_status s on art.delivery_status = s.idstatus  where id_Asset = abr.idAsset and id_Room = abr.idRoom and return_date is null order by idtransaction desc limit 1)  as 'Estado', " +
+                    "concat(last_name, ', ', name) as 'Responsible', '' as 'Comprobante'  ,'' as idtransaction,abr.idAsset, abr.idRoom, '' as 'Eval' " +
+                    "FROM rooms r INNER JOIN edilizia.assets_by_room abr ON abr.idRoom = r.idRooms INNER JOIN assets a on a.id_assets = abr.idAsset LEFT OUTER JOIN rooms_by_users rbu on r.idRooms = rbu.id_room and rbu.end_date is null " +
+                    "inner join edilizia.buildings bu on bu.idbuilding = r.buildings LEFT OUTER JOIN users u on u.idUsers = rbu.id_user_responsible" + " WHERE  bu.Description  = '" + cbEdificio.SelectedItem + "' and level = '" + cbNivel.SelectedItem + "' and number = " + cbNumero.SelectedItem + " order by a.code";
+
+                    /* sqlQuery = "SELECT a.code as 'Referencia', a.description as 'Nombre de activo' ,s.description as 'Estado', concat(last_name, ', ', name) as 'Responsible', concat(t.bookCode,'-',t.bookNumber) as 'Comprobante' " +
                     " ,art.idtransaction,abr.idAsset, abr.idRoom, '' as 'Eval' FROM rooms r INNER JOIN edilizia.assets_by_room abr ON abr.idRoom = r.idRooms INNER JOIN assets a on a.id_assets = abr.idAsset" +
                     " INNER JOIN assets_status s on a.idStatus = s.idstatus LEFT OUTER JOIN rooms_by_users rbu on r.idRooms = rbu.id_room and rbu.end_date is null " +
                    "  inner join edilizia.buildings bu on bu.idbuilding = r.buildings " +
                     " LEFT OUTER JOIN users u on u.idUsers = rbu.id_user_responsible LEFT OUTER JOIN assets_room_Transaction art on art.id_Asset = abr.idAsset and art.id_Room = abr.idRoom and art.return_date is null" +
                     " LEFT OUTER JOIN transaction t on t.idtransaction = art.idtransaction and t.bookCode='" + TipoComprobante + "' WHERE  bu.Description  = '" + cbEdificio.SelectedItem + "' and level = '" + cbNivel.SelectedItem + "' and number = " + cbNumero.SelectedItem + " order by a.code";
+                    */
                 }
 
                 MySqlDataReader dataReaderLocal = DB.GetData(sqlQuery);
@@ -364,23 +371,13 @@ namespace WindowsFormsApplication1
                         string Status = "";
                         string idAsset = "";
                         string observaciones = "";
-                        if ((rbEntrega.Checked == true && dgLocales["Estado Obs.", j].Value != null) || rbAuditoria.Checked == true || (rbDevolucion.Checked == true && dgLocales["Estado Obs.", j].Value != null))
+                        if ((rbEntrega.Checked == true && dgLocales["Estado Obs.", j].Value != null) || (rbAuditoria.Checked == true && dgLocales["Estado Obs.", j].Value != null) || (rbDevolucion.Checked == true && dgLocales["Estado Obs.", j].Value != null))
                         {
                             idAsset = dgLocales["idAsset", j].Value.ToString();
                             //En el caso de un bien que no se encuentra (color rojo) no posee estado, por lo tanto no asigno el status.
                             if (dgLocales["Eval", j].Style.BackColor != Color.Red)
                                 Status = dgLocales["Estado Obs.", j].Value.ToString();
-                            //else
-                            //{
-                            //    if (dgLocales["Estado", j].Value.ToString() == "Bueno")
-                            //        Status = "1";
-                            //    if (dgLocales["Estado", j].Value.ToString() == "Regular")
-                            //        Status = "2";
-                            //    if (dgLocales["Estado", j].Value.ToString() == "Malo")
-                            //        Status = "3";
-                            //    if (dgLocales["Estado", j].Value.ToString() == "Nuevo")
-                            //        Status = "10";
-                            //}
+                            
                             //Observaciones
                             if (dgLocales["Observaciones", j].Value != null)
                                 observaciones = dgLocales["Observaciones", j].Value.ToString();
@@ -438,6 +435,16 @@ namespace WindowsFormsApplication1
                                 if (dgLocales["Observaciones", j].Value != null)
                                     observaciones = dgLocales["Observaciones", j].Value.ToString();
 
+                                string estadoOrig = "NULL";
+                                if (dgLocales["Estado", j].Value.ToString() == "Bueno")
+                                    estadoOrig = "1";
+                                if (dgLocales["Estado", j].Value.ToString() == "Regular")
+                                    estadoOrig = "2";
+                                if (dgLocales["Estado", j].Value.ToString() == "Malo")
+                                    estadoOrig = "3";
+                                if (dgLocales["Estado", j].Value.ToString() == "Nuevo")
+                                    estadoOrig = "10";
+
                                 //Por defecto tomo que el idRoom=127 es el deposito virtual.
                                 idAsset = dgLocales["idAsset", j].Value.ToString();
                                 sql = "update assets_by_room set idRoom = 127 where idAsset=" + idAsset;
@@ -447,8 +454,8 @@ namespace WindowsFormsApplication1
                                 " values (now(),'" + observaciones + "', " + IDTransaction + ",'3', " + idAsset + ", " + IdRoomSelected + ")";
                                 long IDAssetRoomTrans = DB.InsertData(sql);
 
-                                sql = "INSERT INTO diferences (idComprobante,idBien,idLocalOrig,idLocalPicking,Semaforo,idLocalFinal,idEstadoFinal) " +
-                                " values (" + IDTransaction + ", " + dgLocales["idAsset", j].Value.ToString() + ", " + dgLocales["idRoom", j].Value.ToString() + ", '1','3','','')";
+                                sql = "INSERT INTO diferences (idComprobante,idBien,idLocalOrig,idLocalPicking,idEstadoOrig,idEstadoObs,Semaforo,idLocalFinal,idEstadoFinal) " +
+                                " values (" + IDTransaction + ", " + dgLocales["idAsset", j].Value.ToString() + ", " + dgLocales["idRoom", j].Value.ToString() + ", '1',"+estadoOrig+","+estadoOrig+",'3','','')";
                                 //En la grilla deberia guardar el idStatus del bien y ocultarlo. Ojo q me cambia el for
                                 long idDifference = DB.InsertData(sql);
                             }
