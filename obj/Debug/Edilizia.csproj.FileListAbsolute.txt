@@ -39,6 +39,7 @@ C:\Users\lucia\OneDrive\Documentos\GitHub\EdiliziaSoft\obj\Debug\IntegracionCRM.
 C:\Users\lucia\OneDrive\Documentos\GitHub\EdiliziaSoft\obj\Debug\IntegracionCRM.application
 C:\Users\lucia\OneDrive\Documentos\GitHub\EdiliziaSoft\obj\Debug\IntegracionCRM.exe
 C:\Users\lucia\OneDrive\Documentos\GitHub\EdiliziaSoft\obj\Debug\IntegracionCRM.pdb
+<<<<<<< HEAD
 C:\Users\lucia\OneDrive\Documentos\GitHub\EdiliziaSoft\obj\Debug\Edilizia.csprojResolveAssemblyReference.cache
 C:\Users\Leandro\Documents\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.Agrupador.DataGridViewGrouperControl.resources
 C:\Users\Leandro\Documents\GitHub\EdiliziaSoft\obj\Debug\WindowsFormsApplication1.Agrupador.SearchBox.resources
@@ -81,3 +82,6 @@ C:\Users\Leandro\Documents\GitHub\EdiliziaSoft\bin\Debug\MySql.Data.xml
 C:\Users\Leandro\Documents\GitHub\EdiliziaSoft\bin\Debug\Newtonsoft.Json.xml
 C:\Users\Leandro\Documents\GitHub\EdiliziaSoft\obj\Debug\IntegracionCRM.exe.manifest
 C:\Users\Leandro\Documents\GitHub\EdiliziaSoft\obj\Debug\IntegracionCRM.application
+=======
+>>>>>>> 2c0005a029fccb1bda5483e953e01505553b7e1f
+C:\Users\Leandro\Documents\GitHub\EdiliziaSoft\obj\Debug\Edilizia.csprojResolveAssemblyReference.cache

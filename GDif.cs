@@ -101,7 +101,7 @@ namespace WindowsFormsApplication1
         {
 
 
-            while (dgvDiferencias.RowCount > 1)
+            while (dgvDiferencias.RowCount >= 1)
             {
                 dgvDiferencias.Rows.Remove(dgvDiferencias.CurrentRow);
 
@@ -528,7 +528,7 @@ namespace WindowsFormsApplication1
                     }
                     else
                     #region estado sistema
-                    {// por defecto si no esta completo observado ponermos el de sistema
+                    {// por defecto si no esta completo observado ponermos el de sistema que lo traigo oculto en columna 14
                             
                         //string sqlroom = "SELECT idstatus FROM edilizia.assets_status where description ='" + dgvDiferencias[11, i].Value.ToString() + "'";
 
