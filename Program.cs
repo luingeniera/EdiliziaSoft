@@ -19,9 +19,9 @@ namespace WindowsFormsApplication1
             Application.SetCompatibleTextRenderingDefault(false);
 
             
-            //Application.Run(new Login());
+            Application.Run(new Login());
             //Application.Run(new Bienes());
-            Application.Run(new GDif());
+            //Application.Run(new GDif());
           //  Application.Run(new Glocal());
 
             //Application.Run(new Reimpresion());
