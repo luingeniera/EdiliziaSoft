@@ -31,7 +31,7 @@ namespace WindowsFormsApplication1
 
         private void btBuscar_Click(object sender, EventArgs e)
         {
-
+            
             string HasDifference = "0";
             if (cbNivel.SelectedItem == null || cbNumero.SelectedItem == null || cbEdificio.SelectedItem == null)
             {
@@ -81,6 +81,12 @@ namespace WindowsFormsApplication1
                     DataTable dtInfoLastTran = new DataTable();
                     dtInfoLastTran.Load(dataReaderLastTrans);
                     CodeLastTransaction = dtInfoLastTran.Rows[0][0].ToString();
+                    if (TipoComprobante == "AUD")
+                    {
+                        btnConfirmar.Visible = true;
+                        btnConfirmar.Enabled = true;
+                        btnSalir.Visible = true;
+                    }
                     if (TipoComprobante == "ENT" && CodeLastTransaction == "ENT")
                     {
                         MessageBox.Show("Este local ya presenta una entrega vigente. Debe realizar otro tipo de transacción.");
@@ -225,7 +231,8 @@ namespace WindowsFormsApplication1
                     if (deliveriedTo == "")
                     {
                         //Habilito el combobox de "entregar a" y lo completo con los usuarios activos (status=1)
-                        cbEntrega.Enabled = true;
+                        if (TipoComprobante != "AUD")
+                            cbEntrega.Enabled = true;
                         MySqlDataReader dataReaderUsers = DB.GetData("select distinct concat(last_name, ', ', name) from users where status = 1");
                         if (dataReaderUsers.HasRows)
                         {
@@ -371,13 +378,15 @@ namespace WindowsFormsApplication1
                         string Status = "";
                         string idAsset = "";
                         string observaciones = "";
-                        if ((rbEntrega.Checked == true && dgLocales["Estado Obs.", j].Value != null) || (rbAuditoria.Checked == true && dgLocales["Estado Obs.", j].Value != null) || (rbDevolucion.Checked == true && dgLocales["Estado Obs.", j].Value != null))
+                        //En el caso de un bien que no se encuentra (color rojo) no posee estado, por lo tanto no asigno el status.
+                        if (dgLocales["Eval", j].Style.BackColor != Color.Red && dgLocales["Estado Obs.", j].Value != null) 
+                            Status = dgLocales["Estado Obs.", j].Value.ToString();
+                        if (dgLocales["Eval", j].Style.BackColor != Color.Red && dgLocales["Estado Obs.", j].Value == null)
+                            Status = dgLocales["Estado", j].Value.ToString();
+                        
+                        if ((rbEntrega.Checked == true && Status != "") || (rbAuditoria.Checked == true && Status != "") || (rbDevolucion.Checked == true && Status != ""))
                         {
                             idAsset = dgLocales["idAsset", j].Value.ToString();
-                            //En el caso de un bien que no se encuentra (color rojo) no posee estado, por lo tanto no asigno el status.
-                            if (dgLocales["Eval", j].Style.BackColor != Color.Red)
-                                Status = dgLocales["Estado Obs.", j].Value.ToString();
-                            
                             //Observaciones
                             if (dgLocales["Observaciones", j].Value != null)
                                 observaciones = dgLocales["Observaciones", j].Value.ToString();
