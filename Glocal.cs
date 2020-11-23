@@ -47,7 +47,7 @@ namespace WindowsFormsApplication1
                 rbAuditoria.Enabled = false;
                 rbDevolucion.Enabled = false;
                 rbEntrega.Enabled = false;
-                btnSalir.Visible = false;
+                btnSalir.Visible = true;
                 dgLocales.DataSource = null;
                 if (rbEntrega.Checked == true)
                 {
@@ -266,6 +266,7 @@ namespace WindowsFormsApplication1
                         else
                         {
                             btnConfirmar.Visible = true;
+                            btnConfirmar.Enabled = true;
                             btnSalir.Visible = true;
 
                             cbEntrega.Enabled = false;
