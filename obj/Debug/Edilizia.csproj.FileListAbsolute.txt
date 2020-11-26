@@ -81,3 +81,4 @@ C:\Users\lucia\OneDrive\Documentos\GitHub\EdiliziaSoft\obj\Debug\IntegracionCRM.
 C:\Users\lucia\OneDrive\Documentos\GitHub\EdiliziaSoft\obj\Debug\IntegracionCRM.application
 C:\Users\lucia\OneDrive\Documentos\GitHub\EdiliziaSoft\obj\Debug\IntegracionCRM.exe
 C:\Users\lucia\OneDrive\Documentos\GitHub\EdiliziaSoft\obj\Debug\IntegracionCRM.pdb
+C:\Users\lucia\OneDrive\Documentos\GitHub\EdiliziaSoft\obj\Debug\Edilizia.csprojResolveAssemblyReference.cache
