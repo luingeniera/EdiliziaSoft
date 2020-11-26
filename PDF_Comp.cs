@@ -311,21 +311,7 @@ namespace WindowsFormsApplication1
 
                 #endregion
 
-                //agrego la firma
-              
-              
-                PdfPTable tableR = new PdfPTable(1);
-                tableR.DefaultCell.Border = Rectangle.NO_BORDER;
-                PdfPCell cellR = new PdfPCell(new Phrase("\n\n", FontFactory.GetFont(FontFactory.TIMES, 10f)));
-                cellR.Border = 0;
-                cellR.Colspan = 2;
-                cellR.HorizontalAlignment = 0; //0=Left, 1=Centre, 2=Right
-                tableR.AddCell(cellR);
-                tableR.AddCell("......................................................");
-                PdfPCell cellres = new PdfPCell(new Phrase("Responsable del Local", FontFactory.GetFont(FontFactory.HELVETICA, 10f)));
-                cellres.Border = 0;
-                tableR.AddCell(cellres);
-                doc.Add(tableR);
+                
 
                 #region tabla diferencias amarillos y rojos
                
@@ -476,10 +462,25 @@ namespace WindowsFormsApplication1
                     }
                 }
 
+                //agrego la firma
+
+
+                PdfPTable tableR = new PdfPTable(1);
+                tableR.DefaultCell.Border = Rectangle.NO_BORDER;
+                PdfPCell cellR = new PdfPCell(new Phrase("\n\n", FontFactory.GetFont(FontFactory.TIMES, 10f)));
+                cellR.Border = 0;
+                cellR.Colspan = 2;
+                cellR.HorizontalAlignment = 0; //0=Left, 1=Centre, 2=Right
+                tableR.AddCell(cellR);
+                tableR.AddCell("......................................................");
+                PdfPCell cellres = new PdfPCell(new Phrase("Responsable del Local", FontFactory.GetFont(FontFactory.HELVETICA, 10f)));
+                cellres.Border = 0;
+                tableR.AddCell(cellres);
+                doc.Add(tableR);
 
                 PdfPTable table = new PdfPTable(2);
                     table.DefaultCell.Border = Rectangle.NO_BORDER;
-                    PdfPCell cell = new PdfPCell(new Phrase("\n\n\n", FontFactory.GetFont(FontFactory.HELVETICA, 10f)));
+                    PdfPCell cell = new PdfPCell(new Phrase("\n\n", FontFactory.GetFont(FontFactory.HELVETICA, 10f)));
                     cell.Border = 0;
                     cell.Colspan = 2;
                     cell.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
