@@ -32,11 +32,12 @@ namespace WindowsFormsApplication1
                 WindowsFormsApplication1.DBConnection DB = new WindowsFormsApplication1.DBConnection();
                 WindowsFormsApplication1.DBConnection DB2 = new WindowsFormsApplication1.DBConnection();
                 
-                // busco el comrpobante que me mandan por parametro, para ENT y AUD se hace de una manera la seleccion
+                // busco el comrpobante que me mandan por parametro, para ENT y AUD se hace de una manera la seleccion.
+                //Por definición si el local esta devuelto, por ende no tiene responsable asignado, tomamos el owner.
                 String Movimiento = " SELECT distinct r.code, r.description,CONCAT(u.last_name,', ',u.name) as Responsable, " +
                 "CONCAT(t.bookCode,' - ',t.bookNumber) as Comp,DATE_FORMAT(t.date,'%d/%m/%Y') as date FROM edilizia.transaction t INNER JOIN edilizia.assets_room_transaction art ON t.idtransaction = art.idtransaction " +
                 "INNER JOIN edilizia.rooms r on art.id_Room = r.idRooms INNER JOIN edilizia.rooms_by_users rbu on rbu.id_room = r.idRooms " +
-                "INNER JOIN edilizia.users u on u.idUsers = rbu.id_user_responsible where t.idtransaction = " + comprobante.ToString();
+                "INNER JOIN edilizia.users u on u.idUsers = IFNULL(rbu.id_user_responsible,rbu.id_user_owner) where t.idtransaction = " + comprobante.ToString();
 
                 String tipo = "SELECT bookcode FROM edilizia.transaction where idtransaction = " + comprobante.ToString();
 
