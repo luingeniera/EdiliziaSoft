@@ -31,7 +31,7 @@ namespace WindowsFormsApplication1
  "inner join  edilizia.assets a on f.referencia_SIPRECO = a.code " +
  "INNER JOIN edilizia.assets_by_room abr ON abr.idAsset = a.id_assets " +
  "inner join edilizia.rooms redi on redi.idRooms = abr.idRoom " +
- "where  where ro.number <> redi.code");
+ " where ro.number <> redi.code");
 
             MySqlDataReader lastdate = DB.GetData("  SELECT max(last_update_revit) as last FROM edilizia.configurations;");
 
